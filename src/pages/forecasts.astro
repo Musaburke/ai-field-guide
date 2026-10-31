@@ -1,5 +1,6 @@
 ---
-import Base from '../layouts/Base.astro';
+import Guide from '../layouts/Guide.astro';
+import Constellation from '../components/Constellation.astro';
 import Citation from '../components/Citation';
 import Rich from '../components/Rich';
 import { Flags, ReadLine } from '../components/Evidence';
@@ -18,55 +19,52 @@ const ids = ordered.flatMap((f) => {
 });
 const cites = numberCites(ids);
 ---
-<Base title="Forecasts and evidence: AI field guide" description="Forecasts set beside what has been measured, using only pairs the guide's text makes. Nothing here is a prediction by this guide.">
-  <section class="opener on-dark">
-    <h1 class="display opener-title">
-      <span class="line"><span>Forecasts</span></span>
-      <span class="line"><span>and evidence</span></span>
-    </h1>
-    <p class="opener-lead after-title">Everything on the left is a forecast or an opinion. None of it is evidence about what will happen, and this guide makes no prediction of its own. Forecasters disagree, and several are vendors.</p>
-  </section>
-
-  <div class="fc-heads" aria-hidden="true">
-    <span>Forecast</span>
-    <span>Measured, or what the guide has beside it</span>
+<Guide title="Forecasts and evidence: AI field guide" description="Forecasts set beside what has been measured. Nothing here is a prediction by this guide." current="/forecasts">
+  <div class="wash">
+    <Constellation />
+    <div class="wrap">
+      <header class="open short">
+        <h1 data-split>Forecasts and evidence</h1>
+        <p class="lead" data-reveal style="--d:200ms">Each green card is a forecast or an opinion, not evidence of what will happen. This guide makes no prediction of its own. Forecasters disagree, and several are vendors.</p>
+      </header>
+    </div>
   </div>
-
-  <section aria-label="Forecasts beside evidence">
-    {ordered.map((f) => {
-      const pair = paired(f.id);
-      const claim = pair.claim ? allClaims.find((c) => c.id === pair.claim) : undefined;
-      const gap = pair.gapOf ? sections.find((s) => s.id === pair.gapOf)?.gap : undefined;
-      return (
-        <div class="fc-row">
-          <div class="fc-left on-dark" id={f.id}>
-            <h2 class="fc-who">{f.who}</h2>
-            <p class="fc-kind">{f.kind}</p>
-            <p><Rich text={f.text} current={route} /> <Citation client:visible cite={cites.get(f.id)!} current={route} /></p>
-            <ReadLine read={f.read} />
-            <Flags flags={f.flags} />
-            <p><Rich text={f.caveat} current={route} /></p>
-          </div>
-          <div class:list={['fc-right', { 'on-second': !claim && !gap }]}>
-            <span class="fc-side-label">Beside it</span>
-            {claim && (
-              <>
-                <h3 class="fc-who">{claimLabel[claim.id]}</h3>
-                <p><Rich text={claim.text} current={route} /> <Citation client:visible cite={cites.get(claim.id)!} current={route} /></p>
-                <ReadLine read={claim.read} />
-                <p>Strength: {claim.strength}</p>
-                <Flags flags={claim.flags} />
-                {claim.note && <p><Rich text={claim.note} current={route} /></p>}
-                <p><a href={claimHref(claim.id, route)}>In {claim.chapterTitle}</a></p>
-              </>
-            )}
-            {gap && <p><Rich text={gapDisplay(gap)} current={route} /></p>}
-            {!claim && !gap && <p class="fc-none">Nothing measured in this guide to set beside it.</p>}
-          </div>
-        </div>
-      );
-    })}
-  </section>
-
-  <Sources cites={[...cites.values()]} current={route} />
-</Base>
+  <div class="wrap">
+    <section class="block pairs" aria-label="Forecasts beside evidence">
+      {ordered.map((f) => {
+        const pair = paired(f.id);
+        const claim = pair.claim ? allClaims.find((c) => c.id === pair.claim) : undefined;
+        const gap = pair.gapOf ? sections.find((s) => s.id === pair.gapOf)?.gap : undefined;
+        return (
+          <article class="pair" data-reveal>
+            <div class="pair-left" id={f.id}>
+              <small>{f.kind}</small>
+              <h2>{f.who}</h2>
+              <p><Rich text={f.text} current={route} /> <Citation client:visible cite={cites.get(f.id)!} current={route} /></p>
+              <p class="row-note"><Rich text={f.caveat} current={route} /></p>
+              <ReadLine read={f.read} />
+              <Flags flags={f.flags} />
+            </div>
+            <div>
+              <small>What the guide has beside it</small>
+              {claim && (
+                <>
+                  <h3>{claimLabel[claim.id]}</h3>
+                  <p><Rich text={claim.text} current={route} /> <Citation client:visible cite={cites.get(claim.id)!} current={route} /></p>
+                  {claim.note && <p class="row-note"><Rich text={claim.note} current={route} /></p>}
+                  <ReadLine read={claim.read} />
+                  <p class="tl-strength">Strength: {claim.strength}</p>
+                  <Flags flags={claim.flags} />
+                  <p><a href={claimHref(claim.id, route)}>In {claim.chapterTitle}</a></p>
+                </>
+              )}
+              {gap && <p><Rich text={gapDisplay(gap).replace(/ The one SOC forecast found is on the \[[^\]]+\]\([^)]+\)\./, '')} current={route} /></p>}
+              {!claim && !gap && <p class="pair-none">Nothing measured in this guide to set beside it.</p>}
+            </div>
+          </article>
+        );
+      })}
+    </section>
+    <Sources cites={[...cites.values()]} />
+  </div>
+</Guide>

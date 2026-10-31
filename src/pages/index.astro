@@ -1,119 +1,62 @@
 ---
-import Base from '../layouts/Base.astro';
-import { Meter, Profile } from '../components/Evidence';
-import { sections, notRead, checkedOnLabel } from '../data/guide';
+import Guide from '../layouts/Guide.astro';
+import Constellation from '../components/Constellation.astro';
+import { ReadLine } from '../components/Evidence';
+import { sections } from '../data/guide';
 import { figures } from '../data/display';
-import { allClaims, claimHref, readCounts, readRank } from '../lib/content';
+import { blurbs, icons, sourceNames } from '../data/panels';
+import { allClaims, claimHref } from '../lib/content';
 
-const counts = readCounts(allClaims);
-const wall = [...allClaims].sort((a, b) => readRank[a.read] - readRank[b.read]);
-const tileGround = ['on-dark', 'on-second', 'on-dark', 'on-accent', 'on-accent'];
-const tileClass = ['t1', 't2', 't3', 't4', 't5'];
+const metr = allClaims.find((c) => c.id === 'metr-2025')!;
 ---
-<Base
-  title="AI field guide"
-  description="What the evidence says about using AI at work. Every claim shows how far its source was checked, and the guide lists what it did not read."
->
-  <section aria-label="Figures from the guide" class="mosaic">
-    {figures.map((f, i) => (
-      <a class:list={['tile', tileClass[i], tileGround[i]]} href={claimHref(f.claim)}>
-        <span class="tile-value">{f.value}</span>
-        <span class="tile-label">{f.label}</span>
-      </a>
-    ))}
-  </section>
-
-  <section class="hero axis-grid">
-    <div class="axis-side hero-stand after-title">
-      <p class="hero-lead">What the evidence says about using AI at work, with every claim marked for how sure to be.</p>
-      <a class="btn" href={`/${sections[0].id}`}>Read the first chapter</a>
-    </div>
-    <h1 class="display">
-      <span class="line"><span>AI field</span></span>
-      <span class="line"><span>guide</span></span>
-    </h1>
-  </section>
-
-  <section class="specimen on-accent" aria-labelledby="metr-h">
-    <h2 id="metr-h" class="head specimen-title" data-reveal>Expected faster, measured slower</h2>
-    <div class="specimen-pair">
-      <p class="drift-a">
-        <span class="specimen-cap">What developers expected</span>
-        <span class="specimen-num">24%</span>
-        <span class="specimen-word">faster</span>
-      </p>
-      <p class="drift-b">
-        <span class="specimen-cap">What the trial measured</span>
-        <span class="specimen-num">19%</span>
-        <span class="specimen-word">longer</span>
-      </p>
-    </div>
-    <div class="specimen-note" data-reveal>
-      <p>This is one small trial on early-2025 tools, and it is contested: 16 experienced open-source developers, 246 real issues, AI randomly allowed or not. The authors say they do not claim AI slows most developers, and METR's page now carries a notice that the results are out of date.</p>
-      <a class="btn" href={claimHref('metr-2025')}>Read the claim and its limits</a>
-    </div>
-  </section>
-
-  <section id="chapters" class="chapters" aria-labelledby="chapters-h">
-    <div class="chapters-head axis-grid">
-      <ul class="axis-side key" data-reveal>
-        <li><Meter read="page" /> Source page read</li>
-        <li><Meter read="partial" /> Partly read</li>
-        <li><Meter read="snippet" /> Search summary only</li>
-      </ul>
+<Guide title="AI field guide" description="What the evidence really says about using AI at work, in plain English, with every claim sourced." current="/">
+  <div class="wash">
+    <Constellation />
+    <div class="wrap hero">
       <div>
-        <h2 id="chapters-h" class="head" data-reveal>Six chapters, graded</h2>
-        <p class="measure" data-reveal style="margin-top:20px">Each bar is one claim in that chapter. A tall bar means the source page was read, a short one means only a search summary.</p>
-      </div>
-    </div>
-    <nav aria-label="Chapters">
-      {sections.map((s) => {
-        const c = readCounts(s.claims);
-        return (
-          <a class="band" href={`/${s.id}`}>
-            <span class="band-side">
-              <Profile reads={s.claims.map((x) => x.read)} />
-              <span>{s.claims.length} {s.claims.length === 1 ? 'claim' : 'claims'}: {c.page} read, {c.partial} partly, {c.snippet} from summaries</span>
-            </span>
-            <span class="band-title">{s.title}</span>
-          </a>
-        );
-      })}
-    </nav>
-  </section>
-
-  <section class="wall-page on-dark" aria-labelledby="wall-h">
-    <div class="axis-grid wall-top">
-      <p class="axis-side" data-reveal><span class="head wall-count">{counts.page} of {allClaims.length}</span><span class="wall-count-label">claims checked on the source page</span></p>
-      <div class="wall-text">
-        <h2 id="wall-h" class="head" data-reveal>How sure can you be?</h2>
-        <p class="statement measure" data-reveal>Rank all {allClaims.length} claims by how they were read, or pull the contested and vendor sources to the top.</p>
-        <a class="btn" href="/evidence" data-reveal>Open the evidence filter</a>
-      </div>
-    </div>
-    <div class="wall" data-reveal aria-hidden="true">
-      {wall.map((c, i) => <span class={`profile-${c.read}`} style={`--i:${i}`}></span>)}
-    </div>
-    <p class="wall-key">
-      <span><strong>{counts.page}</strong> source page read</span>
-      <span><strong>{counts.partial}</strong> partly read</span>
-      <span><strong>{counts.snippet}</strong> search summary only</span>
-    </p>
-  </section>
-
-  <section class="notread" aria-labelledby="notread-h">
-    <div class="axis-grid">
-      <p class="axis-side" data-reveal>Evidence checked on {checkedOnLabel}. Sources can change after this date.</p>
-      <div>
-        <h2 id="notread-h" class="head" data-reveal>What this guide did not read</h2>
-        <ul class="notread-list statement measure">
-          {notRead.map((n) => <li data-reveal>{n}</li>)}
-        </ul>
-        <div class="closing" data-reveal>
-          <a class="btn" href={`/${sections[0].id}`}>Read the first chapter</a>
-          <a href="/method">See the full list and method</a>
+        <h1 data-split>Use AI <span class="hero-word" data-rotate="well|safely|responsibly">well</span></h1>
+        <p class="hero-lead" data-reveal style="--d:250ms">What the evidence really says, in plain English. For students and professionals.</p>
+        <div class="hero-cta" data-reveal style="--d:350ms">
+          <a class="btn" href={`/${sections[0]!.id}`}>Start reading</a>
+          <a class="btn btn-soft" href="/evidence">See the evidence</a>
         </div>
       </div>
+      <div class="demo" data-reveal style="--d:300ms">
+        <div class="bubble"><small>You ask</small><p>Does AI make developers faster?</p></div>
+        <div class="bubble"><small>The evidence says</small><span class="big-num">19% longer</span><p>In one small 2025 trial of 16 developers.</p></div>
+        <div class="bubble bubble-check"><small>How sure to be</small><p>{metr.strength}</p><div class="check-row"><ReadLine read={metr.read} /><span class="read-line">Contested</span></div></div>
+      </div>
     </div>
-  </section>
-</Base>
+  </div>
+
+  <div class="wrap">
+    <section class="strip" aria-label="Sources used" data-reveal>
+      <p>Sources used include</p>
+      <ul>{sourceNames.map((n) => <li>{n}</li>)}</ul>
+    </section>
+
+    <section class="block" aria-labelledby="ch-h">
+      <h2 id="ch-h" data-split>Six short chapters</h2>
+      <div class="chapters">
+        {sections.map((s, i) => (
+          <a class="ch-card" href={`/${s.id}`} data-reveal style={`--d:${i * 60}ms`}>
+            <span class="ch-top"><span class="ch-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={icons[s.id]} /></svg></span><span class="ch-n">Chapter {i + 1}</span></span>
+            <h3>{s.title}</h3>
+            <p>{blurbs[s.id]}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="num-h">
+      <h2 id="num-h" data-split>The numbers, with their caveats</h2>
+      <div class="wall">
+        {figures.map((f, i) => (
+          <a href={claimHref(f.claim)} data-reveal style={`--d:${i * 60}ms`}><b>{f.value}</b><span>{f.label}</span></a>
+        ))}
+      </div>
+    </section>
+
+    <a class="band" href={`/${sections[0]!.id}`}><span>Chapter 1</span><b>{sections[0]!.title}</b></a>
+  </div>
+</Guide>
