@@ -1,0 +1,30 @@
+---
+import type { Cite } from '../lib/content';
+import { Flags, ReadLine } from './Evidence';
+import Rich from './Rich';
+interface Props { cites: Cite[]; current?: string; fold?: boolean }
+const { cites, current, fold } = Astro.props;
+---
+<section class="sources" aria-labelledby="sources-h">
+  <h2 id="sources-h" class="head-small axis-hang">Sources on this page</h2>
+  <details class="sources-fold" open data-fold={fold || undefined}>
+  <summary class="axis-hang text-btn">Show or hide the {cites.length} sources</summary>
+  <ol class="sources-list">
+    {cites.map((c) => (
+      <li id={`src-${c.n}`} class="source">
+        <div class="source-side">
+          <span class="source-n">{c.n}</span>
+          <ReadLine read={c.read} />
+        </div>
+        <div class="source-main">
+          <p class="source-title">{c.label}{c.date && <span class="soft"> · {c.date}</span>}</p>
+          <p class="source-links">{c.links.map((l, i) => <>{i > 0 && ' · '}<a href={l.url} rel="noopener noreferrer">{l.label}</a></>)}</p>
+          {c.strength && <p>Strength: {c.strength}</p>}
+          <Flags flags={c.flags} />
+          {c.note && <p><Rich text={c.note} current={current} /></p>}
+        </div>
+      </li>
+    ))}
+  </ol>
+  </details>
+</section>

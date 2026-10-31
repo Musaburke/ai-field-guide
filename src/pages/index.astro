@@ -1,133 +1,120 @@
 ---
 import Base from '../layouts/Base.astro';
-import RichText from '../components/RichText.astro';
-import Tags from '../components/Tags.astro';
-import { sections, forecasts, notUsed, notRead, checkedOn, checkedOnLabel } from '../data/guide';
+import { Meter, Profile } from '../components/Evidence';
+import { sections, notRead, checkedOnLabel } from '../data/guide';
+import { figures } from '../data/display';
+import { allClaims, claimHref, readCounts, readRank } from '../lib/content';
 
-const toc = [
-  { id: 'how-to-read', title: 'How to read this guide' },
-  ...sections.map((s) => ({ id: s.id, title: s.title })),
-  { id: 'forecasts', title: 'The future: forecasts, not evidence' },
-  { id: 'limits', title: 'Limits of this guide' },
-];
+const counts = readCounts(allClaims);
+const wall = [...allClaims].sort((a, b) => readRank[a.read] - readRank[b.read]);
+const tileGround = ['on-dark', 'on-second', 'on-dark', 'on-accent', 'on-accent'];
+const tileClass = ['t1', 't2', 't3', 't4', 't5'];
 ---
 <Base
-  title="AI Field Guide"
-  description="A cited guide to using AI well, safely and responsibly: what employers value, coding, cyber security, other fields and the future, with the strength of each piece of evidence shown."
+  title="AI field guide"
+  description="What the evidence says about using AI at work. Every claim shows how far its source was checked, and the guide lists what it did not read."
 >
-  <div class="shell">
-    <header class="masthead">
-      <h1>Using AI well, safely and responsibly</h1>
-      <p class="lede">
-        A cited guide to what the evidence says about AI at work: how to use it, where it goes wrong, what employers ask for, and what is only a forecast.
+  <section aria-label="Figures from the guide" class="mosaic">
+    {figures.map((f, i) => (
+      <a class:list={['tile', tileClass[i], tileGround[i]]} href={claimHref(f.claim)}>
+        <span class="tile-value">{f.value}</span>
+        <span class="tile-label">{f.label}</span>
+      </a>
+    ))}
+    <span class="t6 on-second" aria-hidden="true"></span>
+  </section>
+
+  <section class="hero axis-grid">
+    <div class="axis-side hero-stand after-title">
+      <p class="hero-lead">What the evidence says about using AI at work, with every claim marked for how sure to be.</p>
+      <a class="btn" href={`/${sections[0].id}`}>Read the first chapter</a>
+    </div>
+    <h1 class="display">
+      <span class="line"><span>AI field</span></span>
+      <span class="line"><span>guide</span></span>
+    </h1>
+  </section>
+
+  <section class="specimen on-accent" aria-labelledby="metr-h">
+    <h2 id="metr-h" class="head specimen-title" data-reveal>Expected faster, measured slower</h2>
+    <div class="specimen-pair">
+      <p class="drift-a">
+        <span class="specimen-cap">What developers expected</span>
+        <span class="specimen-num">24%</span>
+        <span class="specimen-word">faster</span>
       </p>
-      <p class="checked">Evidence checked on <time datetime={checkedOn}>{checkedOnLabel}</time>. Sources can change after this date.</p>
-    </header>
+      <p class="drift-b">
+        <span class="specimen-cap">What the trial measured</span>
+        <span class="specimen-num">19%</span>
+        <span class="specimen-word">longer</span>
+      </p>
+    </div>
+    <div class="specimen-note" data-reveal>
+      <p>This is one small trial on early-2025 tools, and it is contested: 16 experienced open-source developers, 246 real issues, AI randomly allowed or not. The authors say they do not claim AI slows most developers, and METR's page now carries a notice that the results are out of date.</p>
+      <a class="btn" href={claimHref('metr-2025')}>Read the claim and its limits</a>
+    </div>
+  </section>
 
-    <nav class="toc" aria-label="Contents">
-      <h2 class="toc-title">Contents</h2>
-      <ol>
-        {toc.map((t) => <li><a href={`#${t.id}`}>{t.title}</a></li>)}
-      </ol>
+  <section id="chapters" class="chapters" aria-labelledby="chapters-h">
+    <div class="chapters-head axis-grid">
+      <ul class="axis-side key" data-reveal>
+        <li><Meter read="page" /> Source page read</li>
+        <li><Meter read="partial" /> Partly read</li>
+        <li><Meter read="snippet" /> Search summary only</li>
+      </ul>
+      <div>
+        <h2 id="chapters-h" class="head" data-reveal>Six chapters, graded</h2>
+        <p class="measure" data-reveal style="margin-top:20px">Each bar is one claim in that chapter. A tall bar means the source page was read, a short one means only a search summary.</p>
+      </div>
+    </div>
+    <nav aria-label="Chapters">
+      {sections.map((s) => {
+        const c = readCounts(s.claims);
+        return (
+          <a class="band" href={`/${s.id}`}>
+            <span class="band-side">
+              <Profile reads={s.claims.map((x) => x.read)} />
+              <span>{s.claims.length} {s.claims.length === 1 ? 'claim' : 'claims'}: {c.page} read, {c.partial} partly, {c.snippet} from summaries</span>
+            </span>
+            <span class="band-title">{s.title}</span>
+          </a>
+        );
+      })}
     </nav>
+  </section>
 
-    <main id="main" class="guide">
-      <section id="how-to-read" aria-labelledby="h-how">
-        <h2 id="h-how">How to read this guide</h2>
-        <p>
-          Every claim links to its source and carries labels, so you can judge it yourself. Nothing in this guide is a prediction by its author. Forecasts are kept in their own section, with the forecaster named.
-        </p>
-        <dl class="legend">
-          <div>
-            <dt>Evidence strength</dt>
-            <dd>The rating from the research notes: strong, moderate or weak, with the reason. It is about how far the source supports the claim, not how important the claim is.</dd>
-          </div>
-          <div>
-            <dt>Source page read</dt>
-            <dd>The page was opened and the claim checked against it. "Partly read" means only some of the claim was confirmed.</dd>
-          </div>
-          <div>
-            <dt>Search summary only</dt>
-            <dd>The claim comes from a search-result summary and the page was not opened. Wording is cautious ("reportedly") and the figure should be re-checked at the link before you rely on it.</dd>
-          </div>
-          <div>
-            <dt>Vendor or interested-party source</dt>
-            <dd>The source is written or paid for by someone who sells, or stands to gain from, the thing it describes.</dd>
-          </div>
-          <div>
-            <dt>Contested</dt>
-            <dd>Authors, critics or later data dispute the claim or its reach.</dd>
-          </div>
-        </dl>
-        <p>
-          Companies named here appear as sources or examples only. Naming one is not an endorsement.
-        </p>
-      </section>
+  <section class="wall-page on-dark" aria-labelledby="wall-h">
+    <div class="axis-grid wall-top">
+      <p class="axis-side" data-reveal><span class="head wall-count">{counts.page} of {allClaims.length}</span><span class="wall-count-label">claims checked on the source page</span></p>
+      <div class="wall-text">
+        <h2 id="wall-h" class="head" data-reveal>How sure can you be?</h2>
+        <p class="statement measure" data-reveal>Rank all {allClaims.length} claims by how they were read, or pull the contested and vendor sources to the top.</p>
+        <a class="btn" href="/evidence" data-reveal>Open the evidence filter</a>
+      </div>
+    </div>
+    <div class="wall" data-reveal aria-hidden="true">
+      {wall.map((c, i) => <span class={`profile-${c.read}`} style={`--i:${i}`}></span>)}
+    </div>
+    <p class="wall-key">
+      <span><strong>{counts.page}</strong> source page read</span>
+      <span><strong>{counts.partial}</strong> partly read</span>
+      <span><strong>{counts.snippet}</strong> search summary only</span>
+    </p>
+  </section>
 
-      {sections.map((s) => (
-        <section id={s.id} aria-labelledby={`h-${s.id}`}>
-          <h2 id={`h-${s.id}`}>{s.title}</h2>
-          <p class="intro"><RichText text={s.intro} /></p>
-          <ul class="claims">
-            {s.claims.map((c) => (
-              <li class="claim" id={c.id}>
-                <p><RichText text={c.text} /></p>
-                <Tags read={c.read} strength={c.strength} flags={c.flags} />
-                {c.note && <p class="note"><RichText text={c.note} /></p>}
-              </li>
-            ))}
-          </ul>
-          {s.gap && <p class="gap"><RichText text={s.gap} /></p>}
-          {s.habits && (
-            <>
-              <h3>Habits these sources support</h3>
-              <ul class="habits">
-                {s.habits.map((h) => <li><RichText text={h.text} /></li>)}
-              </ul>
-            </>
-          )}
-        </section>
-      ))}
-
-      <section id="forecasts" aria-labelledby="h-forecasts">
-        <h2 id="h-forecasts">The future: forecasts, not evidence</h2>
-        <p class="intro">
-          Everything below is a forecast or an opinion. None of it is evidence about what will happen, and this guide makes no prediction of its own. Forecasters disagree, and several are vendors.
-        </p>
-        <ul class="forecasts">
-          {forecasts.map((f) => (
-            <li class="forecast" id={f.id}>
-              <p class="forecaster">{f.who}</p>
-              <p class="kind">{f.kind}</p>
-              <p><RichText text={f.text} /></p>
-              <Tags read={f.read} flags={f.flags} />
-              <p class="note"><RichText text={f.caveat} /></p>
-            </li>
-          ))}
+  <section class="notread" aria-labelledby="notread-h">
+    <div class="axis-grid">
+      <p class="axis-side" data-reveal>Evidence checked on {checkedOnLabel}. Sources can change after this date.</p>
+      <div>
+        <h2 id="notread-h" class="head" data-reveal>What this guide did not read</h2>
+        <ul class="notread-list statement measure">
+          {notRead.map((n) => <li data-reveal>{n}</li>)}
         </ul>
-      </section>
-
-      <section id="limits" aria-labelledby="h-limits">
-        <h2 id="h-limits">Limits of this guide</h2>
-        <p>
-          The research behind it used a fixed budget of 30 searches and 20 page reads. Many pages were seen only as search summaries, and several 2026-dated items rest on summaries that conflict across sources. Read the labels, and open the link before you quote a number.
-        </p>
-        <h3>Deliberately not used</h3>
-        <ul class="plain">
-          {notUsed.map((n) => <li>{n}</li>)}
-        </ul>
-        <h3>Not opened or not readable</h3>
-        <ul class="plain">
-          {notRead.map((n) => <li>{n}</li>)}
-        </ul>
-        <p>
-          Anthropic appears as a source several times. Some of those items are studies of its own products, and each is labelled as a vendor source.
-        </p>
-      </section>
-    </main>
-
-    <footer class="foot">
-      <p>Evidence checked on {checkedOnLabel}. Static page, no scripts, no tracking.</p>
-    </footer>
-  </div>
+        <div class="closing" data-reveal>
+          <a class="btn" href={`/${sections[0].id}`}>Read the first chapter</a>
+          <a href="/method">See the full list and method</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </Base>
