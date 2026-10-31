@@ -78,8 +78,12 @@ import { checkedOn, checkedOnLabel, notRead, notUsed } from '../data/guide';
   </section>
 
   <section class="date-page on-second" aria-labelledby="dt-h">
-    <h2 id="dt-h" class="head-small" data-reveal>Evidence checked on</h2>
-    <p class="date-big" data-reveal style="margin-top:16px"><time datetime={checkedOn}>{checkedOnLabel}</time></p>
-    <p class="measure" data-reveal style="margin-top:24px">Sources can change after this date.</p>
+    <div class="axis-grid">
+      <div class="axis-side">
+        <h2 id="dt-h" class="head-small" data-reveal>Evidence checked on</h2>
+        <p data-reveal style="margin-top:12px">Sources can change after this date.</p>
+      </div>
+      <p class="display" data-reveal><time datetime={checkedOn}>{checkedOnLabel}</time></p>
+    </div>
   </section>
 </Base>

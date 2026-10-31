@@ -2,11 +2,11 @@
 import Base from '../layouts/Base.astro';
 import Citation from '../components/Citation';
 import Rich from '../components/Rich';
-import { Flags, ReadLine } from '../components/Evidence';
+import { Flags, Profile, ReadLine } from '../components/Evidence';
 import Sources from '../components/Sources.astro';
 import { sections } from '../data/guide';
 import { claimLabel, takeaways, titleLines } from '../data/display';
-import { numberCites } from '../lib/content';
+import { gapDisplay, numberCites, readCounts } from '../lib/content';
 
 export function getStaticPaths() {
   return sections.map((s, i) => ({ params: { chapter: s.id }, props: { index: i } }));
@@ -19,6 +19,7 @@ const prev = sections[index - 1];
 const next = sections[index + 1];
 const lines = titleLines[s.id];
 const answers = takeaways[s.id];
+const counts = readCounts(s.claims);
 const ground = index % 2 === 0 ? 'on-accent' : 'on-dark';
 
 // Numbered in reading order: takeaways first, then this chapter's own claims.
@@ -30,16 +31,20 @@ const cites = numberCites([...answers.flatMap((a) => (a.claim ? [a.claim] : []))
       {lines.map((l) => <span class="line"><span>{l}</span></span>)}
     </h1>
     <p class="opener-lead after-title"><Rich text={s.intro} current={route} /></p>
+    <p class="opener-side after-title">
+      <Profile reads={s.claims.map((c) => c.read)} />
+      <span>{s.claims.length} {s.claims.length === 1 ? 'claim' : 'claims'}: {counts.page} read, {counts.partial} partly, {counts.snippet} from summaries</span>
+    </p>
   </section>
   <div class="progress" aria-hidden="true"><span data-progress></span></div>
 
   <section class="answer" aria-labelledby="answer-h">
     <h2 id="answer-h" class="head answer-intro axis-hang" data-reveal>The short answer</h2>
     <ul class="answer-list">
-      {answers.map((a, i) => {
+      {answers.map((a) => {
         const cite = a.claim ? cites.get(a.claim) : undefined;
         return (
-          <li class="answer-row" data-reveal style={`--d:${i * 70}ms`}>
+          <li class="answer-row">
             <div class="answer-side">
               {cite && <><ReadLine read={cite.read} /><Flags flags={cite.flags} /></>}
               {!cite && <span class="read-line">An admitted gap</span>}
@@ -88,7 +93,7 @@ const cites = numberCites([...answers.flatMap((a) => (a.claim ? [a.claim] : []))
     <section class="gap-page on-second" aria-labelledby="gap-h">
       <div class="axis-hang">
         <h2 id="gap-h" class="head" data-reveal>What is missing</h2>
-        <p class="statement measure" data-reveal style="margin-top:32px"><Rich text={s.gap} current={route} /></p>
+        <p class="statement measure" data-reveal style="margin-top:32px"><Rich text={gapDisplay(s.gap)} current={route} /></p>
       </div>
     </section>
   )}
@@ -109,7 +114,7 @@ const cites = numberCites([...answers.flatMap((a) => (a.claim ? [a.claim] : []))
   {next ? (
     <a class="next on-accent" href={`/${next.id}`}>
       <span class="next-word">Next chapter</span>
-      <span class="next-title display">{next.title}</span>
+      <span class="next-title display">{titleLines[next.id].map((l) => <span class="next-line">{l}</span>)}</span>
     </a>
   ) : (
     <a class="next on-accent" href="/evidence">
