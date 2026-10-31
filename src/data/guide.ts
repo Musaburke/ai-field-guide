@@ -187,7 +187,7 @@ export const sections: Section[] = [
     ],
     habits: [
       {
-        text: 'Keep confidential code and data out of tools you have not been cleared to use. The Samsung case is the documented example of what happens otherwise.',
+        text: 'Keep confidential code and data out of tools you have not been cleared to use. The reported Samsung case is the example of what can happen otherwise.',
       },
       {
         text: 'Treat anything an AI agent can read as a way to instruct it. NCSC\'s advice is least privilege, deterministic safeguards that do not depend on the model, and logging ([NCSC](https://www.ncsc.gov.uk/blog-post/prompt-injection-is-not-sql-injection)).',

@@ -1,7 +1,6 @@
 // Word rise, reveals and the typed rotator, adapted from the portfolio's motion.ts.
 // Content stays in the DOM and visible without JS; this only adds the travel.
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-document.documentElement.classList.add('js');
 
 document.querySelectorAll<HTMLElement>('[data-split]').forEach((el) => {
   let i = 0;

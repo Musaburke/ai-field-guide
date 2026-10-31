@@ -3,7 +3,7 @@
 export const terms: Record<string, { term: string; meaning: string }[]> = {
   'using-ai-well': [
     { term: 'Randomized trial', meaning: 'A test where chance decides who or what gets the tool, so the groups can be compared fairly.' },
-    { term: 'Confidence interval', meaning: 'The range the true result probably falls in. If it includes zero, there may be no real effect.' },
+    { term: 'Confidence interval', meaning: 'A range of results the data fits. If it includes zero, the data cannot rule out no effect.' },
     { term: 'Self-selected survey', meaning: 'People chose to answer, so they may not represent everyone.' },
     { term: 'Vendor', meaning: 'A company that sells the product being discussed, so it has an interest in the result.' },
   ],
@@ -18,8 +18,8 @@ export const terms: Record<string, { term: string; meaning: string }[]> = {
     { term: 'Representative sample', meaning: 'A group chosen to reflect the wider population. Selected examples are not one.' },
   ],
   coding: [
-    { term: 'Synthetic benchmark', meaning: 'A set test made for measuring, rather than real work.' },
-    { term: 'OWASP Top 10', meaning: 'A well-known list of common security risks in software.' },
+    { term: 'Synthetic benchmark', meaning: 'A standard test built for measuring, not real work.' },
+    { term: 'OWASP Top 10', meaning: 'A well-known list of common web security risks. It is separate from OWASP\'s list for AI apps.' },
     { term: 'Mature repository', meaning: 'A long-running code project the developer already knows well.' },
   ],
   cyber: [

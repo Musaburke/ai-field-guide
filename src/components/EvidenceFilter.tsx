@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import type { Flag, Read } from '../data/guide';
-import { Flags, Meter } from './Evidence';
+import { Meter } from './Evidence';
 
 export interface Row {
   id: string;
@@ -11,6 +11,9 @@ export interface Row {
   chapter: string;
   chapterTitle: string;
 }
+
+const readShort: Record<Read, string> = { page: 'Read', partial: 'Partly read', snippet: 'Summary only' };
+const flagShort: Record<Flag, string> = { contested: 'Contested', vendor: 'Vendor', unresolved: 'Unresolved' };
 
 type Test = (r: Row) => boolean;
 const filters: { id: string; label: string; test: Test }[] = [
@@ -48,7 +51,10 @@ export default function EvidenceFilter({ rows }: { rows: Row[] }) {
                     <a href={`/${r.chapter}#${r.id}`}>
                       <span className="index-title">{r.title}</span>
                       <span className="index-source">{r.source}</span>
-                      <span className="index-flags"><Flags flags={r.flags} /><Meter read={r.read} /></span>
+                      <span className="index-flags">
+                        {r.flags.map((f) => <span className="index-flag" key={f}>{flagShort[f]}</span>)}
+                        <span className="index-read"><Meter read={r.read} />{readShort[r.read]}</span>
+                      </span>
                     </a>
                   </li>
                 ))}

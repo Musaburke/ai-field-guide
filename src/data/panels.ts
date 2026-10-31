@@ -5,10 +5,10 @@ export const blurbs: Record<string, string> = {
   employers: 'What employers say they want from you.',
   coding: 'Speed, learning and the security of AI code.',
   cyber: 'AI used by attackers, and AI as a target.',
-  'other-fields': 'Healthcare, law, finance and education.',
+  'other-fields': 'Healthcare, law and finance.',
 };
 
-export const sourceNames = ['METR', 'NIST', 'OWASP', 'UK NCSC', 'DORA', 'Stack Overflow', 'EU AI Act'];
+export const sourceNames = ['METR', 'NIST', 'OWASP', 'UK NCSC', 'DORA', 'Stack Overflow'];
 
 // Line icons for the chapter cards (24 x 24, stroked).
 export const icons: Record<string, string> = {

@@ -10,19 +10,14 @@ import { notRead, notUsed } from '../data/guide';
     <div class="wrap">
       <header class="open short">
         <h1 data-split>What was read, and what was not</h1>
-        <p class="lead" data-reveal style="--d:200ms">Many pages were seen only as search summaries, and several 2026-dated items rest on summaries that conflict across sources. Read the labels, and open the link before you quote a number.</p>
+        <p class="lead" data-reveal style="--d:200ms">The research used a fixed budget of 30 searches and 20 page reads. Many pages were seen only as search summaries, and several 2026-dated items rest on summaries that conflict across sources. Read the labels, and open the link before you quote a number.</p>
       </header>
     </div>
   </div>
   <div class="wrap">
-    <section class="block tiles" aria-label="Research budget" data-reveal>
-      <div class="tile"><b>30</b>searches in the research budget</div>
-      <div class="tile"><b>20</b>page reads in the research budget</div>
-    </section>
-
     <section class="block" aria-labelledby="lb-h">
       <h2 id="lb-h" data-split>How to read the labels</h2>
-      <p class="block-note">Every claim links to its source. Forecasts are kept in their own section, with the forecaster named.</p>
+      <p class="block-note" style="margin-top:8px">Every claim links to its source. Forecasts are kept in their own section, with the forecaster named.</p>
       <dl class="legend-grid">
         <div><dt>Evidence strength</dt><dd>The rating from the research notes: strong, moderate or weak, with the reason. It is about how far the source supports the claim, not how important the claim is.</dd></div>
         <div><dt><Meter read="page" /> Source page read</dt><dd>The page was opened and the claim checked against it.</dd></div>
@@ -36,12 +31,12 @@ import { notRead, notUsed } from '../data/guide';
 
     <section class="block" aria-labelledby="nr-h">
       <h2 id="nr-h" data-split>Not opened or not readable</h2>
-      <ul class="list-cards">{notRead.map((n) => <li>{n}</li>)}</ul>
+      <ul class="plain-list">{notRead.map((n) => <li>{n}</li>)}</ul>
     </section>
 
     <section class="block" aria-labelledby="nu-h">
       <h2 id="nu-h" data-split>Deliberately not used</h2>
-      <ul class="list-cards">{notUsed.map((n) => <li>{n}</li>)}</ul>
+      <ul class="plain-list">{notUsed.map((n) => <li>{n}</li>)}</ul>
     </section>
 
     <section class="block" aria-labelledby="in-h">
