@@ -30,7 +30,7 @@ export default function Citation({ cite, current }: { cite: Cite; current?: stri
     <Popover.Root>
       <Popover.Trigger ref={trigger} className="chip" aria-label={name}>{cite.n}</Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content className="pop" side="top" align="center" sideOffset={8} collisionPadding={16}>
+        <Popover.Content className="pop" side="bottom" align="center" sideOffset={8} collisionPadding={16}>
           <p className="pop-title">{cite.label}</p>
           <ul className="pop-links">
             {cite.links.map((l) => (
