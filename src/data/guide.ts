@@ -64,7 +64,7 @@ export const sections: Section[] = [
       },
       {
         id: 'metr-2026',
-        text: 'METR\'s [update of 24 February 2026](https://metr.org/blog/2026-02-24-uplift-update/) used late-2025 data. Returning developers showed about 18% less time with AI and new developers about 4% less, but the confidence intervals include zero. METR calls this "very weak evidence": many developers refused to work without AI or withheld tasks, and self-reported speedups are unreliable. The experiment is being redesigned.',
+        text: 'METR\'s [update of 24 February 2026](https://metr.org/blog/2026-02-24-uplift-update/) used late-2025 data. Returning developers showed about 18% less time with AI and new developers about 4% less, but the confidence intervals include zero. METR says its data is "only very weak evidence" for the size of the increase: many developers refused to work without AI or withheld tasks, and self-reported speedups are unreliable. The experiment is being redesigned.',
         read: 'page',
         strength: 'Moderate to weak',
         flags: ['contested'],
@@ -72,7 +72,7 @@ export const sections: Section[] = [
       },
       {
         id: 'anthropic-rct',
-        text: 'In an [Anthropic randomized trial](https://www.anthropic.com/research/AI-assistance-coding-skills) (29 January 2026), 52 mostly junior engineers learned the Trio library. Completion time was not significantly different (about 2 minutes faster with AI, p = 0.391). On a later quiz the AI group scored 50% and the no-AI group 67% (p = 0.01), with the largest gap on debugging. Lower scorers delegated code or used AI only to debug; higher scorers (65% and above) asked conceptual or follow-up questions.',
+        text: 'In an [Anthropic randomized trial](https://www.anthropic.com/research/AI-assistance-coding-skills) (29 January 2026), 52 mostly junior engineers learned the Trio library. Completion time was not significantly different (about 2 minutes faster with AI, p = 0.391). On a later quiz the AI group scored 50% and the no-AI group 67% (p = 0.01), with the largest gap on debugging. Lower-scoring usage patterns delegated code or used AI only to debug; patterns averaging 65% or higher asked conceptual or follow-up questions.',
         read: 'page',
         strength: 'Moderate (small RCT)',
         flags: ['vendor'],
@@ -87,7 +87,7 @@ export const sections: Section[] = [
       },
       {
         id: 'so-2025',
-        text: 'The [Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/ai) reports that 47.1% of all respondents (50.6% of professionals) use AI tools daily. 45.7% distrust the accuracy of AI output against 32.7% who trust it, and 3.1% highly trust it. The top frustration, at 66%, is "AI solutions that are almost right, but not quite".',
+        text: 'The [Stack Overflow Developer Survey 2025](https://survey.stackoverflow.co/2025/ai) reports that 47.1% of all respondents (50.6% of professionals) use AI tools daily. 46% distrust the accuracy of AI output against 33% who trust it, and 3.1% highly trust it. The top frustration, at 66%, is "AI solutions that are almost right, but not quite".',
         read: 'page',
         strength: 'Moderate',
         note: 'A large, self-selected, self-reported survey. It measures attitudes, not outcomes. Fieldwork dates are not on the page.',
@@ -227,7 +227,7 @@ export const sections: Section[] = [
         read: 'page',
         strength: 'Moderate, descriptive',
         flags: ['contested'],
-        note: 'The authors call these "early, descriptive indicators... rather than causal estimates". The effect weakens with education controls and some trends predate generative AI. Earlier versions reported 13% (August 2025), so the number moves between revisions. No rebuttal was retrieved.',
+        note: 'The authors call these "early, descriptive indicators... rather than causal estimates". The effect weakens with education controls and some trends predate generative AI. The paper has been revised, so the number can move between revisions. No rebuttal was retrieved.',
       },
       {
         id: 'mit-pilots',
@@ -312,7 +312,7 @@ export const sections: Section[] = [
         text: 'Damien Charlotin\'s [AI Hallucination Cases database](https://www.damiencharlotin.com/hallucinations/) listed "2241 cases identified so far" (updated 29 October 2026): 1,294 involving self-represented litigants, 884 lawyers and 33 judges. By country: USA 1,514, Canada 238, Australia 112, UK 89.',
         read: 'page',
         strength: 'Strong that it happens and is rising; not a rate',
-        note: 'It counts court decisions discussing hallucinated content, some only alleged, and "does not track every fake citation". It is curated by one researcher and is not a rate per filing.',
+        note: 'It counts court decisions discussing hallucinated content, some only alleged, and "does not track the (necessarily wider) universe of all fake citations". It is curated by one researcher and is not a rate per filing.',
       },
       {
         id: 'finance',

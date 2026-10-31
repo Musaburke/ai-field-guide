@@ -1,0 +1,17 @@
+---
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const links = [
+  { href: '/#chapters', label: 'Chapters', hideOnPhone: true },
+  { href: '/evidence', label: 'Evidence' },
+  { href: '/forecasts', label: 'Forecasts' },
+  { href: '/method', label: 'Method' },
+];
+---
+<header class="bar">
+  <a class="bar-mark" href="/">AI field guide</a>
+  <nav class="bar-tab" aria-label="Main">
+    {links.map((l) => (
+      <a href={l.href} class:list={{ 'hide-phone': l.hideOnPhone }} aria-current={path === l.href ? 'page' : undefined}>{l.label}</a>
+    ))}
+  </nav>
+</header>
