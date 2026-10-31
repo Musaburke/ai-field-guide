@@ -1,0 +1,23 @@
+---
+import { sections, checkedOn, checkedOnLabel } from '../data/guide';
+---
+<footer class="foot on-dark">
+  <div class="foot-cols">
+    <div>
+      <h2 class="foot-head">Chapters</h2>
+      <ul>{sections.map((s) => <li><a href={`/${s.id}`}>{s.title}</a></li>)}</ul>
+    </div>
+    <div>
+      <h2 class="foot-head">Check the guide</h2>
+      <ul>
+        <li><a href="/evidence">All claims, ranked by evidence</a></li>
+        <li><a href="/forecasts">Forecasts against evidence</a></li>
+        <li><a href="/method">What this guide did not read</a></li>
+      </ul>
+    </div>
+    <p class="foot-note">Evidence checked on <time datetime={checkedOn}>{checkedOnLabel}</time>. Sources can change after this date.</p>
+  </div>
+  <svg class="foot-word" viewBox="0 0 1000 176" role="img" aria-label="AI field guide">
+    <text x="0" y="136" textLength="1000" lengthAdjust="spacing" font-size="170" font-weight="600" fill="currentColor">AI field guide</text>
+  </svg>
+</footer>

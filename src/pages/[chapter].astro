@@ -1,0 +1,124 @@
+---
+import Base from '../layouts/Base.astro';
+import Citation from '../components/Citation';
+import Rich from '../components/Rich';
+import { Flags, ReadLine } from '../components/Evidence';
+import Sources from '../components/Sources.astro';
+import { sections } from '../data/guide';
+import { claimLabel, takeaways, titleLines } from '../data/display';
+import { numberCites } from '../lib/content';
+
+export function getStaticPaths() {
+  return sections.map((s, i) => ({ params: { chapter: s.id }, props: { index: i } }));
+}
+
+const { index } = Astro.props;
+const s = sections[index];
+const route = `/${s.id}`;
+const prev = sections[index - 1];
+const next = sections[index + 1];
+const lines = titleLines[s.id];
+const answers = takeaways[s.id];
+const ground = index % 2 === 0 ? 'on-accent' : 'on-dark';
+
+// Numbered in reading order: takeaways first, then this chapter's own claims.
+const cites = numberCites([...answers.flatMap((a) => (a.claim ? [a.claim] : [])), ...s.claims.map((c) => c.id)]);
+---
+<Base title={`${s.title}: AI field guide`} description={s.intro.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')}>
+  <section class:list={['opener', ground]}>
+    <h1 class="display opener-title">
+      {lines.map((l) => <span class="line"><span>{l}</span></span>)}
+    </h1>
+    <p class="opener-lead after-title"><Rich text={s.intro} current={route} /></p>
+  </section>
+  <div class="progress" aria-hidden="true"><span data-progress></span></div>
+
+  <section class="answer" aria-labelledby="answer-h">
+    <h2 id="answer-h" class="head answer-intro axis-hang" data-reveal>The short answer</h2>
+    <ul class="answer-list">
+      {answers.map((a, i) => {
+        const cite = a.claim ? cites.get(a.claim) : undefined;
+        return (
+          <li class="answer-row" data-reveal style={`--d:${i * 70}ms`}>
+            <div class="answer-side">
+              {cite && <><ReadLine read={cite.read} /><Flags flags={cite.flags} /></>}
+              {!cite && <span class="read-line">An admitted gap</span>}
+            </div>
+            <p class="answer-text">
+              {a.text}{cite && <>{' '}<Citation client:visible cite={cite} current={route} /></>}
+            </p>
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+
+  <section aria-labelledby="ev-h" class="ch-grid">
+    <aside class="ch-rail" aria-label="Chapters">
+      <div class="ch-rail-in">
+        <p class="ch-rail-title">{s.title}</p>
+        <nav class="ch-nav" aria-label="All chapters">
+          {sections.map((x) => <a href={`/${x.id}`} aria-current={x.id === s.id ? 'page' : undefined}>{x.title}</a>)}
+        </nav>
+      </div>
+    </aside>
+    <div class="ch-head">
+      <h2 id="ev-h" class="head" data-reveal>The evidence</h2>
+      <button class="text-btn" type="button" data-open-all>Open every claim</button>
+    </div>
+    {s.claims.map((c) => (
+      <article class="claim" id={c.id}>
+        <div class="claim-side">
+          <ReadLine read={c.read} />
+          <Flags flags={c.flags} />
+        </div>
+        <div class="claim-main">
+          <h3 class="claim-label">{claimLabel[c.id]}</h3>
+          <p class="claim-strength">Strength: {c.strength}</p>
+          <div class="claim-body" id={`body-${c.id}`}>
+            <p><Rich text={c.text} current={route} /> <Citation client:visible cite={cites.get(c.id)!} current={route} /></p>
+            {c.note && <p class="claim-note"><Rich text={c.note} current={route} /></p>}
+          </div>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  {s.gap && (
+    <section class="gap-page on-second" aria-labelledby="gap-h">
+      <div class="axis-hang">
+        <h2 id="gap-h" class="head" data-reveal>What is missing</h2>
+        <p class="statement measure" data-reveal style="margin-top:32px"><Rich text={s.gap} current={route} /></p>
+      </div>
+    </section>
+  )}
+
+  {s.habits && (
+    <section class="habits on-dark" aria-labelledby="habits-h">
+      <div class="habits-grid">
+        <h2 id="habits-h" class="head habits-title" data-reveal>Habits these sources support</h2>
+        <ul class="habits-list measure">
+          {s.habits.map((h) => <li data-reveal><Rich text={h.text} current={route} /></li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <Sources cites={[...cites.values()]} current={route} />
+
+  {next ? (
+    <a class="next on-accent" href={`/${next.id}`}>
+      <span class="next-word">Next chapter</span>
+      <span class="next-title display">{next.title}</span>
+    </a>
+  ) : (
+    <a class="next on-accent" href="/evidence">
+      <span class="next-word">That was the last chapter</span>
+      <span class="next-title display">All claims, ranked</span>
+    </a>
+  )}
+  <div class="prev-row">
+    {prev ? <a href={`/${prev.id}`}>Previous: {prev.title}</a> : <a href="/">Back to the start</a>}
+    <a href="/method">What this guide did not read</a>
+  </div>
+</Base>
