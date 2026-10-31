@@ -1,0 +1,43 @@
+---
+import '@fontsource-variable/plus-jakarta-sans';
+import '../styles/guide.css';
+import { checkedOn, checkedOnLabel } from '../data/guide';
+interface Props { title: string; description: string; current?: string }
+const { title, description, current } = Astro.props;
+const links = [
+  { href: '/', label: 'Chapters', hide: true },
+  { href: '/evidence', label: 'Evidence' },
+  { href: '/forecasts', label: 'Forecasts' },
+  { href: '/method', label: 'Method' },
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#cbe7c9" />
+    <link rel="preload" href="/fonts/clash-grotesk-500.woff2" as="font" type="font/woff2" crossorigin />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="aurora" aria-hidden="true"><span></span><span></span></div>
+    <a class="skip" href="#main">Skip to the guide</a>
+    <header class="nav">
+      <a class="nav-mark" href="/">AI field guide</a>
+      <nav class="nav-links" aria-label="Main">
+        {links.map((l) => <a href={l.href} class:list={{ 'nav-hide': l.hide }} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a>)}
+      </nav>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="foot">
+      <div class="wrap">
+        <span>Evidence checked on <time datetime={checkedOn}>{checkedOnLabel}</time>. Sources can change after this date.</span>
+        <a href="/method">What this guide did not read</a>
+      </div>
+    </footer>
+    <script>import '../scripts/motion';</script>
+  </body>
+</html>

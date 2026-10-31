@@ -1,13 +1,16 @@
 ---
-import Base from '../layouts/Base.astro';
+import Guide from '../layouts/Guide.astro';
+import Constellation from '../components/Constellation.astro';
 import EvidenceFilter, { type Row } from '../components/EvidenceFilter';
 import Sources from '../components/Sources.astro';
+import { claimLabel } from '../data/display';
 import { allClaims, numberCites, readCounts, readRank } from '../lib/content';
 
 const sorted = [...allClaims].sort((a, b) => readRank[a.read] - readRank[b.read]);
 const cites = numberCites(sorted.map((c) => c.id));
 const rows: Row[] = sorted.map((c) => ({
   id: c.id,
+  label: claimLabel[c.id] ?? c.id,
   text: c.text,
   read: c.read,
   strength: c.strength,
@@ -19,14 +22,21 @@ const rows: Row[] = sorted.map((c) => ({
 }));
 const counts = readCounts(allClaims);
 ---
-<Base title="Every claim, by evidence: AI field guide" description="All claims in the guide, ranked by how they were read and flagged as contested, vendor or unresolved.">
-  <section class="opener on-accent">
-    <h1 class="display opener-title">
-      <span class="line"><span>Every claim,</span></span>
-      <span class="line"><span>by evidence</span></span>
-    </h1>
-    <p class="opener-lead after-title">{allClaims.length} claims. {counts.page} checked on the source page, {counts.partial} partly, {counts.snippet} from a search summary only.</p>
-  </section>
-  <EvidenceFilter client:visible rows={rows} />
-  <Sources cites={[...cites.values()]} current="/evidence" fold />
-</Base>
+<Guide title="All the evidence: AI field guide" description="All claims in the guide, filtered by how they were read and flagged as contested, vendor or unresolved." current="/evidence">
+  <div class="wash">
+    <Constellation />
+    <div class="wrap">
+      <header class="open short">
+        <h1 data-split>All the evidence</h1>
+        <p class="lead" data-reveal style="--d:200ms">{allClaims.length} claims. {counts.page} checked on the source page, {counts.partial} partly, {counts.snippet} from a search summary only.</p>
+      </header>
+    </div>
+  </div>
+  <div class="wrap">
+    <section class="block" aria-label="Claims">
+      <EvidenceFilter client:load rows={rows} />
+      <noscript><p>With JavaScript off, this list shows one group. Every claim is also in its chapter.</p></noscript>
+    </section>
+    <Sources cites={[...cites.values()]} />
+  </div>
+</Guide>

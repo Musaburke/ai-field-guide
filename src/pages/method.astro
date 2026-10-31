@@ -1,89 +1,55 @@
 ---
-import Base from '../layouts/Base.astro';
+import Guide from '../layouts/Guide.astro';
+import Constellation from '../components/Constellation.astro';
 import { Flags, Meter } from '../components/Evidence';
-import { checkedOn, checkedOnLabel, notRead, notUsed } from '../data/guide';
+import { notRead, notUsed } from '../data/guide';
 ---
-<Base title="What was not read: AI field guide" description="What this guide did not read, what it chose not to use, how to read its labels and when it was checked.">
-  <section class="opener on-dark">
-    <h1 class="display opener-title">
-      <span class="line"><span>What was read,</span></span>
-      <span class="line"><span>what was not</span></span>
-    </h1>
-    <p class="opener-lead after-title">The research behind this guide used a fixed budget of 30 searches and 20 page reads. Many pages were seen only as search summaries, and several 2026-dated items rest on summaries that conflict across sources. Read the labels, and open the link before you quote a number.</p>
-  </section>
-
-  <section class="method-text" aria-labelledby="nr-h">
-    <div class="axis-grid">
-      <div class="axis-side budget" data-reveal>
-        <p><span class="head">30</span> searches</p>
-        <p><span class="head">20</span> page reads</p>
-      </div>
-      <div>
-        <h2 id="nr-h" class="head" data-reveal>Not opened or not readable</h2>
-        <ul class="method-list big measure">
-          {notRead.map((n) => <li data-reveal>{n}</li>)}
-        </ul>
-      </div>
+<Guide title="What was not read: AI field guide" description="What this guide did not read, what it chose not to use, how to read its labels and when it was checked." current="/method">
+  <div class="wash">
+    <Constellation />
+    <div class="wrap">
+      <header class="open short">
+        <h1 data-split>What was read, and what was not</h1>
+        <p class="lead" data-reveal style="--d:200ms">Many pages were seen only as search summaries, and several 2026-dated items rest on summaries that conflict across sources. Read the labels, and open the link before you quote a number.</p>
+      </header>
     </div>
-  </section>
+  </div>
+  <div class="wrap">
+    <section class="block tiles" aria-label="Research budget" data-reveal>
+      <div class="tile"><b>30</b>searches in the research budget</div>
+      <div class="tile"><b>20</b>page reads in the research budget</div>
+    </section>
 
-  <section class="method-text on-accent" aria-labelledby="nu-h">
-    <div class="axis-grid">
-      <h2 id="nu-h" class="head axis-side axis-sticky" data-reveal>Deliberately not used</h2>
-      <ul class="method-list big measure method-flush">
-        {notUsed.map((n) => <li data-reveal>{n}</li>)}
+    <section class="block" aria-labelledby="lb-h">
+      <h2 id="lb-h" data-split>How to read the labels</h2>
+      <p class="block-note">Every claim links to its source. Forecasts are kept in their own section, with the forecaster named.</p>
+      <dl class="legend-grid">
+        <div><dt>Evidence strength</dt><dd>The rating from the research notes: strong, moderate or weak, with the reason. It is about how far the source supports the claim, not how important the claim is.</dd></div>
+        <div><dt><Meter read="page" /> Source page read</dt><dd>The page was opened and the claim checked against it.</dd></div>
+        <div><dt><Meter read="partial" /> Partly read</dt><dd>Only some of the claim was confirmed.</dd></div>
+        <div><dt><Meter read="snippet" /> Search summary only</dt><dd>The page was not opened. Wording is cautious ("reportedly") and the figure should be re-checked at the link before you rely on it.</dd></div>
+        <div><dt><Flags flags={['vendor']} /></dt><dd>Written or paid for by someone who sells, or stands to gain from, the thing it describes.</dd></div>
+        <div><dt><Flags flags={['contested']} /></dt><dd>Authors, critics or later data dispute the claim or its reach.</dd></div>
+        <div><dt><Flags flags={['unresolved']} /></dt><dd>Sources disagree and the point could not be settled, as with the EU AI Act dates.</dd></div>
+      </dl>
+    </section>
+
+    <section class="block" aria-labelledby="nr-h">
+      <h2 id="nr-h" data-split>Not opened or not readable</h2>
+      <ul class="list-cards">{notRead.map((n) => <li>{n}</li>)}</ul>
+    </section>
+
+    <section class="block" aria-labelledby="nu-h">
+      <h2 id="nu-h" data-split>Deliberately not used</h2>
+      <ul class="list-cards">{notUsed.map((n) => <li>{n}</li>)}</ul>
+    </section>
+
+    <section class="block" aria-labelledby="in-h">
+      <h2 id="in-h" data-split>Independence</h2>
+      <ul class="list-cards">
+        <li>Companies named here appear as sources or examples only. Naming one is not an endorsement.</li>
+        <li>Anthropic appears as a source several times. Some of those items are studies of its own products, and each is labelled as a vendor source.</li>
       </ul>
-    </div>
-  </section>
-
-  <section class="method-text" aria-labelledby="lb-h">
-    <div class="axis-hang">
-      <h2 id="lb-h" class="head" data-reveal>How to read the labels</h2>
-      <p class="measure" data-reveal style="margin-top:24px">Every claim links to its source and carries labels, so you can judge it yourself. Nothing in this guide is a prediction by its author. Forecasts are kept in their own section, with the forecaster named.</p>
-    </div>
-    <dl class="legend">
-      <div>
-        <dt>Evidence strength</dt>
-        <dd>The rating from the research notes: strong, moderate or weak, with the reason. It is about how far the source supports the claim, not how important the claim is.</dd>
-      </div>
-      <div>
-        <dt><Meter read="page" /> Source page read</dt>
-        <dd>The page was opened and the claim checked against it.</dd>
-      </div>
-      <div>
-        <dt><Meter read="partial" /> Source page partly read</dt>
-        <dd>Only some of the claim was confirmed.</dd>
-      </div>
-      <div>
-        <dt><Meter read="snippet" /> Search summary only</dt>
-        <dd>The claim comes from a search-result summary and the page was not opened. Wording is cautious ("reportedly") and the figure should be re-checked at the link before you rely on it.</dd>
-      </div>
-      <div>
-        <dt><Flags flags={['vendor']} /></dt>
-        <dd>The source is written or paid for by someone who sells, or stands to gain from, the thing it describes.</dd>
-      </div>
-      <div>
-        <dt><Flags flags={['contested']} /></dt>
-        <dd>Authors, critics or later data dispute the claim or its reach.</dd>
-      </div>
-      <div>
-        <dt><Flags flags={['unresolved']} /></dt>
-        <dd>Sources disagree and the point could not be settled, as with the EU AI Act dates.</dd>
-      </div>
-    </dl>
-    <div class="axis-hang" style="margin-top:56px">
-      <p class="measure">Companies named here appear as sources or examples only. Naming one is not an endorsement.</p>
-      <p class="measure" style="margin-top:16px">Anthropic appears as a source several times. Some of those items are studies of its own products, and each is labelled as a vendor source.</p>
-    </div>
-  </section>
-
-  <section class="date-page on-second" aria-labelledby="dt-h">
-    <div class="axis-grid">
-      <div class="axis-side">
-        <h2 id="dt-h" class="head-small" data-reveal>Evidence checked on</h2>
-        <p data-reveal style="margin-top:12px">Sources can change after this date.</p>
-      </div>
-      <p class="display" data-reveal><time datetime={checkedOn}>{checkedOnLabel}</time></p>
-    </div>
-  </section>
-</Base>
+    </section>
+  </div>
+</Guide>
