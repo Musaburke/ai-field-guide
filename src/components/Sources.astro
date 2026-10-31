@@ -19,8 +19,10 @@ const { cites, current, fold } = Astro.props;
         <div class="source-main">
           <p class="source-title">{c.label}{c.date && <span class="soft"> · {c.date}</span>}</p>
           <p class="source-links">{c.links.map((l, i) => <>{i > 0 && ' · '}<a href={l.url} rel="noopener noreferrer">{l.label}</a></>)}</p>
-          {c.strength && <p>Strength: {c.strength}</p>}
-          <Flags flags={c.flags} />
+          <div class="source-meta">
+            {c.strength && <span>Strength: {c.strength}</span>}
+            <Flags flags={c.flags} />
+          </div>
           {c.note && <p><Rich text={c.note} current={current} /></p>}
         </div>
       </li>

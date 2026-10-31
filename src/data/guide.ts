@@ -244,7 +244,7 @@ export const sections: Section[] = [
     id: 'coding',
     title: 'AI and coding',
     intro:
-      'Controlled studies of coding productivity and learning are in the sections above ([METR 2025](#metr-2025), [METR 2026](#metr-2026), [Anthropic trial](#anthropic-rct)), with survey data in [Stack Overflow](#so-2025) and [DORA](#dora-2025). Summarised: one trial found a slowdown for experienced developers on their own mature repositories, later data suggests a smaller or reversed effect but is inconclusive, and a second trial found a learning cost when code was delegated.',
+      'Controlled studies of coding productivity and learning are in other chapters ([METR 2025](#metr-2025), [METR 2026](#metr-2026), [Anthropic trial](#anthropic-rct)), with survey data in [Stack Overflow](#so-2025) and [DORA](#dora-2025). Summarised: one trial found a slowdown for experienced developers on their own mature repositories, later data suggests a smaller or reversed effect but is inconclusive, and a second trial found a learning cost when code was delegated.',
     claims: [
       {
         id: 'veracode',
@@ -268,7 +268,7 @@ export const sections: Section[] = [
     id: 'cyber',
     title: 'AI and cyber security',
     intro:
-      'Two directions: AI used by attackers, and AI as a target. Prompt injection is covered above; the NCSC and OWASP entries are the strongest sources in this guide.',
+      'Two directions: AI used by attackers, and AI as a target. Prompt injection is covered in [Safety and responsibility](#ncsc-injection); the NCSC and OWASP entries are the strongest sources in this guide.',
     claims: [
       {
         id: 'gtg-1002',
@@ -285,13 +285,13 @@ export const sections: Section[] = [
         strength: 'Strong consensus',
       },
     ],
-    gap: 'Gap: no independent evaluation of AI in security operations centre (SOC) work was found. The sources located were vendor-heavy or vendor-sponsored, so this guide gives no SOC effectiveness figures. The one SOC forecast found is in the forecasts section below.',
+    gap: 'Gap: no independent evaluation of AI in security operations centre (SOC) work was found. The sources located were vendor-heavy or vendor-sponsored, so this guide gives no SOC effectiveness figures. The one SOC forecast found is on the [forecasts page](#f-gartner).',
   },
   {
     id: 'other-fields',
     title: 'Other fields',
     intro:
-      'Healthcare, law, finance and education, each with its limits. Education evidence is in the sections above ([Anthropic trial](#anthropic-rct), [Bastani et al.](#bastani)).',
+      'Healthcare, law, finance and education, each with its limits. Education evidence is in other chapters ([Anthropic trial](#anthropic-rct), [Bastani et al.](#bastani)).',
     claims: [
       {
         id: 'health',
@@ -372,7 +372,7 @@ export const forecasts: Forecast[] = [
 
 export const notUsed: string[] = [
   'A claimed doubling time for AI task length that came from a personal website. It was not confirmed on METR\'s own site, so it is not cited.',
-  'The widely shared MIT-linked pilot-failure statistic, as fact. It appears above only as a contested claim.',
+  'The widely shared MIT-linked pilot-failure statistic, as fact. It appears in What employers value only as a contested claim.',
   'Figures attributed to the Stanford AI Index 2026 by aggregator sites. The official report page was not opened, so none are reproduced.',
   'Job-advert percentages relayed second-hand from analytics firms, and a 2026 SOC survey figure that traced to a single vendor.',
   'Control counts for NIST AI 600-1 from vendor summaries (they conflict), and an unverified claim about fraud in financial services.',

@@ -6,7 +6,7 @@ import { Flags, ReadLine } from '../components/Evidence';
 import Sources from '../components/Sources.astro';
 import { forecasts, sections } from '../data/guide';
 import { claimLabel, forecastPairs } from '../data/display';
-import { allClaims, claimHref, numberCites } from '../lib/content';
+import { allClaims, claimHref, gapDisplay, numberCites } from '../lib/content';
 
 const route = '/forecasts';
 const paired = (id: string) => forecastPairs[id] ?? {};
@@ -60,7 +60,7 @@ const cites = numberCites(ids);
                 <p><a href={claimHref(claim.id, route)}>In {claim.chapterTitle}</a></p>
               </>
             )}
-            {gap && <p class="fc-none"><Rich text={gap} current={route} /></p>}
+            {gap && <p><Rich text={gapDisplay(gap)} current={route} /></p>}
             {!claim && !gap && <p class="fc-none">Nothing measured in this guide to set beside it.</p>}
           </div>
         </div>

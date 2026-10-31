@@ -78,6 +78,12 @@ export function numberCites(ids: string[]): Map<string, Cite> {
   return out;
 }
 
+/** Under a "What is missing" heading the data's "Gap:" prefix would repeat itself. */
+export function gapDisplay(gap: string): string {
+  const t = gap.replace(/^Gap:\s*/, '');
+  return t.charAt(0).toUpperCase() + t.slice(1);
+}
+
 export const readRank: Record<Read, number> = { page: 0, partial: 1, snippet: 2 };
 
 export function readCounts(items: { read: Read }[]) {
