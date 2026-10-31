@@ -15,7 +15,7 @@ const paired = (id: string) => forecastPairs[id] ?? {};
 // Paired forecasts first, so the difference shows before the unpaired ones.
 const ordered = [...forecasts].sort((a, b) => Number(!forecastPairs[a.id]) - Number(!forecastPairs[b.id]));
 const ids = ordered.flatMap((f) => {
-  const c = paired(f.id).claim;
+  const c = f.id === 'f-wef' ? undefined : paired(f.id).claim;
   return c ? [f.id, c] : [f.id];
 });
 const cites = numberCites(ids);
@@ -34,37 +34,40 @@ const cites = numberCites(ids);
     <section class="block pairs" aria-label="Forecasts beside evidence">
       {ordered.map((f) => {
         const pair = paired(f.id);
-        const claim = pair.claim ? allClaims.find((c) => c.id === pair.claim) : undefined;
+        // The WEF forecast and claim are the same report, so link it rather than repeat it.
+        const same = f.id === 'f-wef' ? allClaims.find((c) => c.id === pair.claim) : undefined;
+        const claim = pair.claim && !same ? allClaims.find((c) => c.id === pair.claim) : undefined;
         const gap = pair.gapOf ? sections.find((s) => s.id === pair.gapOf)?.gap : undefined;
         return (
-          <article class="pair" data-reveal>
+          <article class:list={["pair", { "pair-solo": !claim && !gap }]} data-reveal>
             <div class="pair-left" id={f.id}>
               <small>{briefs[f.id]!.source}</small>
               <h2>{briefs[f.id]!.title}</h2>
               <p class="pair-sum">{briefs[f.id]!.summary} <Citation client:visible cite={cites.get(f.id)!} current={route} /></p>
               <p class="row-note">{briefs[f.id]!.catch}</p>
-              <ReadLine read={f.read} />
-              <Flags flags={f.flags} />
+              <div class="ev-meta"><ReadLine read={f.read} /><Flags flags={f.flags} /></div>
+              {same && <p><a href={claimHref(same.id, route)}>Read it in {same.chapterTitle}</a></p>}
+              {!claim && !gap && !same && <p class="pair-none">Nothing measured in this guide to set beside it.</p>}
               <details class="ev-more">
                 <summary>Full detail<span class="row-mark" aria-hidden="true"></span></summary>
                 <div class="ev-detail"><p><Rich text={f.text} current={route} /></p><p class="soft"><Rich text={f.caveat} current={route} /></p><p class="soft">{f.kind}</p></div>
               </details>
             </div>
-            <div>
-              <small>What has been measured</small>
-              {claim && (
-                <>
-                  <h3>{briefs[claim.id]!.title}</h3>
-                  <p class="pair-sum">{briefs[claim.id]!.summary} <Citation client:visible cite={cites.get(claim.id)!} current={route} /></p>
-                  <p class="row-note">{briefs[claim.id]!.catch}</p>
-                  <ReadLine read={claim.read} />
-                  <Flags flags={claim.flags} />
-                  <p><a href={claimHref(claim.id, route)}>Read it in {claim.chapterTitle}</a></p>
-                </>
-              )}
-              {gap && <p class="pair-sum"><Rich text={gapDisplay(gap).replace(/ The one SOC forecast found is on the \[[^\]]+\]\([^)]+\)\./, '')} current={route} /></p>}
-              {!claim && !gap && <p class="pair-none">Nothing measured in this guide to set beside it.</p>}
-            </div>
+            {(claim || gap) && (
+              <div>
+                <small>{claim ? 'What has been measured' : 'What is missing'}</small>
+                {claim && (
+                  <>
+                    <h3>{briefs[claim.id]!.title}</h3>
+                    <p class="pair-sum">{briefs[claim.id]!.summary} <Citation client:visible cite={cites.get(claim.id)!} current={route} /></p>
+                    <p class="row-note">{briefs[claim.id]!.catch}</p>
+                    <div class="ev-meta"><ReadLine read={claim.read} /><Flags flags={claim.flags} /></div>
+                    <p><a href={claimHref(claim.id, route)}>Read it in {claim.chapterTitle}</a></p>
+                  </>
+                )}
+                {gap && <p class="pair-sum"><Rich text={gapDisplay(gap).replace(/ The one SOC forecast found is on the \[[^\]]+\]\([^)]+\)\./, '')} current={route} /></p>}
+              </div>
+            )}
           </article>
         );
       })}

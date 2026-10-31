@@ -21,8 +21,9 @@ const date = claimDate[claim.id];
           <i class:list={{ strong: bar.strong }} style={`width:${bar.value}%`}></i>
         </div>
       ))}
-      {v?.big && <p class="ev-big">{v.big}</p>}
+      {v?.big && <p class:list={['ev-big', { 'ev-big-long': v.big.length > 9 }]}>{v.big}</p>}
       {v?.label && <p class="ev-label">{v.label}</p>}
+      {v?.caption && <p class="panel-caption">{v.caption}</p>}
     </div>
     <div class="ev-body">
       <p class="ev-source">{b.source}{date && ` · ${date}`}</p>
