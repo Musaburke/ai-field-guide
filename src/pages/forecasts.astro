@@ -6,7 +6,8 @@ import Rich from '../components/Rich';
 import { Flags, ReadLine } from '../components/Evidence';
 import Sources from '../components/Sources.astro';
 import { forecasts, sections } from '../data/guide';
-import { claimLabel, forecastPairs } from '../data/display';
+import { forecastPairs } from '../data/display';
+import { briefs } from '../data/brief';
 import { allClaims, claimHref, gapDisplay, numberCites } from '../lib/content';
 
 const route = '/forecasts';
@@ -25,7 +26,7 @@ const cites = numberCites(ids);
     <div class="wrap">
       <header class="open short">
         <h1 data-split>Forecasts and evidence</h1>
-        <p class="lead" data-reveal style="--d:200ms">Each green card is a forecast or an opinion, not evidence of what will happen. This guide makes no prediction of its own. Forecasters disagree, and several are vendors.</p>
+        <p class="verdict" data-reveal style="--d:200ms">Green cards are forecasts or opinions, not evidence. This guide makes no prediction of its own.</p>
       </header>
     </div>
   </div>
@@ -38,27 +39,30 @@ const cites = numberCites(ids);
         return (
           <article class="pair" data-reveal>
             <div class="pair-left" id={f.id}>
-              <small>{f.kind}</small>
-              <h2>{f.who}</h2>
-              <p><Rich text={f.text} current={route} /> <Citation client:visible cite={cites.get(f.id)!} current={route} /></p>
-              <p class="row-note"><Rich text={f.caveat} current={route} /></p>
+              <small>{briefs[f.id]!.source}</small>
+              <h2>{briefs[f.id]!.title}</h2>
+              <p class="pair-sum">{briefs[f.id]!.summary} <Citation client:visible cite={cites.get(f.id)!} current={route} /></p>
+              <p class="row-note">{briefs[f.id]!.catch}</p>
               <ReadLine read={f.read} />
               <Flags flags={f.flags} />
+              <details class="ev-more">
+                <summary>Full detail<span class="row-mark" aria-hidden="true"></span></summary>
+                <div class="ev-detail"><p><Rich text={f.text} current={route} /></p><p class="soft"><Rich text={f.caveat} current={route} /></p><p class="soft">{f.kind}</p></div>
+              </details>
             </div>
             <div>
-              <small>What the guide has beside it</small>
+              <small>What has been measured</small>
               {claim && (
                 <>
-                  <h3>{claimLabel[claim.id]}</h3>
-                  <p><Rich text={claim.text} current={route} /> <Citation client:visible cite={cites.get(claim.id)!} current={route} /></p>
-                  {claim.note && <p class="row-note"><Rich text={claim.note} current={route} /></p>}
+                  <h3>{briefs[claim.id]!.title}</h3>
+                  <p class="pair-sum">{briefs[claim.id]!.summary} <Citation client:visible cite={cites.get(claim.id)!} current={route} /></p>
+                  <p class="row-note">{briefs[claim.id]!.catch}</p>
                   <ReadLine read={claim.read} />
-                  <p class="tl-strength">Strength: {claim.strength}</p>
                   <Flags flags={claim.flags} />
-                  <p><a href={claimHref(claim.id, route)}>In {claim.chapterTitle}</a></p>
+                  <p><a href={claimHref(claim.id, route)}>Read it in {claim.chapterTitle}</a></p>
                 </>
               )}
-              {gap && <p><Rich text={gapDisplay(gap).replace(/ The one SOC forecast found is on the \[[^\]]+\]\([^)]+\)\./, '')} current={route} /></p>}
+              {gap && <p class="pair-sum"><Rich text={gapDisplay(gap).replace(/ The one SOC forecast found is on the \[[^\]]+\]\([^)]+\)\./, '')} current={route} /></p>}
               {!claim && !gap && <p class="pair-none">Nothing measured in this guide to set beside it.</p>}
             </div>
           </article>

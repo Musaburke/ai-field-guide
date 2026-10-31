@@ -1,0 +1,43 @@
+---
+import Citation from './Citation';
+import Rich from './Rich';
+import { Flags, ReadLine } from './Evidence';
+import { briefs } from '../data/brief';
+import { claimDate } from '../data/display';
+import type { Claim } from '../data/guide';
+import type { Cite } from '../lib/content';
+interface Props { claim: Claim; cite: Cite; current: string }
+const { claim, cite, current } = Astro.props;
+const b = briefs[claim.id]!;
+const v = b.visual;
+const date = claimDate[claim.id];
+---
+<article class="ev-card" id={claim.id} data-stack data-reveal>
+  <div class="ev-inner">
+    <div class="ev-panel" aria-hidden="true">
+      {v?.bars && v.bars.map((bar) => (
+        <div class="barline">
+          <span><span>{bar.label}</span><span>{bar.show}</span></span>
+          <i class:list={{ strong: bar.strong }} style={`width:${bar.value}%`}></i>
+        </div>
+      ))}
+      {v?.big && <p class="ev-big">{v.big}</p>}
+      {v?.label && <p class="ev-label">{v.label}</p>}
+    </div>
+    <div class="ev-body">
+      <p class="ev-source">{b.source}{date && ` · ${date}`}</p>
+      <h3>{b.title}</h3>
+      <p class="ev-summary">{b.summary} <Citation client:visible cite={cite} current={current} /></p>
+      {b.catch && <p class="ev-catch">{b.catch}</p>}
+      <div class="ev-meta"><ReadLine read={claim.read} /><Flags flags={claim.flags} /></div>
+      <details class="ev-more">
+        <summary>Full detail<span class="row-mark" aria-hidden="true"></span></summary>
+        <div class="ev-detail">
+          <p><Rich text={claim.text} current={current} /></p>
+          {claim.note && <p class="soft"><Rich text={claim.note} current={current} /></p>}
+          <p class="soft">Strength: {claim.strength}</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</article>

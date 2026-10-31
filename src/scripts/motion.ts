@@ -59,22 +59,33 @@ if (rot && !reduce) {
   setTimeout(step, 2400);
 }
 
-// Evidence timeline: the line fills with reading position and each dot lights as it is passed.
-const tl = document.querySelector<HTMLElement>('[data-tl]');
-const fill = tl?.querySelector<HTMLElement>('[data-tl-fill]');
-if (tl && fill && !reduce) {
-  const items = [...tl.querySelectorAll<HTMLElement>('[data-tl-item]')];
-  let queued = false, inView = false;
-  const update = () => {
-    queued = false;
-    const r = tl.getBoundingClientRect();
-    const mark = innerHeight * 0.6;
-    fill.style.transform = `scaleY(${Math.min(1, Math.max(0, (mark - r.top) / r.height))})`;
-    for (const it of items) it.classList.toggle('lit', it.getBoundingClientRect().top < mark);
-  };
-  const ask = () => { if (inView && !queued) { queued = true; requestAnimationFrame(update); } };
-  tl.classList.add('tl-live');
-  new IntersectionObserver(([e]) => { inView = !!e?.isIntersecting; ask(); }).observe(tl);
+// Reading progress in the navbar, and stacked evidence cards that settle back as the next arrives.
+const bar = document.querySelector<HTMLElement>('[data-progress]');
+const stack = [...document.querySelectorAll<HTMLElement>('[data-stack]')];
+let queued = false;
+const frame = () => {
+  queued = false;
+  if (bar) {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    bar.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`;
+  }
+  if (!matchMedia('(min-width: 900px) and (min-height: 700px)').matches) {
+    stack.forEach((c) => { (c.firstElementChild as HTMLElement).style.transform = ''; });
+    return;
+  }
+  stack.forEach((card, i) => {
+    const next = stack[i + 1];
+    const inner = card.firstElementChild as HTMLElement;
+    if (!next) return;
+    const r = card.getBoundingClientRect();
+    const p = Math.min(1, Math.max(0, (r.bottom - next.getBoundingClientRect().top) / r.height));
+    inner.style.transform = `scale(${1 - p * 0.04})`;
+    inner.style.opacity = String(1 - p * 0.35);
+  });
+};
+if (!reduce && (bar || stack.length)) {
+  const ask = () => { if (!queued) { queued = true; requestAnimationFrame(frame); } };
   addEventListener('scroll', ask, { passive: true });
   addEventListener('resize', ask);
+  ask();
 }
