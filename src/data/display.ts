@@ -12,7 +12,7 @@ export interface Figure {
 export const figures: Figure[] = [
   {
     value: '19% longer',
-    label: 'Tasks with AI allowed, in one small 2025 trial of 16 developers. Contested.',
+    label: 'Tasks with AI allowed, in one small 2025 trial of 16 developers. Contested, and now marked out of date.',
     claim: 'metr-2025',
   },
   {
@@ -26,7 +26,7 @@ export const figures: Figure[] = [
     claim: 'law-database',
   },
   {
-    value: '50% v 67%',
+    value: '50% vs 67%',
     label: 'Later quiz scores, with and without AI, in a small vendor trial of 52 engineers.',
     claim: 'anthropic-rct',
   },
@@ -163,7 +163,7 @@ export const claimLabel: Record<string, string> = {
   canaries: 'Canaries in the Coal Mine (Stanford)',
   'mit-pilots': 'The MIT-linked pilot-failure statistic',
   veracode: 'Veracode 2025 GenAI Code Security Report',
-  'gtg-1002': 'Anthropic\'s report of an AI-run espionage campaign',
+  'gtg-1002': 'Anthropic\'s report of an AI-driven espionage campaign',
   'injection-unsolved': 'Prompt injection as an unsolved problem',
   health: 'Ambient AI scribes in NEJM AI',
   'law-mata': 'Mata v. Avianca',
