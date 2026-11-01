@@ -41,14 +41,3 @@ export function ReadLine({ read }: { read: Read }) {
     </span>
   );
 }
-
-/** One bar per claim. A chapter's reading profile at a glance. */
-export function Profile({ reads }: { reads: Read[] }) {
-  return (
-    <span className="profile" aria-hidden="true">
-      {reads.map((r, i) => (
-        <span key={i} className={`profile-${r}`} />
-      ))}
-    </span>
-  );
-}

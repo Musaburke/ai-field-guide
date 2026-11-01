@@ -1,8 +1,8 @@
 // All guide content. Every claim traces to research/ai-research.md.
 // Text supports [label](url) links only. Nothing here is a prediction by this guide.
 
-export const checkedOn = '2026-10-31';
-export const checkedOnLabel = '31 October 2026';
+export const checkedOn = '2026-11-01';
+export const checkedOnLabel = '1 November 2026';
 
 export type Read = 'page' | 'partial' | 'snippet';
 export type Flag = 'contested' | 'vendor' | 'unresolved';
@@ -149,11 +149,105 @@ export const sections: Section[] = [
     ],
   },
   {
+    id: 'set-up-your-tools',
+    title: 'Set up your AI tools',
+    intro: 'Practical habits for any AI tool, using Claude and Claude Code as the worked example.',
+    claims: [
+      {
+        id: 'prompting',
+        text: 'Anthropic\'s [prompting guide](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) says "Claude responds well to clear, explicit instructions" and suggests a test: "Show your prompt to a colleague with minimal context on the task and ask them to follow it. If they\'d be confused, Claude will be too." It also says examples "are one of the most reliable ways to steer Claude\'s output format, tone, and structure."',
+        read: 'page',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+      {
+        id: 'cc-models',
+        text: 'The [Claude Code model docs](https://code.claude.com/docs/en/model-config) describe haiku as for "simple tasks", sonnet for "daily coding tasks", opus for "complex reasoning tasks" and fable for "your hardest and longest-running tasks". /model switches during a session and saves your choice as the default unless you pick session-only. Its [costs page](https://code.claude.com/docs/en/costs) says "Sonnet handles most coding tasks well and costs less than Opus."',
+        read: 'page',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+      {
+        id: 'cc-costs',
+        text: 'The [Claude Code costs page](https://code.claude.com/docs/en/costs) says "Token costs scale with context size." It advises /clear when switching to unrelated work because "Stale context wastes tokens on every subsequent message", and warns that "compacting a large context is itself a large request." /usage shows token use for the session.',
+        read: 'page',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+      {
+        id: 'cc-plan',
+        text: 'The [Claude Code permissions page](https://code.claude.com/docs/en/permissions) says that in plan mode Claude "reads files and runs read-only shell commands to explore but doesn\'t edit your source files". The [costs page](https://code.claude.com/docs/en/costs) says to "Press Shift+Tab to cycle to plan mode before implementation." The [best practices page](https://code.claude.com/docs/en/best-practices) suggests having Claude interview you, writing a spec, then building in a fresh session.',
+        read: 'page',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+      {
+        id: 'cc-best',
+        text: 'The [Claude Code best practices page](https://code.claude.com/docs/en/best-practices) advises: "Give Claude something it can run that comes back pass or fail." It also says to ask for "evidence: the command it ran and its output, or the screenshot."',
+        read: 'page',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+      {
+        id: 'cc-skills',
+        text: 'The [Claude Code skills docs](https://code.claude.com/docs/en/skills) say a skill is a SKILL.md file of instructions, kept in .claude/skills/<name>/ for a project or ~/.claude/skills/<name>/ for you, and run with /skill-name or loaded when relevant. "Unlike CLAUDE.md content, a skill\'s body loads only when it\'s used, so long reference material costs almost nothing until you need it."',
+        read: 'page',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+      {
+        id: 'cc-memory',
+        text: 'The [Claude Code memory docs](https://code.claude.com/docs/en/memory) say CLAUDE.md files give Claude persistent instructions that it reads at the start of every session, and that /init generates a starting file. They advise: "target under 200 lines per CLAUDE.md file." They also warn: "Claude treats them as context, not enforced configuration."',
+        read: 'page',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+      {
+        id: 'cc-subagents',
+        text: 'The [Claude Code subagent docs](https://code.claude.com/docs/en/sub-agents) say each subagent runs in its own context window and "sends its own requests, which count toward the same usage limits as your main conversation." The [best practices page](https://code.claude.com/docs/en/best-practices) says they pay off for parallel work, keeping long output out of the main conversation and getting a reviewer who has not seen how the code was written. By default, it says, you get "parallelism or a fresh pair of eyes out of it, but not a smarter answer."',
+        read: 'page',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+      {
+        id: 'cc-permissions',
+        text: 'The [Claude Code permissions page](https://code.claude.com/docs/en/permissions) says "Permission rules are enforced by Claude Code, not by the model", and are evaluated in the order deny, ask, allow. On bypass mode it says: "Only use this mode in isolated environments like containers or VMs where Claude Code can\'t cause damage."',
+        read: 'page',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+      {
+        id: 'cc-mcp',
+        text: 'The [Claude Code MCP docs](https://code.claude.com/docs/en/mcp) describe MCP as "an open source standard for AI-tool integrations" that gives Claude Code access to tools, databases and APIs. They warn: "Verify you trust each server before connecting it. Servers that fetch external content can expose you to prompt injection risk."',
+        read: 'page',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+    ],
+  },
+  {
     id: 'safety',
     title: 'Use AI safely',
     intro:
       'Reference frameworks, official guidance and documented incidents. Frameworks are consensus on risks, not measurements of how often harm happens.',
     claims: [
+      {
+        id: 'gov-playbook',
+        text: 'The [UK Government AI Playbook](https://www.gov.uk/government/publications/ai-playbook-for-the-uk-government/artificial-intelligence-playbook-for-the-uk-government-html) (10 February 2025) says AI systems "are also not guaranteed to be accurate", that you should "minimise the risk of privacy intrusion from the outset", and that "humans validate any high-risk decisions influenced by AI". It names prompt injection and hallucinations among threats specific to AI.',
+        read: 'page',
+        strength: 'Strong as official guidance',
+        note: 'Guidance written for UK government work, not a study. The principles were read, not every section. Its acknowledgements list industry contributors including Amazon, Google, IBM and Microsoft.',
+      },
       {
         id: 'owasp',
         text: 'The [OWASP Top 10 for LLM Applications 2025](https://genai.owasp.org/llm-top-10/) lists: prompt injection; sensitive information disclosure; supply chain; data and model poisoning; improper output handling; excessive agency; system prompt leakage; vector and embedding weaknesses; misinformation; unbounded consumption.',
@@ -262,7 +356,6 @@ export const sections: Section[] = [
         text: 'A study linking adoption surveys to Danish labour records ([Humlum and Vestergaard, NBER](https://www.nber.org/papers/w33777), revised March 2026) estimates "precise null effects on earnings and recorded hours", "ruling out effects larger than 2% two years after the launch of ChatGPT". Workers still report productivity benefits, and adopters move into higher-paying occupations, "though still too few to move average earnings."',
         read: 'partial',
         strength: 'Moderate to strong for Denmark',
-        flags: ['contested'],
         note: 'Only the abstract page was read. It covers one country and the early period after ChatGPT launched. It sits awkwardly beside the task-level gains above, which is why it is here.',
       },
       {
@@ -315,6 +408,14 @@ export const sections: Section[] = [
       'Two directions: AI used by attackers, and AI as a target. Prompt injection is covered in [Use AI safely](#ncsc-injection); the NCSC and OWASP entries are the strongest sources in this guide.',
     claims: [
       {
+        id: 'security-copilot',
+        text: 'In a [randomised lab trial](https://arxiv.org/abs/2411.01067) (Bono and Xu, Microsoft, October 2024), 181 participants recruited through Upwork completed IT admin tasks in a simulated environment, with half given Security Copilot. "Copilot subjects experienced a 34.53% improvement in overall accuracy and a 29.79% reduction in task completion time." Multiple-choice questions took 25.13% longer with it.',
+        read: 'page',
+        strength: 'Moderate, vendor-run',
+        flags: ['vendor'],
+        note: 'Written by Microsoft staff about a Microsoft product, in a simulated lab rather than live work. The discussion section was not read in full.',
+      },
+      {
         id: 'gtg-1002',
         text: 'Anthropic [reported](https://www.anthropic.com/news/disrupting-AI-espionage) (13 November 2025) that a group it assesses "with high confidence" as Chinese state-sponsored used Claude Code against roughly thirty targets and "succeeded in a small number of cases". Anthropic says the AI did "80-90% of the campaign", with humans at about four to six decision points, and that Claude "occasionally hallucinated credentials", "an obstacle to fully autonomous cyberattacks".',
         read: 'page',
@@ -329,7 +430,7 @@ export const sections: Section[] = [
         strength: 'Strong consensus',
       },
     ],
-    gap: 'Gap: no independent evaluation of AI in security operations centre (SOC) work was found. The sources located were vendor-heavy or vendor-sponsored, so this guide gives no SOC effectiveness figures. The one SOC forecast found is on the [forecasts page](#f-gartner).',
+    gap: 'Gap: no independent evaluation of AI in security operations centre (SOC) work was found. The sources located were vendor-heavy or vendor-sponsored, so this guide gives no SOC effectiveness figures. The one SOC forecast found is [listed on Sources](#f-gartner).',
   },
   {
     id: 'other-fields',

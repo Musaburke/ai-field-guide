@@ -1,0 +1,26 @@
+---
+import Citation from './Citation';
+import PromptBox from './PromptBox.astro';
+import Rich from './Rich';
+import type { Field } from '../data/playbooks';
+import type { Cite } from '../lib/content';
+interface Props { fields: Field[]; cites: Map<string, Cite>; current: string }
+const { fields, cites, current } = Astro.props;
+---
+<div class="picker field-picker" data-picker data-reveal>
+  <div class="picker-tabs" role="tablist" aria-label="Choose your field">
+    {fields.map((f, i) => (
+      <button type="button" role="tab" id={`tab-${f.id}`} aria-controls={`panel-${f.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{f.label}</button>
+    ))}
+  </div>
+  <div class="picker-panels">
+    {fields.map((f, i) => (
+      <div class="picker-panel" role="tabpanel" id={`panel-${f.id}`} aria-labelledby={`tab-${f.id}`} data-active={i === 0 ? 'true' : 'false'}>
+        <h3>{f.label}</h3>
+        <p><Rich text={f.text} current={current} /> {f.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={current} />)}</p>
+        <PromptBox prompt={f.prompt} />
+        <p class="picker-check"><span>Then check</span> {f.check}</p>
+      </div>
+    ))}
+  </div>
+</div>

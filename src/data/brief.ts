@@ -5,6 +5,67 @@ export interface Visual { big?: string; label?: string; caption?: string; bars?:
 export interface Brief { source: string; title: string; summary: string; catch?: string; visual?: Visual }
 
 export const briefs: Record<string, Brief> = {
+  'prompting': {
+    source: 'Anthropic prompting guide', title: 'Clear prompts get better results',
+    summary: 'Be explicit about what you want and give examples. If a colleague would be confused by your prompt, the model will be too.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-models': {
+    source: 'Claude Code docs', title: 'Match the model to the task',
+    summary: 'Haiku is for simple tasks, Sonnet for daily coding, Opus for complex reasoning and Fable for the hardest, longest work.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-costs': {
+    source: 'Claude Code docs', title: 'Long conversations cost more',
+    summary: 'Token costs grow with context size, so clear the conversation when you switch to unrelated work.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-plan': {
+    source: 'Claude Code docs', title: 'Plan mode explores without editing',
+    summary: 'In plan mode Claude reads and explores but does not edit your source files. Press Shift+Tab to reach it.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-best': {
+    source: 'Claude Code docs', title: 'Give it a pass or fail check',
+    summary: 'Give the tool something it can run that passes or fails, and ask for evidence such as the output or a screenshot.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-skills': {
+    source: 'Claude Code docs', title: 'Skills load only when used',
+    summary: 'A skill is a saved set of instructions, so long reference material costs almost nothing until needed.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-memory': {
+    source: 'Claude Code docs', title: 'Keep CLAUDE.md under 200 lines',
+    summary: 'Claude reads it at the start of every session, as context rather than enforced rules.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-subagents': {
+    source: 'Claude Code docs', title: 'Subagents add parallelism, not smarts',
+    summary: 'Each sends its own requests against the same limits. By default you get parallel work or a fresh reviewer, but not a smarter answer.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-permissions': {
+    source: 'Claude Code docs', title: 'Permission rules are not up to the model',
+    summary: 'Claude Code enforces permission rules itself. The docs say to use bypass mode only in isolated environments.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-mcp': {
+    source: 'Claude Code docs', title: 'Only connect servers you trust',
+    summary: 'MCP links Claude Code to other tools and data, and servers that fetch outside content can expose you to prompt injection.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'gov-playbook': {
+    source: 'UK Government AI Playbook', title: 'Keep humans on high-risk decisions',
+    summary: 'UK government guidance says AI is not guaranteed to be accurate, privacy risk should be minimised from the start, and humans should validate high-risk decisions.',
+    catch: 'Guidance for government work, not a study.',
+  },
+  'security-copilot': {
+    source: 'Bono and Xu, Microsoft', title: 'Copilot made IT admin tasks more accurate',
+    summary: '181 people doing IT admin tasks in a simulated lab were 34.53% more accurate with Security Copilot and took 29.79% less time overall.',
+    catch: 'Microsoft staff testing a Microsoft product, in a lab. Multiple-choice questions took longer with it.',
+    visual: { big: '34.53%', caption: 'More accurate, in a vendor-run lab trial' },
+  },
   'noy-zhang': {
     source: 'Noy and Zhang, Science', title: 'ChatGPT cut writing time by 40%',
     summary: '453 professionals doing writing tasks in their own field took 40% less time with ChatGPT, and quality rose by 18%.',
@@ -229,9 +290,10 @@ export const briefs: Record<string, Brief> = {
 // One honest line per chapter, shown as its opening.
 export const verdicts: Record<string, string> = {
   'using-ai-well': 'Get real work done faster, and keep learning while you do it.',
-  safety: 'The UK NCSC says prompt injection may never be fully fixed, so limit what AI tools can reach.',
-  employers: 'Some employers say they expect AI skills, but what is public here is stated intent, not results.',
-  coding: 'The speed evidence is mixed, and one vendor\'s benchmark is a reason to review AI-written code.',
-  cyber: 'One vendor reports a state-linked group using AI in attacks, AI tools are targets themselves, and independent evidence is thin.',
-  'other-fields': 'AI is in use across these fields, with documented mistakes and few studies of real outcomes.',
+  'set-up-your-tools': 'Pick the right model, plan first and keep your usage under control.',
+  safety: 'Get the benefits without giving away data or access you cannot get back.',
+  employers: 'Show what you can do with AI, and be honest about how you checked it.',
+  coding: 'Build faster, understand what you build, and review all of it.',
+  cyber: 'Use AI to learn and defend, and only test what you have permission to test.',
+  'other-fields': 'Find where AI helps in your work, and the checks your field still requires.',
 };

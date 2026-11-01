@@ -25,7 +25,7 @@ const { title, description, current } = Astro.props;
       <a class="nav-mark" href="/">AI field guide</a>
       <nav class="nav-links" aria-label="Main">
         <button class="nav-btn" type="button" popovertarget="guides-menu" aria-haspopup="true">Guides<span class="nav-caret" aria-hidden="true"></span></button>
-        <a href="/evidence" aria-current={current === '/evidence' ? 'page' : undefined}>Sources</a>
+        <a href="/sources" aria-current={current === '/sources' ? 'page' : undefined}>Sources</a>
       </nav>
       <span class="nav-progress" aria-hidden="true"><i data-progress></i></span>
     </header>
@@ -39,8 +39,8 @@ const { title, description, current } = Astro.props;
     <main id="main"><slot /></main>
     <footer class="foot">
       <div class="wrap">
-        <span>Evidence checked on <time datetime={checkedOn}>{checkedOnLabel}</time>. Sources can change after this date.</span>
-        <a href="/method">What this guide did not read</a>
+        <span>By Musa Burke, with Claude. Last checked <time datetime={checkedOn}>{checkedOnLabel}</time>. Sources can change after this date.</span>
+        <a href="/sources">Where this comes from</a>
       </div>
     </footer>
     <script>import '../scripts/motion';</script>
