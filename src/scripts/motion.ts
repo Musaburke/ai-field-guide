@@ -77,6 +77,17 @@ document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
   });
 });
 
+// A link to a Sources row opens that row, including any collapsed section around it.
+const openTarget = () => {
+  const target = location.hash && document.getElementById(location.hash.slice(1));
+  if (!target) return;
+  let node: HTMLElement | null = target;
+  while (node) { if (node instanceof HTMLDetailsElement) node.open = true; node = node.parentElement; }
+  target.scrollIntoView();
+};
+addEventListener('hashchange', openTarget);
+openTarget();
+
 // Reading progress in the navbar, and stacked evidence cards that settle back as the next arrives.
 const bar = document.querySelector<HTMLElement>('[data-progress]');
 const stack = [...document.querySelectorAll<HTMLElement>('[data-stack]')];

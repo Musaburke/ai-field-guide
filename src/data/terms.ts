@@ -7,6 +7,12 @@ export const terms: Record<string, { term: string; meaning: string }[]> = {
     { term: 'Self-selected survey', meaning: 'People chose to answer, so they may not represent everyone.' },
     { term: 'Vendor', meaning: 'A company that sells the product being discussed, so it has an interest in the result.' },
   ],
+  'set-up-your-tools': [
+    { term: 'Token', meaning: 'A small chunk of text. AI tools measure and often charge by tokens.' },
+    { term: 'Context', meaning: 'Everything the model can see right now, including your conversation so far.' },
+    { term: 'Agent', meaning: 'An AI tool that takes steps on its own, such as reading files or running commands.' },
+    { term: 'MCP', meaning: 'Model Context Protocol, a standard way to connect AI tools to other apps and data.' },
+  ],
   safety: [
     { term: 'Prompt injection', meaning: 'Hidden or malicious text that tricks an AI tool into following instructions it should ignore.' },
     { term: 'Framework', meaning: 'An agreed list of risks and good practice. It guides work but does not measure how often harm happens.' },
