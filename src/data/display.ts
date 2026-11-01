@@ -1,147 +1,17 @@
-// Display layer over guide.ts. Every line is a shortened restatement of an
-// existing claim and keeps its hedge. Nothing here adds a fact. guide.ts stays
-// the source: when a claim changes there, change its line here too.
-
-export interface Figure {
-  value: string;
-  label: string;
-  claim: string;
-}
-
-// Home mosaic. Each label carries the caveat the figure needs.
-export const figures: Figure[] = [
-  {
-    value: '19% longer',
-    label: 'Tasks with AI allowed, in one small 2025 trial of 16 developers. Contested, and now marked out of date.',
-    claim: 'metr-2025',
-  },
-  {
-    value: '45%',
-    label: 'Of cases in a vendor\'s synthetic benchmark. Not 45% of real AI-written code.',
-    claim: 'veracode',
-  },
-  {
-    value: '2241 cases',
-    label: 'Court decisions discussing AI-hallucinated content, some only alleged. A count, not a rate.',
-    claim: 'law-database',
-  },
-  {
-    value: '50% vs 67%',
-    label: 'Later quiz scores, with and without AI, in a small vendor trial of 52 engineers.',
-    claim: 'anthropic-rct',
-  },
-  {
-    value: '66%',
-    label: 'Top frustration in a self-selected survey: "almost right, but not quite".',
-    claim: 'so-2025',
-  },
-];
-
-export interface Takeaway {
-  text: string;
-  claim?: string; // absent only when the line restates the section's own gap
-}
-
-export const takeaways: Record<string, Takeaway[]> = {
-  'using-ai-well': [
-    {
-      text: 'In METR\'s 2025 trial, 16 experienced developers took 19% longer with AI allowed and afterwards still believed they were about 20% faster. It is one small, contested trial on early-2025 tools.',
-      claim: 'metr-2025',
-    },
-    {
-      text: 'METR\'s late-2025 data points to less time with AI, but the confidence intervals include zero and METR says its data is "only very weak evidence" for the size of the increase.',
-      claim: 'metr-2026',
-    },
-    {
-      text: 'In a small Anthropic trial, the AI group scored 50% on a later quiz and the no-AI group 67%. Anthropic is an AI vendor.',
-      claim: 'anthropic-rct',
-    },
-    {
-      text: 'A trial of nearly 1,000 maths students reportedly found that unguarded GPT access left them 17% worse on later unassisted exams.',
-      claim: 'bastani',
-    },
-  ],
-  safety: [
-    {
-      text: 'The UK NCSC argues prompt injection "may never be totally mitigated", and advises reducing its impact through least privilege, deterministic safeguards and logging.',
-      claim: 'ncsc-injection',
-    },
-    {
-      text: 'The OWASP Top 10 for LLM Applications is a community-consensus list ranked by expert judgement. It is not measured incidence.',
-      claim: 'owasp',
-    },
-    {
-      text: 'In 2023, Samsung staff reportedly pasted internal source code into ChatGPT, and the company temporarily restricted generative AI on company devices.',
-      claim: 'samsung',
-    },
-    {
-      text: 'Do not rely on the EU AI Act dates listed here. Sources disagree on an amendment, so check the EU Official Journal.',
-      claim: 'eu-ai-act',
-    },
-  ],
-  employers: [
-    {
-      text: 'Press reports of two 2025 CEO memos show stated intent, from Shopify\'s "reflexive AI usage" to Duolingo\'s "AI-first" approach. They are examples, not a representative sample.',
-      claim: 'ceo-memos',
-    },
-    {
-      text: 'A Stanford paper finds employment of 22-to-25-year-olds in AI-exposed occupations 19% below where it would be had it kept pace with less-exposed peers. Its authors call this descriptive, not causal.',
-      claim: 'canaries',
-    },
-    {
-      text: 'According to summaries, the World Economic Forum report lists AI and big data among the fastest-growing skills to 2030. The report page could not be read.',
-      claim: 'wef',
-    },
-    {
-      text: 'The MIT-linked pilot-failure statistic has been criticised for thin methodology, and this guide does not use it as evidence.',
-      claim: 'mit-pilots',
-    },
-  ],
-  coding: [
-    {
-      text: 'One trial found a slowdown for experienced developers on their own mature repositories. Later data suggests a smaller or reversed effect but is inconclusive.',
-      claim: 'metr-2025',
-    },
-    {
-      text: 'A second trial found a learning cost when code was delegated.',
-      claim: 'anthropic-rct',
-    },
-    {
-      text: 'In Veracode\'s synthetic benchmark, models introduced a flaw of an OWASP Top 10 class in 45% of cases. That does not show 45% of real AI-written code is vulnerable, and Veracode sells code-scanning tools.',
-      claim: 'veracode',
-    },
-  ],
-  cyber: [
-    {
-      text: 'Both the NCSC and OWASP treat prompt injection as an unsolved problem.',
-      claim: 'injection-unsolved',
-    },
-    {
-      text: 'Anthropic reported that a group it assesses as Chinese state-sponsored used Claude Code against roughly thirty targets. This is a vendor self-report, not independently verified.',
-      claim: 'gtg-1002',
-    },
-    {
-      text: 'No independent evaluation of AI in security operations centre work was found, so this guide gives no effectiveness figures for it.',
-    },
-  ],
-  'other-fields': [
-    {
-      text: 'Two small trials of ambient AI scribes in NEJM AI measured time and burnout, not patient outcomes.',
-      claim: 'health',
-    },
-    {
-      text: 'One researcher\'s database listed 2241 court decisions discussing hallucinated content on 29 October 2026, some only alleged. It is not a rate per filing.',
-      claim: 'law-database',
-    },
-    {
-      text: 'A 2024 Bank of England and FCA survey reportedly found 75% of firms using AI. No outcome study for finance was found.',
-      claim: 'finance',
-    },
-  ],
-};
-
-// Short names for rows and citations.
+// Short labels and dates for citations.
 export const claimLabel: Record<string, string> = {
+  'cc-best': 'Claude Code docs: best practices',
+  'prompting': 'Anthropic prompting guide',
+  'cc-models': 'Claude Code docs: models',
+  'cc-costs': 'Claude Code docs: costs',
+  'cc-plan': 'Claude Code docs: plan mode',
+  'cc-skills': 'Claude Code docs: skills',
+  'cc-memory': 'Claude Code docs: CLAUDE.md',
+  'cc-subagents': 'Claude Code docs: subagents',
+  'cc-permissions': 'Claude Code docs: permissions',
+  'cc-mcp': 'Claude Code docs: MCP',
+  'gov-playbook': 'UK Government AI Playbook',
+  'security-copilot': 'Bono and Xu, Security Copilot trial',
   'noy-zhang': 'Noy and Zhang, Science',
   brynjolfsson: 'Brynjolfsson, Li and Raymond',
   kestin: 'Kestin et al.',
@@ -182,8 +52,19 @@ export const claimLabel: Record<string, string> = {
   'f-fri': 'Forecasting Research Institute, LEAP wave 8',
 };
 
-// Dates, only where the claim's own text gives one.
 export const claimDate: Record<string, string> = {
+  'cc-best': 'Checked 1 November 2026',
+  'prompting': 'Checked 1 November 2026',
+  'cc-models': 'Checked 1 November 2026',
+  'cc-costs': 'Checked 1 November 2026',
+  'cc-plan': 'Checked 1 November 2026',
+  'cc-skills': 'Checked 1 November 2026',
+  'cc-memory': 'Checked 1 November 2026',
+  'cc-subagents': 'Checked 1 November 2026',
+  'cc-permissions': 'Checked 1 November 2026',
+  'cc-mcp': 'Checked 1 November 2026',
+  'gov-playbook': '10 February 2025',
+  'security-copilot': 'October 2024',
   'noy-zhang': 'July 2023',
   brynjolfsson: '2025',
   kestin: 'June 2025',
@@ -208,21 +89,4 @@ export const claimDate: Record<string, string> = {
   'law-database': 'Updated 29 October 2026',
   finance: '21 November 2024',
   'f-amodei': 'May 2025',
-};
-
-// Authored line breaks for chapter titles, two lines at every width.
-export const titleLines: Record<string, [string, string?]> = {
-  'using-ai-well': ['Using AI', 'well'],
-  safety: ['Safety and', 'responsibility'],
-  employers: ['What employers', 'value'],
-  coding: ['AI and', 'coding'],
-  cyber: ['AI and', 'cyber security'],
-  'other-fields': ['Other', 'fields'],
-};
-
-// Forecasts paired with measured claims, only where the text itself links them.
-export const forecastPairs: Record<string, { claim?: string; gapOf?: string }> = {
-  'f-amodei': { claim: 'canaries' },
-  'f-wef': { claim: 'wef' },
-  'f-gartner': { gapOf: 'cyber' },
 };

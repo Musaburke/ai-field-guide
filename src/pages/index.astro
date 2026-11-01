@@ -17,7 +17,7 @@ import { claimHref } from '../lib/content';
         <p class="hero-lead" data-reveal style="--d:250ms">What to use it for, how to ask, and what to check. Practical guides for students and professionals, with sources you can open.</p>
         <div class="hero-cta" data-reveal style="--d:350ms">
           <a class="btn" href={`/${sections[0]!.id}`}>Start with the basics</a>
-          <a class="btn btn-soft" href="#guides">See all six guides</a>
+          <a class="btn btn-soft" href="#guides">See all seven guides</a>
         </div>
       </div>
       <div data-reveal style="--d:300ms"><PromptPicker /></div>
@@ -39,7 +39,7 @@ import { claimHref } from '../lib/content';
     </section>
 
     <section class="block" id="guides" aria-labelledby="ch-h">
-      <h2 id="ch-h" data-split>Six short guides</h2>
+      <h2 id="ch-h" data-split>Seven short guides</h2>
       <div class="chapters">
         {sections.map((s, i) => (
           <a class="ch-card" href={`/${s.id}`} data-reveal style={`--d:${i * 60}ms`}>

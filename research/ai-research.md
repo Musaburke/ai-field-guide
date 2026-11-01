@@ -183,3 +183,15 @@ Pages opened on this date. Abstract only unless stated. Drawn from a focused rea
 - Humlum and Vestergaard (NBER w33777, revised March 2026): null effects on earnings and hours, ruling out more than 2%.
 
 Could not be opened: Cui et al. (SSRN and PubPub 403), so not used. arXiv 2311.04235 was the wrong paper for a Security Copilot trial, so that trial is not used.
+
+
+## Added 1 November 2026: tools, safety and cyber
+
+Pages opened on this date, through a fetch agent. Long pages were read for their first ~40k characters, and only those verbatim parts are used.
+
+- Claude Code docs: costs, best-practices, model-config, skills, memory, sub-agents, permissions, mcp (code.claude.com/docs/en/...).
+- Anthropic prompting best practices (platform.claude.com).
+- UK Government AI Playbook, published 10 February 2025 (principles read).
+- Bono and Xu, Security Copilot for IT administrators (arXiv 2411.01067): 181 completed, +34.53% accuracy, -29.79% time, multiple-choice 25.13% slower. Microsoft authors, simulated lab.
+
+Failed: ICO AI guidance (timed out twice), so not used. Microsoft Research page for the trial returned 404.

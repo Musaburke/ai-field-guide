@@ -1,0 +1,113 @@
+---
+import Guide from '../layouts/Guide.astro';
+import Constellation from '../components/Constellation.astro';
+import EvidenceFilter, { type Row } from '../components/EvidenceFilter';
+import Rich from '../components/Rich';
+import { Flags, Meter, ReadLine } from '../components/Evidence';
+import { briefs } from '../data/brief';
+import { claimDate } from '../data/display';
+import { forecasts, notRead, notUsed } from '../data/guide';
+import { allClaims, readCounts } from '../lib/content';
+
+const route = '/sources';
+const rows: Row[] = allClaims.map((c) => ({
+  id: c.id,
+  title: briefs[c.id]!.title,
+  source: briefs[c.id]!.source,
+  date: claimDate[c.id],
+  read: c.read,
+  flags: c.flags ?? [],
+  chapter: c.chapter,
+  chapterTitle: c.chapterTitle,
+  text: c.text,
+  note: c.note,
+  strength: c.strength,
+}));
+const counts = readCounts(allClaims);
+const parts = [
+  { n: counts.page, label: 'Checked on the source page', cls: 's-page' },
+  { n: counts.partial, label: 'Partly checked, often the abstract', cls: 's-partial' },
+  { n: counts.snippet, label: 'From a search summary only', cls: 's-snippet' },
+];
+---
+<Guide title="Sources: AI field guide" description="Every source behind the guide, how far each was checked, what was not read, and who wrote it." current={route}>
+  <div class="wash">
+    <Constellation />
+    <div class="wrap">
+      <header class="open short">
+        <h1 data-split>Where this comes from</h1>
+        <p class="verdict" data-reveal style="--d:200ms">Every source in the guide, and how far each one was checked.</p>
+      </header>
+    </div>
+  </div>
+  <div class="wrap">
+    <section class="block strength" aria-label="How far the sources were checked" data-reveal>
+      <div class="strength-bar" aria-hidden="true">
+        {parts.map((x) => <i class={x.cls} style={`flex:${x.n}`}></i>)}
+      </div>
+      <div class="strength-key">
+        {parts.map((x) => <div><b>{x.n}</b><span><i class={x.cls}></i>{x.label}</span></div>)}
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="all-h">
+      <h2 id="all-h" data-split>All {allClaims.length} sources</h2>
+      <p class="block-note">Open any row for the full detail and links.</p>
+      <div class="filter-wrap"><EvidenceFilter client:load rows={rows} /></div>
+    </section>
+
+    <section class="block" aria-labelledby="who-h">
+      <h2 id="who-h" data-split>Who made this</h2>
+      <ul class="list-cards">
+        <li>By Musa Burke. Researched and written with Claude, reviewed by Musa.</li>
+        <li>Anthropic makes Claude, and also appears here as a source. Its studies and documentation are labelled as vendor sources.</li>
+        <li>Prompts, steps and everyday tips are this guide's practical advice, not study findings. Findings carry a numbered source.</li>
+        <li>Companies named here appear as sources or examples only. Naming one is not an endorsement.</li>
+      </ul>
+    </section>
+
+    <section class="block" aria-labelledby="lb-h">
+      <h2 id="lb-h" data-split>How to read the labels</h2>
+      <dl class="legend-grid">
+        <div><dt><Meter read="page" /> Source page read</dt><dd>The page was opened and the claim checked against it.</dd></div>
+        <div><dt><Meter read="partial" /> Partly read</dt><dd>Only some of it was confirmed, such as the abstract or one quote.</dd></div>
+        <div><dt><Meter read="snippet" /> Search summary only</dt><dd>The page was not opened. Check the link before you rely on the figure.</dd></div>
+        <div><dt><Flags flags={['vendor']} /></dt><dd>Written or paid for by someone who gains from what it describes.</dd></div>
+        <div><dt><Flags flags={['contested']} /></dt><dd>Authors, critics or later data dispute the claim or how far it reaches.</dd></div>
+        <div><dt><Flags flags={['unresolved']} /></dt><dd>Sources disagree and the point could not be settled.</dd></div>
+      </dl>
+    </section>
+
+    <section class="block" aria-labelledby="lim-h">
+      <h2 id="lim-h" data-split>What this guide did not do</h2>
+      <p class="block-note">This is a focused read, not a systematic review. The first research pass used 30 searches and 20 page reads. Studies of benefits were then chosen on purpose to show where AI helps, so read them alongside the cautions.</p>
+      <div class="rows">
+        <details class="row">
+          <summary>Pages not opened or not readable<span class="row-mark" aria-hidden="true"></span></summary>
+          <ul class="row-body lim-list">{notRead.map((n) => <li>{n}</li>)}</ul>
+        </details>
+        <details class="row">
+          <summary>Deliberately not used<span class="row-mark" aria-hidden="true"></span></summary>
+          <ul class="row-body lim-list">{notUsed.map((n) => <li>{n}</li>)}</ul>
+        </details>
+        <details class="row" id="forecasts">
+          <summary>Forecasts seen but not relied on<span class="row-mark" aria-hidden="true"></span></summary>
+          <div class="row-body">
+            <p>Forecasts are other people's opinions, not evidence. This guide makes no prediction of its own.</p>
+            <ul class="lim-list">
+              {forecasts.map((f) => (
+                <li id={f.id}>
+                  <h3>{briefs[f.id]!.title}</h3>
+                  <p class="soft">{f.who}</p>
+                  <p><Rich text={f.text} current={route} /></p>
+                  <p class="soft"><Rich text={f.caveat} current={route} /></p>
+                  <div class="ev-meta"><ReadLine read={f.read} /><Flags flags={f.flags} /></div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </details>
+      </div>
+    </section>
+  </div>
+</Guide>

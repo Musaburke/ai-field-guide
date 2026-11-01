@@ -1,5 +1,6 @@
 import { sections, forecasts, readLabel, type Claim, type Flag, type Forecast, type Read } from '../data/guide';
 import { claimDate, claimLabel } from '../data/display';
+import { playbooks } from '../data/playbooks';
 
 export interface Part { t: string; href?: string }
 
@@ -20,8 +21,10 @@ export const allClaims: (Claim & { chapter: string; chapterTitle: string })[] = 
   s.claims.map((c) => ({ ...c, chapter: s.id, chapterTitle: s.title })),
 );
 
-const home = new Map<string, string>(allClaims.map((c) => [c.id, `/${c.chapter}`]));
-forecasts.forEach((f) => home.set(f.id, '/forecasts'));
+// A claim's home is its card on a guide, or the Sources page if no guide shows it as a card.
+const home = new Map<string, string>(allClaims.map((c) => [c.id, '/sources']));
+for (const [guide, p] of Object.entries(playbooks)) p.proof.forEach((id) => home.set(id, `/${guide}`));
+forecasts.forEach((f) => home.set(f.id, '/sources'));
 
 /** The one helper for in-text anchors: `#metr-2025` becomes the route that holds it. */
 export function resolveHref(href: string, current?: string): string {
@@ -83,8 +86,6 @@ export function gapDisplay(gap: string): string {
   const t = gap.replace(/^Gap:\s*/, '');
   return t.charAt(0).toUpperCase() + t.slice(1);
 }
-
-export const readRank: Record<Read, number> = { page: 0, partial: 1, snippet: 2 };
 
 export function readCounts(items: { read: Read }[]) {
   return {
