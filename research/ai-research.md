@@ -168,3 +168,18 @@ Everything here is **forecast or opinion**, not evidence.
 3. No finance outcome study found; finance is regulatory only.
 4. No independent rebuttal retrieved for the Anthropic GTG-1002 report or the Stanford "Canaries" paper.
 5. Many 2026-dated items rest on search summaries that conflict across sources; verify each.
+
+
+## Added 31 October 2026: where AI helps
+
+Pages opened on this date. Abstract only unless stated. Drawn from a focused read, not a systematic review, and chosen to show benefits, so read alongside the limits above.
+
+- Noy and Zhang, Science 2023 (PubMed 37440646): 453 professionals, 40% less time, 18% higher quality.
+- Brynjolfsson, Li and Raymond (NBER w31161; QJE 2025): 5,179 agents, +14% average, +34% novices, minimal for experienced.
+- Kestin et al. 2025 (PubMed 40537565, via Europe PMC): AI tutor RCT, more learning in less time than active-learning class. No effect sizes in the abstract.
+- Dell'Acqua et al. (MIT Sloan summary only; HBS page gave 403): 700+ BCG consultants, nearly +40% inside the frontier, average -19 points outside.
+- Peng et al. 2023 (arXiv 2302.06590, abstract and HTML): 55.8% faster, CI 21-89%, 35 completers, worded in the paper as from both groups. GitHub and Microsoft affiliations. No code quality measure.
+- Bastani et al., PNAS 2025 (PubMed 40560616, via Europe PMC): +48% and +127% in practice, -17% later for GPT Base, largely mitigated by GPT Tutor.
+- Humlum and Vestergaard (NBER w33777, revised March 2026): null effects on earnings and hours, ruling out more than 2%.
+
+Could not be opened: Cui et al. (SSRN and PubPub 403), so not used. arXiv 2311.04235 was the wrong paper for a Security Copilot trial, so that trial is not used.

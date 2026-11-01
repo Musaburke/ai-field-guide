@@ -50,10 +50,38 @@ export const flagLabel: Record<Flag, string> = {
 export const sections: Section[] = [
   {
     id: 'using-ai-well',
-    title: 'Using AI well',
+    title: 'Get good at AI',
     intro:
-      'Evidence on whether AI tools make people faster, and what they do to learning. The honest headline is that the measurements are hard and the results are mixed.',
+      'Get real work done faster with AI and keep learning while you do it, with practical steps and the evidence behind them.',
     claims: [
+      {
+        id: 'noy-zhang',
+        text: 'In a preregistered online experiment [published in Science](https://pubmed.ncbi.nlm.nih.gov/37440646/) (Noy and Zhang, July 2023), 453 college-educated professionals did occupation-specific writing tasks, and half were randomly given ChatGPT. "The average time taken decreased by 40% and output quality rose by 18%." Inequality between workers decreased.',
+        read: 'partial',
+        strength: 'Strong for what it measured',
+        note: 'Only the abstract was read. These were set tasks in an experiment, with an early version of ChatGPT, so real jobs may differ.',
+      },
+      {
+        id: 'brynjolfsson',
+        text: 'A study of [5,179 customer support agents](https://www.nber.org/papers/w31161) (Brynjolfsson, Li and Raymond; published in the Quarterly Journal of Economics, 2025) found an AI assistant raised issues resolved per hour by 14% on average, "including a 34% improvement for novice and low-skilled workers but with minimal impact on experienced and highly skilled workers."',
+        read: 'partial',
+        strength: 'Strong for this setting',
+        note: 'Only the abstract page was read. It covers one kind of work, and the tool was introduced in stages rather than in a lab trial.',
+      },
+      {
+        id: 'kestin',
+        text: 'In a randomised trial at college level ([Kestin et al., 2025](https://pubmed.ncbi.nlm.nih.gov/40537565/); [full article](https://www.nature.com/articles/s41598-025-97652-6)), students "learn significantly more in less time" with an AI tutor than in an in-class active learning lesson, and felt more engaged and motivated. The tutor was custom-built on the same teaching practices as the class.',
+        read: 'partial',
+        strength: 'Moderate',
+        note: 'Only the abstract was read, so effect sizes and sample size are not given here. This was a purpose-built tutor, not a general chatbot.',
+      },
+      {
+        id: 'dellacqua',
+        text: 'A study with [more than 700 Boston Consulting Group consultants](https://mitsloan.mit.edu/ideas-made-to-matter/how-generative-ai-can-boost-highly-skilled-workers-productivity) (Dell\'Acqua et al.), as summarised by MIT Sloan, found GPT-4 could improve performance by nearly 40% on tasks within its abilities. On a task outside them, performance dropped by an average of 19 percentage points.',
+        read: 'partial',
+        strength: 'Moderate until the paper is read',
+        note: 'This rests on MIT Sloan\'s summary because the paper\'s page refused access. The summary\'s 19-point average is not reconciled with its separate 13 and 24 point figures.',
+      },
       {
         id: 'metr-2025',
         text: 'In a [randomized trial by METR](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) (published 10 July 2025), 16 experienced open-source developers worked on 246 real issues, with AI tools randomly allowed or not. When AI was allowed, tasks took 19% longer. The developers had expected a 24% speedup and, afterwards, still believed it was about 20%.',
@@ -80,10 +108,10 @@ export const sections: Section[] = [
       },
       {
         id: 'bastani',
-        text: 'A randomised trial of nearly 1,000 high-school maths students in Turkey (Bastani et al., [PNAS vol. 122](https://econpapers.repec.org/RePEc:nas:journl:v:122:y:2025:p:e2422633122); [working paper](https://papers.ssrn.com/abstract=4895486)) reportedly found that unguarded GPT access improved practice scores, but students did 17% worse on later unassisted exams. A guarded tutor version reportedly avoided the penalty.',
-        read: 'snippet',
+        text: 'A field experiment with nearly 1,000 high-school maths students (Bastani et al., [PNAS abstract](https://pubmed.ncbi.nlm.nih.gov/40560616/); [working paper](https://papers.ssrn.com/abstract=4895486)) found GPT-4 access raised practice grades by 48% with a standard chat interface and 127% with a tutor version built to safeguard learning. When access was removed, the standard group did 17% worse than students who never had it. The authors say the safeguards largely mitigated this.',
+        read: 'partial',
         strength: 'Moderate',
-        note: 'Peer-reviewed, but one school, one subject and a 2023 model. Figures come from a search summary and have not been checked on the paper.',
+        note: 'The abstract was read, not the full paper. Peer-reviewed. That it was one school in Turkey comes from search summaries.',
       },
       {
         id: 'so-2025',
@@ -122,7 +150,7 @@ export const sections: Section[] = [
   },
   {
     id: 'safety',
-    title: 'Safety and responsibility',
+    title: 'Use AI safely',
     intro:
       'Reference frameworks, official guidance and documented incidents. Frameworks are consensus on risks, not measurements of how often harm happens.',
     claims: [
@@ -196,7 +224,7 @@ export const sections: Section[] = [
   },
   {
     id: 'employers',
-    title: 'What employers value',
+    title: 'Stand out at work',
     intro:
       'Public statements and surveys about what employers say they want. These are statements of intent and expectation, not outcomes. No published company acceptable-use policy was read for this guide.',
     claims: [
@@ -230,6 +258,14 @@ export const sections: Section[] = [
         note: 'The authors call these "early, descriptive indicators... rather than causal estimates". The effect weakens with education controls and some trends predate generative AI. The paper has been revised, so the number can move between revisions. No rebuttal was retrieved.',
       },
       {
+        id: 'humlum',
+        text: 'A study linking adoption surveys to Danish labour records ([Humlum and Vestergaard, NBER](https://www.nber.org/papers/w33777), revised March 2026) estimates "precise null effects on earnings and recorded hours", "ruling out effects larger than 2% two years after the launch of ChatGPT". Workers still report productivity benefits, and adopters move into higher-paying occupations, "though still too few to move average earnings."',
+        read: 'partial',
+        strength: 'Moderate to strong for Denmark',
+        flags: ['contested'],
+        note: 'Only the abstract page was read. It covers one country and the early period after ChatGPT launched. It sits awkwardly beside the task-level gains above, which is why it is here.',
+      },
+      {
         id: 'mit-pilots',
         text: 'A statistic attributed to an MIT report on the failure rate of generative AI pilots was [widely reported](https://finance.yahoo.com/news/mit-report-95-generative-ai-105412686.html) and has been [criticised](https://neonvagabond.xyz/mirrors/mit-report-lacks-evidence.html) for thin methodology, a narrow definition of "failure" (no measurable profit-and-loss impact within about six months) and an author tie to a related technology.',
         read: 'snippet',
@@ -242,10 +278,18 @@ export const sections: Section[] = [
   },
   {
     id: 'coding',
-    title: 'AI and coding',
+    title: 'Code with AI',
     intro:
       'Controlled studies of coding productivity and learning are in other chapters ([METR 2025](#metr-2025), [METR 2026](#metr-2026), [Anthropic trial](#anthropic-rct)), with survey data in [Stack Overflow](#so-2025) and [DORA](#dora-2025). Summarised: one trial found a slowdown for experienced developers on their own mature repositories, later data suggests a smaller or reversed effect but is inconclusive, and a second trial found a learning cost when code was delegated.',
     claims: [
+      {
+        id: 'peng',
+        text: 'In a [randomised experiment](https://arxiv.org/abs/2302.06590) (Peng et al., February 2023), professional programmers recruited through Upwork, using GitHub Copilot, finished an HTTP server task in JavaScript 55.8% faster than a control group (95% confidence interval 21 to 89%). 95 were recruited and 35 from both groups completed it. Less experienced developers benefited more.',
+        read: 'page',
+        strength: 'Moderate',
+        flags: ['vendor'],
+        note: 'Authors include GitHub and Microsoft Research staff, and both sell Copilot. It is one standard task, and the authors say it "does not examine the effects of AI on code quality".',
+      },
       {
         id: 'veracode',
         text: 'The [Veracode 2025 GenAI Code Security Report](https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/) (30 July 2025) tested 100+ language models on 80 coding tasks built from known weakness types (CWEs). In 45% of cases the models introduced a flaw of an OWASP Top 10 class. Java failed in over 70% of cases, Python, C# and JavaScript between 38% and 45%, cross-site scripting (CWE-80) in 86% and log injection (CWE-117) in 88%. The report says models are "getting better at coding accurately but are not improving at security".',
@@ -266,9 +310,9 @@ export const sections: Section[] = [
   },
   {
     id: 'cyber',
-    title: 'AI and cyber security',
+    title: 'AI in cyber security',
     intro:
-      'Two directions: AI used by attackers, and AI as a target. Prompt injection is covered in [Safety and responsibility](#ncsc-injection); the NCSC and OWASP entries are the strongest sources in this guide.',
+      'Two directions: AI used by attackers, and AI as a target. Prompt injection is covered in [Use AI safely](#ncsc-injection); the NCSC and OWASP entries are the strongest sources in this guide.',
     claims: [
       {
         id: 'gtg-1002',
@@ -289,7 +333,7 @@ export const sections: Section[] = [
   },
   {
     id: 'other-fields',
-    title: 'Other fields',
+    title: 'AI in your field',
     intro:
       'Healthcare, law, finance and education, each with its limits. Education evidence is in other chapters ([Anthropic trial](#anthropic-rct), [Bastani et al.](#bastani)).',
     claims: [
@@ -372,7 +416,7 @@ export const forecasts: Forecast[] = [
 
 export const notUsed: string[] = [
   'A claimed doubling time for AI task length that came from a personal website. It was not confirmed on METR\'s own site, so it is not cited.',
-  'The widely shared MIT-linked pilot-failure statistic, as fact. It appears in What employers value only as a contested claim.',
+  'The widely shared MIT-linked pilot-failure statistic, as fact. It appears in Stand out at work only as a contested claim.',
   'Figures attributed to the Stanford AI Index 2026 by aggregator sites. The official report page was not opened, so none are reproduced.',
   'Job-advert percentages relayed second-hand from analytics firms, and a 2026 SOC survey figure that traced to a single vendor.',
   'Control counts for NIST AI 600-1 from vendor summaries (they conflict), and an unverified claim about fraud in financial services.',
