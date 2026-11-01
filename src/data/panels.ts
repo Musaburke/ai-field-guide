@@ -1,11 +1,11 @@
 // Short home page text and icons. No new facts.
 export const blurbs: Record<string, string> = {
-  'using-ai-well': 'Does it make people faster? The results are mixed.',
-  safety: 'The risks, and what official guidance says.',
-  employers: 'What employers say they want from you.',
-  coding: 'Speed, learning and the security of AI code.',
-  cyber: 'AI used by attackers, and AI as a target.',
-  'other-fields': 'Healthcare, law and finance.',
+  'using-ai-well': 'Draft, learn and think faster, and keep your own skills.',
+  safety: 'Protect your data and limit what AI tools can reach.',
+  employers: 'What employers say they want, and how to show it.',
+  coding: 'Build faster, and review AI code like a stranger\'s.',
+  cyber: 'How attackers use AI, and how AI tools get attacked.',
+  'other-fields': 'Healthcare, law and finance, and where each draws the line.',
 };
 
 export const sourceNames = ['METR', 'NIST', 'OWASP', 'UK NCSC', 'DORA', 'Stack Overflow'];

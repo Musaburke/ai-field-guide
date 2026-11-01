@@ -1,15 +1,10 @@
 ---
 import '@fontsource-variable/plus-jakarta-sans';
 import '../styles/guide.css';
-import { checkedOn, checkedOnLabel } from '../data/guide';
+import { checkedOn, checkedOnLabel, sections } from '../data/guide';
+import { blurbs } from '../data/panels';
 interface Props { title: string; description: string; current?: string }
 const { title, description, current } = Astro.props;
-const links = [
-  { href: '/', label: 'Chapters', hide: true },
-  { href: '/evidence', label: 'Evidence' },
-  { href: '/forecasts', label: 'Forecasts' },
-  { href: '/method', label: 'Method' },
-];
 ---
 <!doctype html>
 <html lang="en">
@@ -29,10 +24,18 @@ const links = [
     <header class="nav">
       <a class="nav-mark" href="/">AI field guide</a>
       <nav class="nav-links" aria-label="Main">
-        {links.map((l) => <a href={l.href} class:list={{ 'nav-hide': l.hide }} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a>)}
+        <button class="nav-btn" type="button" popovertarget="guides-menu" aria-haspopup="true">Guides<span class="nav-caret" aria-hidden="true"></span></button>
+        <a href="/evidence" aria-current={current === '/evidence' ? 'page' : undefined}>Sources</a>
       </nav>
       <span class="nav-progress" aria-hidden="true"><i data-progress></i></span>
     </header>
+    <div class="menu" id="guides-menu" popover>
+      <ul>
+        {sections.map((g) => (
+          <li><a href={`/${g.id}`} aria-current={Astro.url.pathname.replace(/\/$/, '') === `/${g.id}` ? 'page' : undefined}><b>{g.title}</b><span>{blurbs[g.id]}</span></a></li>
+        ))}
+      </ul>
+    </div>
     <main id="main"><slot /></main>
     <footer class="foot">
       <div class="wrap">

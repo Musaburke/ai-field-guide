@@ -142,6 +142,12 @@ export const takeaways: Record<string, Takeaway[]> = {
 
 // Short names for rows and citations.
 export const claimLabel: Record<string, string> = {
+  'noy-zhang': 'Noy and Zhang, Science',
+  brynjolfsson: 'Brynjolfsson, Li and Raymond',
+  kestin: 'Kestin et al.',
+  dellacqua: 'Dell\'Acqua et al., via MIT Sloan',
+  humlum: 'Humlum and Vestergaard',
+  peng: 'Peng et al.',
   'metr-2025': 'METR\'s 2025 randomized trial',
   'metr-2026': 'METR\'s February 2026 update',
   'anthropic-rct': 'Anthropic\'s trial on learning a library',
@@ -178,6 +184,12 @@ export const claimLabel: Record<string, string> = {
 
 // Dates, only where the claim's own text gives one.
 export const claimDate: Record<string, string> = {
+  'noy-zhang': 'July 2023',
+  brynjolfsson: '2025',
+  kestin: 'June 2025',
+  dellacqua: 'October 2023',
+  humlum: 'Revised March 2026',
+  peng: 'February 2023',
   'metr-2025': '10 July 2025',
   'metr-2026': '24 February 2026',
   'anthropic-rct': '29 January 2026',

@@ -2,11 +2,14 @@
 import Guide from '../layouts/Guide.astro';
 import Constellation from '../components/Constellation.astro';
 import EvidenceCard from '../components/EvidenceCard.astro';
+import Citation from '../components/Citation';
+import PromptBox from '../components/PromptBox.astro';
 import Rich from '../components/Rich';
 import Sources from '../components/Sources.astro';
 import { sections } from '../data/guide';
 import { verdicts } from '../data/brief';
 import { takeaways } from '../data/display';
+import { playbooks } from '../data/playbooks';
 import { terms } from '../data/terms';
 import { allClaims, gapDisplay, numberCites } from '../lib/content';
 
@@ -23,7 +26,11 @@ const own = new Set(s.claims.map((c) => c.id));
 // Claims this chapter's summary leans on from other chapters come first, then its own.
 const borrowed = (takeaways[s.id] ?? []).flatMap((a) => (a.claim && !own.has(a.claim) ? [a.claim] : []));
 const list = [...borrowed.map((id) => allClaims.find((c) => c.id === id)!), ...s.claims];
-const cites = numberCites(list.map((c) => c.id));
+const p = playbooks[s.id];
+const proof = p ? p.proof.map((id) => allClaims.find((c) => c.id === id)!) : list;
+const cites = numberCites(p
+  ? [...p.uses, ...p.steps, ...p.careful].flatMap((l) => l.cite ?? []).concat(p.proof)
+  : list.map((c) => c.id));
 const plain = s.intro.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
 // The gap's last sentence can point at a page; keep the link working from here.
 ---
@@ -32,13 +39,61 @@ const plain = s.intro.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
     <Constellation />
     <div class="wrap">
       <header class="open">
-        <p class="open-step">Chapter {index + 1} of {sections.length}</p>
+        <p class="open-step">Guide {index + 1} of {sections.length}</p>
         <h1 data-split>{s.title}</h1>
         <p class="verdict" data-reveal style="--d:200ms">{verdicts[s.id]}</p>
       </header>
     </div>
   </div>
   <div class="wrap">
+    {p && (
+      <>
+        <section class="block" aria-labelledby="uses-h">
+          <h2 id="uses-h" data-split>What it is great for</h2>
+          <div class="uses">
+            {p.uses.map((u, i) => (
+              <article class="use" data-reveal style={`--d:${(i % 2) * 70}ms`}>
+                <h3>{u.title}</h3>
+                <p>{u.text} {u.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p>
+                <PromptBox prompt={u.prompt} />
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section class="block" aria-labelledby="steps-h">
+          <h2 id="steps-h" data-split>How to do it</h2>
+          <ol class="steps">
+            {p.steps.map((l, i) => (
+              <li data-reveal style={`--d:${i * 50}ms`}>
+                <span class="step-n" aria-hidden="true">{i + 1}</span>
+                <div><h3>{l.title}</h3><p>{l.text} {l.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p></div>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section class="block" aria-labelledby="careful-h">
+          <h2 id="careful-h" data-split>Where to be careful</h2>
+          <ul class="rules">
+            {p.careful.map((l, i) => (
+              <li data-reveal style={`--d:${i * 70}ms`}><h3>{l.title}</h3><p>{l.text} {l.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p></li>
+            ))}
+          </ul>
+        </section>
+      </>
+    )}
+
+    <section class="block" id="evidence" aria-labelledby="ev-h">
+      <div class="sec-head">
+        <h2 id="ev-h" data-split>{p ? 'Why we say this' : 'The evidence'}</h2>
+        <p>{proof.length} {proof.length === 1 ? 'source' : 'sources'}, each with its catch</p>
+      </div>
+      <div class="ev-stack">
+        {proof.map((c) => <EvidenceCard claim={c} cite={cites.get(c.id)!} current={route} />)}
+      </div>
+    </section>
+
     {chapterTerms.length > 0 && (
       <section class="terms-row" aria-label="Terms used in this chapter">
         <div class="rows">
@@ -52,17 +107,7 @@ const plain = s.intro.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
       </section>
     )}
 
-    <section class="block" id="evidence" aria-labelledby="ev-h">
-      <div class="sec-head">
-        <h2 id="ev-h" data-split>The evidence</h2>
-        <p>{list.length} {list.length === 1 ? 'source' : 'sources'}, each with its catch</p>
-      </div>
-      <div class="ev-stack">
-        {list.map((c) => <EvidenceCard claim={c} cite={cites.get(c.id)!} current={route} />)}
-      </div>
-    </section>
-
-    {s.habits && (
+    {!p && s.habits && (
       <section class="block" id="habits" aria-labelledby="habits-h">
         <h2 id="habits-h" data-split>What to do about it</h2>
         <ul class="habit-cards">
