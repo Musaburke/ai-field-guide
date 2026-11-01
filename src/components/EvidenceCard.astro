@@ -14,6 +14,7 @@ const date = claimDate[claim.id];
 ---
 <article class="ev-card" id={claim.id} data-stack data-reveal>
   <div class="ev-inner">
+    {v && (
     <div class="ev-panel" aria-hidden="true">
       {v?.bars && v.bars.map((bar) => (
         <div class="barline">
@@ -25,6 +26,7 @@ const date = claimDate[claim.id];
       {v?.label && <p class="ev-label">{v.label}</p>}
       {v?.caption && <p class="panel-caption">{v.caption}</p>}
     </div>
+    )}
     <div class="ev-body">
       <p class="ev-source">{b.source}{date && ` · ${date}`}</p>
       <h3>{b.title}</h3>

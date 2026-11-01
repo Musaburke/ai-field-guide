@@ -1,0 +1,22 @@
+---
+import Rich from './Rich';
+import PromptBox from './PromptBox.astro';
+import { tasks } from '../data/playbooks';
+---
+<section class="picker" aria-labelledby="picker-h" data-picker>
+  <h2 id="picker-h">What do you want to do?</h2>
+  <div class="picker-tabs" role="tablist" aria-labelledby="picker-h">
+    {tasks.map((t, i) => (
+      <button type="button" role="tab" id={`tab-${t.id}`} aria-controls={`panel-${t.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{t.label}</button>
+    ))}
+  </div>
+  <div class="picker-panels">
+    {tasks.map((t, i) => (
+      <div class="picker-panel" role="tabpanel" id={`panel-${t.id}`} aria-labelledby={`tab-${t.id}`} data-active={i === 0 ? 'true' : 'false'}>
+        <p class="picker-weak"><span>Instead of</span> “{t.weak}”</p>
+        <PromptBox prompt={t.better} />
+        <p class="picker-check"><span>Then check</span> <Rich text={t.check} current="/" /></p>
+      </div>
+    ))}
+  </div>
+</section>

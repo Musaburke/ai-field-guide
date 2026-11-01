@@ -1,4 +1,4 @@
-// Word rise, reveals and the typed rotator, adapted from the portfolio's motion.ts.
+// Word rise, reveals, the prompt picker and copy buttons, adapted from the portfolio's motion.ts.
 // Content stays in the DOM and visible without JS; this only adds the travel.
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -42,21 +42,40 @@ if (reduce) {
   targets.forEach((t) => io.observe(t));
 }
 
-const rot = document.querySelector<HTMLElement>('[data-rotate]');
-if (rot && !reduce) {
-  const words = (rot.dataset.rotate ?? '').split('|');
-  let word = 0, n = words[0]!.length, deleting = true;
-  const step = () => {
-    if (document.hidden) { setTimeout(step, 600); return; }
-    const cur = words[word]!;
-    n += deleting ? -1 : 1;
-    rot.textContent = cur.slice(0, Math.max(n, 0));
-    if (deleting && n <= 0) { deleting = false; word = (word + 1) % words.length; n = 0; setTimeout(step, 220); return; }
-    if (!deleting && n >= words[word]!.length) { deleting = true; setTimeout(step, 2400); return; }
-    setTimeout(step, deleting ? 45 : 85);
+// Home picker: tabs share one grid cell, so the card never changes height.
+document.querySelectorAll<HTMLElement>('[data-picker]').forEach((picker) => {
+  const tabs = [...picker.querySelectorAll<HTMLElement>('[role="tab"]')];
+  const choose = (tab: HTMLElement, focus = false) => {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      picker.querySelector<HTMLElement>(`#${t.getAttribute('aria-controls')}`)!.dataset.active = String(on);
+    });
+    if (focus) tab.focus();
   };
-  setTimeout(step, 2400);
-}
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => choose(tab));
+    tab.addEventListener('keydown', (e) => {
+      const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (step) { e.preventDefault(); choose(tabs[(i + step + tabs.length) % tabs.length]!, true); }
+    });
+  });
+});
+
+// Copy buttons. If the clipboard is refused, select the text so it can be copied by hand.
+document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+  btn.addEventListener('click', async () => {
+    const text = btn.parentElement!.querySelector<HTMLElement>('[data-prompt]')!;
+    try {
+      await navigator.clipboard.writeText(text.textContent ?? '');
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 1600);
+    } catch {
+      getSelection()?.selectAllChildren(text);
+    }
+  });
+});
 
 // Reading progress in the navbar, and stacked evidence cards that settle back as the next arrives.
 const bar = document.querySelector<HTMLElement>('[data-progress]');

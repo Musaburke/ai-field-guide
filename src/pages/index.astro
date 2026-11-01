@@ -1,46 +1,49 @@
 ---
 import Guide from '../layouts/Guide.astro';
 import Constellation from '../components/Constellation.astro';
-import { ReadLine } from '../components/Evidence';
+import PromptPicker from '../components/PromptPicker.astro';
+import Rich from '../components/Rich';
 import { sections } from '../data/guide';
-import { figures } from '../data/display';
-import { blurbs, icons, sourceNames } from '../data/panels';
-import { allClaims, claimHref } from '../lib/content';
-
-const metr = allClaims.find((c) => c.id === 'metr-2025')!;
+import { blurbs, icons } from '../data/panels';
+import { rules, wins } from '../data/playbooks';
+import { claimHref } from '../lib/content';
 ---
-<Guide title="AI field guide" description="What the evidence really says about using AI at work, in plain English, with every claim sourced." current="/">
+<Guide title="AI field guide" description="Practical guides to using AI well: what to use it for, how to ask, and what to check. For students and professionals, with every claim sourced." current="/">
   <div class="wash">
     <Constellation />
     <div class="wrap hero">
       <div>
-        <h1 data-split>Use AI <span class="hero-word" data-rotate="well|safely|responsibly">well</span></h1>
-        <p class="hero-lead" data-reveal style="--d:250ms">What the evidence really says, in plain English. For students and professionals.</p>
+        <h1 data-split>Get more out of AI,<br /> and stay sharp</h1>
+        <p class="hero-lead" data-reveal style="--d:250ms">What to use it for, how to ask, and what to check. Practical guides for students and professionals, with sources you can open.</p>
         <div class="hero-cta" data-reveal style="--d:350ms">
-          <a class="btn" href={`/${sections[0]!.id}`}>Start reading</a>
-          <a class="btn btn-soft" href="/evidence">How strong is it?</a>
+          <a class="btn" href={`/${sections[0]!.id}`}>Start with the basics</a>
+          <a class="btn btn-soft" href="#guides">See all six guides</a>
         </div>
       </div>
-      <div class="demo" data-reveal style="--d:300ms">
-        <div class="bubble"><small>You ask</small><p>Does AI make developers faster?</p></div>
-        <div class="bubble"><small>The evidence says</small><span class="big-num">19% longer</span><p>In one small 2025 trial of 16 developers.</p></div>
-        <div class="bubble bubble-check"><small>How sure to be</small><p>{metr.strength}</p><div class="check-row"><ReadLine read={metr.read} /><span class="read-line">Contested</span><span class="read-line">Now marked out of date</span></div></div>
-      </div>
+      <div data-reveal style="--d:300ms"><PromptPicker /></div>
     </div>
   </div>
 
   <div class="wrap">
-    <section class="strip" aria-label="Sources used" data-reveal>
-      <p>Sources used include</p>
-      <ul>{sourceNames.map((n) => <li>{n}</li>)}</ul>
+    <section class="block" aria-labelledby="wins-h">
+      <h2 id="wins-h" data-split>Where AI has really helped</h2>
+      <div class="wins">
+        {wins.map((w, i) => (
+          <a href={claimHref(w.claim)} data-reveal style={`--d:${i * 60}ms`}>
+            <b>{w.value}</b>
+            <span>{w.text}</span>
+            <small>{w.limit}</small>
+          </a>
+        ))}
+      </div>
     </section>
 
-    <section class="block" aria-labelledby="ch-h">
-      <h2 id="ch-h" data-split>Six short chapters</h2>
+    <section class="block" id="guides" aria-labelledby="ch-h">
+      <h2 id="ch-h" data-split>Six short guides</h2>
       <div class="chapters">
         {sections.map((s, i) => (
           <a class="ch-card" href={`/${s.id}`} data-reveal style={`--d:${i * 60}ms`}>
-            <span class="ch-top"><span class="ch-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={icons[s.id]} /></svg></span><span class="ch-n">Chapter {i + 1}</span></span>
+            <span class="ch-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={icons[s.id]} /></svg></span>
             <h3>{s.title}</h3>
             <p>{blurbs[s.id]}</p>
           </a>
@@ -48,15 +51,15 @@ const metr = allClaims.find((c) => c.id === 'metr-2025')!;
       </div>
     </section>
 
-    <section class="block" aria-labelledby="num-h">
-      <h2 id="num-h" data-split>The numbers, with their caveats</h2>
-      <div class="wall">
-        {figures.map((f, i) => (
-          <a href={claimHref(f.claim)} data-reveal style={`--d:${i * 60}ms`}><b>{f.value}</b><span>{f.label}</span></a>
+    <section class="block" aria-labelledby="rules-h">
+      <h2 id="rules-h" data-split>Three rules for using it wisely</h2>
+      <ul class="rules">
+        {rules.map((r, i) => (
+          <li data-reveal style={`--d:${i * 70}ms`}><h3>{r.title}</h3><p><Rich text={r.text} current="/" /></p></li>
         ))}
-      </div>
+      </ul>
     </section>
 
-    <a class="band" href={`/${sections[0]!.id}`}><span>Chapter 1</span><b>{sections[0]!.title}</b></a>
+    <a class="band" href={`/${sections[0]!.id}`}><span>Start here</span><b>{sections[0]!.title}</b></a>
   </div>
 </Guide>
