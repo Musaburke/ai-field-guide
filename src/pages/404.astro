@@ -1,0 +1,16 @@
+---
+import Guide from '../layouts/Guide.astro';
+import { sections } from '../data/guide';
+---
+<Guide title="Page not found: AI field guide" description="This page does not exist.">
+  <div class="wrap">
+    <header class="open">
+      <h1>Page not found</h1>
+      <p class="verdict">This page does not exist. Start from the guides instead.</p>
+      <div class="hero-cta">
+        <a class="btn" href="/">All guides</a>
+        <a class="btn btn-soft" href={`/${sections[0]!.id}`}>Start with the basics</a>
+      </div>
+    </header>
+  </div>
+</Guide>
