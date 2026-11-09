@@ -1,0 +1,203 @@
+---
+import Guide from '../layouts/Guide.astro';
+import Constellation from '../components/Constellation.astro';
+import EvidenceCard from '../components/EvidenceCard.astro';
+import Citation from '../components/Citation';
+import FieldPicker from '../components/FieldPicker.astro';
+import PromptBox from '../components/PromptBox.astro';
+import Rich from '../components/Rich';
+import Sources from '../components/Sources.astro';
+import Terminal from '../components/Terminal.astro';
+import BrainGraph from '../components/BrainGraph.astro';
+import { sections } from '../data/guide';
+import { verdicts } from '../data/brief';
+import { groupOf } from '../data/panels';
+import { playbooks } from '../data/playbooks';
+import { terms } from '../data/terms';
+import { allClaims, countWord, gapDisplay, numberCites } from '../lib/content';
+
+export function getStaticPaths() {
+  return sections.map((s, i) => ({ params: { chapter: s.id }, props: { index: i } }));
+}
+
+const { index } = Astro.props;
+const s = sections[index]!;
+const route = `/${s.id}`;
+const prev = sections[index - 1];
+const next = sections[index + 1];
+const group = groupOf(s.id);
+const chapterTerms = terms[s.id] ?? [];
+const p = playbooks[s.id]!;
+const proof = p.proof.map((id) => allClaims.find((c) => c.id === id)!);
+const cites = numberCites(
+  [...(p.uses ?? []), ...(p.topics ?? []), ...(p.fields ?? []), ...p.steps, ...p.careful]
+    .flatMap((l) => l.cite ?? [])
+    .concat(p.proof),
+);
+// `code` spans in the data render as code; nothing else is parsed.
+const codeParts = (t: string) => t.split(/`([^`]+)`/);
+
+// The "On this page" list follows the sections this guide actually renders.
+const toc = [
+  p.uses && { id: 'uses', label: 'What it is great for' },
+  p.graph && { id: 'graph', label: p.graph.title },
+  p.fields && { id: 'fields', label: 'In your field' },
+  p.topics && { id: 'habits', label: p.topicsTitle ?? 'Habits' },
+  { id: 'steps', label: 'How to do it' },
+  { id: 'careful', label: 'Where to be careful' },
+  { id: 'behind', label: 'Behind this guide' },
+].filter((t): t is { id: string; label: string } => Boolean(t));
+---
+<Guide title={`${s.title}: AI field guide`} description={verdicts[s.id]!}>
+  <div class="wash">
+    <Constellation />
+    <div class="wrap">
+      <header class="open">
+        <p class="open-step">{group.title} · Guide {index + 1} of {sections.length}</p>
+        <h1 data-split>{s.title}</h1>
+        <p class="verdict" data-reveal style="--d:200ms">{verdicts[s.id]}</p>
+      </header>
+    </div>
+  </div>
+  <div class="wrap guide-grid">
+    <nav class="toc" aria-label="On this page">
+      <p class="toc-head">On this page</p>
+      <ul>
+        {toc.map((t) => <li><a href={`#${t.id}`} data-toc={t.id}>{t.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="guide-main">
+      {p.uses && (
+        <section class="block" id="uses" aria-labelledby="uses-h">
+          <h2 id="uses-h" data-split>What it is great for</h2>
+          <div class="uses">
+            {p.uses.map((u, i) => (
+              <article class="use" data-reveal style={`--d:${(i % 2) * 70}ms`}>
+                <h3>{u.title}</h3>
+                <p>{codeParts(u.text).map((part, n) => n % 2 ? <code>{part}</code> : part)} {u.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p>
+                {u.demo && <Terminal demo={u.demo} />}
+                <PromptBox prompt={u.prompt} />
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {p.graph && (
+        <section class="block" id="graph" aria-labelledby="graph-h">
+          <h2 id="graph-h" data-split>{p.graph.title}</h2>
+          <p class="block-lead">{codeParts(p.graph.text).map((part, n) => n % 2 ? <code>{part}</code> : part)}</p>
+          <BrainGraph />
+        </section>
+      )}
+
+      {p.fields && (
+        <section class="block" id="fields" aria-labelledby="fields-h">
+          <h2 id="fields-h" data-split>What it is great for in your field</h2>
+          <FieldPicker fields={p.fields} cites={cites} current={route} />
+        </section>
+      )}
+
+      {p.topics && (
+        <section class="block" id="habits" aria-labelledby="topics-h">
+          <div class="sec-head">
+            <h2 id="topics-h" data-split>{p.topicsTitle ?? `${countWord(p.topics.length)} habits that pay off`}</h2>
+            <p>{p.topicsNote ?? 'In any AI tool, with Claude Code as the example'}</p>
+          </div>
+          <div class="habits">
+            {p.topics.map((t) => (
+              <article class="habit" data-reveal>
+                <div class="habit-text">
+                  <h3>{t.title}</h3>
+                  <p class="topic-habit">{t.habit}</p>
+                  <p class="habit-example">{codeParts(t.example).map((part, n) => n % 2 ? <code>{part}</code> : part)} {t.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p>
+                  {t.prompt && <PromptBox prompt={t.prompt} />}
+                </div>
+                {t.demo && <Terminal demo={t.demo} />}
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section class="block" id="steps" aria-labelledby="steps-h">
+        <h2 id="steps-h" data-split>How to do it</h2>
+        <ol class="steps">
+          {p.steps.map((l, i) => (
+            <li data-reveal style={`--d:${i * 50}ms`}>
+              <span class="step-n" aria-hidden="true">{i + 1}</span>
+              <div><h3>{l.title}</h3><p>{codeParts(l.text).map((part, n) => n % 2 ? <code>{part}</code> : part)} {l.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p></div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section class="block" id="careful" aria-labelledby="careful-h">
+        <h2 id="careful-h" data-split>Where to be careful</h2>
+        <ul class="rules">
+          {p.careful.map((l, i) => (
+            <li data-reveal style={`--d:${i * 70}ms`}><h3>{l.title}</h3><p>{codeParts(l.text).map((part, n) => n % 2 ? <code>{part}</code> : part)} {l.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p></li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="behind" id="behind" aria-labelledby="behind-h">
+        <div class="sec-head">
+          <h2 id="behind-h">Behind this guide</h2>
+          <p>Notes, evidence and sources</p>
+        </div>
+
+        {p.notes && (
+          <div class="behind-part">
+            <h3>{p.notesTitle ?? 'What I learned building this site'}</h3>
+            <p class="block-note">Musa Burke's own notes from building this guide and other sites with Claude Code, not study findings.</p>
+            <ul class="notes">
+              {p.notes.map((l, i) => (
+                <li data-reveal style={`--d:${(i % 2) * 70}ms`}><h4>{l.title}</h4><p>{codeParts(l.text).map((part, n) => n % 2 ? <code>{part}</code> : part)}</p></li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {proof.length > 0 && (
+          <div class="behind-part" id="evidence">
+            <h3>Why we say this</h3>
+            <p class="block-note">{proof.length} {proof.length === 1 ? 'source' : 'sources'}, each with its catch.</p>
+            <div class="ev-stack">
+              {proof.map((c) => <EvidenceCard claim={c} cite={cites.get(c.id)!} current={route} />)}
+            </div>
+          </div>
+        )}
+
+        {s.gap && (
+          <div class="gap-card behind-part" data-reveal>
+            <h3>What is missing</h3>
+            <p><Rich text={gapDisplay(s.gap)} current={route} /></p>
+          </div>
+        )}
+
+        <div class="rows behind-part">
+          {chapterTerms.length > 0 && (
+            <details class="row">
+              <summary>Terms used in this guide<span class="row-mark" aria-hidden="true"></span></summary>
+              <dl class="terms">
+                {chapterTerms.map((t) => <div><dt>{t.term}</dt><dd>{t.meaning}</dd></div>)}
+              </dl>
+            </details>
+          )}
+          <Sources cites={[...cites.values()]} current={route} />
+        </div>
+      </section>
+
+      <nav class="pager" aria-label="Guides">
+        {prev
+          ? <a class="pager-prev" href={`/${prev.id}`}><span>Previous guide</span><b>{prev.title}</b></a>
+          : <a class="pager-prev" href="/"><span>Back to</span><b>All guides</b></a>}
+        {next
+          ? <a class="band" href={`/${next.id}`}><span>Next guide</span><b>{next.title}</b></a>
+          : <a class="band" href="/sources"><span>Last page</span><b>Where this comes from</b></a>}
+      </nav>
+    </div>
+  </div>
+</Guide>

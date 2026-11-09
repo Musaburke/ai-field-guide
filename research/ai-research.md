@@ -168,3 +168,44 @@ Everything here is **forecast or opinion**, not evidence.
 3. No finance outcome study found; finance is regulatory only.
 4. No independent rebuttal retrieved for the Anthropic GTG-1002 report or the Stanford "Canaries" paper.
 5. Many 2026-dated items rest on search summaries that conflict across sources; verify each.
+
+
+## Added 31 October 2026: where AI helps
+
+Pages opened on this date. Abstract only unless stated. Drawn from a focused read, not a systematic review, and chosen to show benefits, so read alongside the limits above.
+
+- Noy and Zhang, Science 2023 (PubMed 37440646): 453 professionals, 40% less time, 18% higher quality.
+- Brynjolfsson, Li and Raymond (NBER w31161; QJE 2025): 5,179 agents, +14% average, +34% novices, minimal for experienced.
+- Kestin et al. 2025 (PubMed 40537565, via Europe PMC): AI tutor RCT, more learning in less time than active-learning class. No effect sizes in the abstract.
+- Dell'Acqua et al. (MIT Sloan summary only; HBS page gave 403): 700+ BCG consultants, nearly +40% inside the frontier, average -19 points outside.
+- Peng et al. 2023 (arXiv 2302.06590, abstract and HTML): 55.8% faster, CI 21-89%, 35 completers, worded in the paper as from both groups. GitHub and Microsoft affiliations. No code quality measure.
+- Bastani et al., PNAS 2025 (PubMed 40560616, via Europe PMC): +48% and +127% in practice, -17% later for GPT Base, largely mitigated by GPT Tutor.
+- Humlum and Vestergaard (NBER w33777, revised March 2026): null effects on earnings and hours, ruling out more than 2%.
+
+Could not be opened: Cui et al. (SSRN and PubPub 403), so not used. arXiv 2311.04235 was the wrong paper for a Security Copilot trial, so that trial is not used.
+
+
+## Added 1 November 2026: tools, safety and cyber
+
+Pages opened on this date, through a fetch agent. Long pages were read for their first ~40k characters, and only those verbatim parts are used.
+
+- Claude Code docs: costs, best-practices, model-config, skills, memory, sub-agents, permissions, mcp (code.claude.com/docs/en/...).
+- Anthropic prompting best practices (platform.claude.com).
+- UK Government AI Playbook, published 10 February 2025 (principles read).
+- Bono and Xu, Security Copilot for IT administrators (arXiv 2411.01067): 181 completed, +34.53% accuracy, -29.79% time, multiple-choice 25.13% slower. Microsoft authors, simulated lab.
+
+Failed: ICO AI guidance (timed out twice), so not used. Microsoft Research page for the trial returned 404.
+
+
+## Added 9 November 2026: usage, second brain and reference sites
+
+Pages read on this date, through a fetch agent and Context7 documentation excerpts. Only verbatim parts are used.
+
+- Claude Code costs page (code.claude.com/docs/en/costs), read in full: /usage Session block, plan-limit breakdown, subscribers' session cost "isn't relevant for billing purposes", /context, usage credits. The page has no sentence on /cost, so /cost is not used.
+- Claude Code status line docs (code.claude.com/docs/en/statusline), excerpts: rate_limits five_hour and seven_day, used_percentage, resets_at.
+- Claude Code settings reference (code.claude.com/docs/en/settings-reference), excerpts: cleanupPeriodDays, default 30, silent sweep, 0 fails validation, 3650 suggested.
+- Claude Code memory docs (code.claude.com/docs/en/memory), first ~40k of ~55k characters verbatim plus an excerpt of the locations table: @path imports, ~/.claude/CLAUDE.md as user instructions, --add-dir folders not loaded by default.
+- Claude Code skills docs (code.claude.com/docs/en/skills), excerpt: disable-model-invocation: true.
+- Refero Styles (styles.refero.design), home page: beta, "2,000+ AI-readable design systems", DESIGN.md files. Pricing and terms not checked.
+
+No independent study found on usage habits, notes vaults, or reference-led AI design. The usage and reference-site guides say so in their "What is missing" lines; Musa removed it from the second-brain guide on 9 November 2026. Personal numbers in the notes come from Musa's own Brain notes, not from sources.

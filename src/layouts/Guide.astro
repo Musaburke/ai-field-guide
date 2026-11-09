@@ -1,0 +1,53 @@
+---
+import '@fontsource-variable/plus-jakarta-sans';
+import '../styles/guide.css';
+import { sections } from '../data/guide';
+import { groups } from '../data/panels';
+interface Props { title: string; description: string; current?: string }
+const { title, description, current } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#cbe7c9" />
+    <link rel="preload" href="/fonts/clash-grotesk-500.woff2" as="font" type="font/woff2" crossorigin />
+    <title>{title}</title>
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <div class="aurora" aria-hidden="true"><span></span><span></span></div>
+    <a class="skip" href="#main">Skip to the guide</a>
+    <header class="nav">
+      <a class="nav-mark" href="/"><svg class="nav-logo" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path class="logo-a" d="M4 16 10 5l8 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path class="logo-b" d="M4 9l7 8 7-12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle class="logo-s1" cx="4" cy="16" r="2.2" fill="currentColor"/><circle class="logo-s2" cx="10" cy="5" r="2.6" fill="currentColor"/><circle class="logo-s3" cx="18" cy="11" r="2.2" fill="currentColor"/></svg>AI field guide</a>
+      <nav class="nav-links" aria-label="Main">
+        <button class="nav-btn" type="button" popovertarget="guides-menu" aria-haspopup="true">Guides<span class="nav-caret" aria-hidden="true"></span></button>
+        <a href="/sources" aria-current={current === '/sources' ? 'page' : undefined}>Sources</a>
+      </nav>
+      <span class="nav-progress" aria-hidden="true"><i data-progress></i></span>
+    </header>
+    <div class="menu" id="guides-menu" popover>
+      {groups.map((gr) => (
+        <div class="menu-group">
+          <p class="menu-head">{gr.title}</p>
+          <ul>
+            {gr.guides.map((id) => (
+              <li><a href={`/${id}`} aria-current={Astro.url.pathname.replace(/\/$/, '') === `/${id}` ? 'page' : undefined}>{sections.find((s) => s.id === id)!.title}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <main id="main"><slot /></main>
+    <footer class="foot">
+      <div class="wrap">
+        <span>By Musa Burke, with Claude. Sources can change, so check the linked pages.</span>
+        <a href="/sources">Where this comes from</a>
+      </div>
+    </footer>
+    <script>import '../scripts/motion';</script>
+  </body>
+</html>
