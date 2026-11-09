@@ -142,7 +142,6 @@ export const playbooks: Record<string, Playbook> = {
       { title: 'More agents can mean less left', text: 'Each agent sends its own requests, so a big fan-out can use up a weekly limit quickly.', cite: ['cc-subagents'] },
       { title: 'These details change', text: 'Model names, limits and commands move often. Everything here was checked on 1 November 2026, so confirm it on the linked page.' },
     ],
-    // TODO(musa): approve or rewrite each note. Drafted from what happened on this project.
     notes: [
       { title: 'Agents only know what you tell them', text: 'My first two designs came out badly because the agents building them used none of the design skills I had set up. The brief never told them to.' },
       { title: 'Set a budget before you start', text: 'I gave Claude a weekly usage limit and pasted in my `/usage` at checkpoints, because the session could not read it. One research agent alone used about 261,000 tokens.' },
@@ -193,7 +192,6 @@ export const playbooks: Record<string, Playbook> = {
       { title: 'Estimates can be far off', text: 'An AI\'s guess at how much a job will use is a guess. Read `/usage` before and after a big job instead.' },
       { title: 'Agents multiply usage', text: 'Each subagent sends its own requests against the same limits. Try one, see what it used, then decide whether to start more.', cite: ['cc-subagents'] },
     ],
-    // TODO(musa): approve or rewrite each note. Drafted from Usage and limits and Using Claude efficiently in ~/Brain.
     notesTitle: 'What my own usage looked like',
     notes: [
       { title: 'Real numbers from one week', text: 'On my plan, the first full build of my portfolio took about 14% of a weekly limit, and one new section about 2%. Claude had guessed that section would cost far more. A redesign on Opus took about 8% of the week and 60% of one five-hour window.' },
@@ -245,7 +243,6 @@ export const playbooks: Record<string, Playbook> = {
       { title: 'Notes are summaries, not sources', text: 'A note records what someone remembered. When it disagrees with the code or the live site, trust the code.' },
       { title: 'Keep secrets out', text: 'Leave out passwords, keys, other people\'s personal details and raw chat transcripts. A private repo is still one more copy.' },
     ],
-    // TODO(musa): approve or rewrite each note. Drafted from How this brain works and Skills setup in ~/Brain.
     notesTitle: 'How my own second brain works',
     notes: [
       { title: 'Four folders', text: 'Inbox for quick thoughts, Uni for lectures, Knowledge for ideas and fixes worth keeping, and Projects for one note per project. Links work by name, so notes can move freely.' },
@@ -453,7 +450,6 @@ export const playbooks: Record<string, Playbook> = {
       { title: 'Borrow ideas, not sites', text: 'Use references for direction. Another site\'s words, images and exact look are not yours to publish.' },
       { title: 'Pages can carry instructions', text: 'A page the AI reads can hide text telling it what to do. Treat what it reads as data.', cite: ['injection-unsolved'] },
     ],
-    // TODO(musa): approve or rewrite each note. Drafted from AI field guide and Review loop in ~/Brain.
     notes: [
       { title: 'Three designs rejected first', text: 'Warm paper with a serif, a printed annual, and cream with pastel green were all rejected. The one that stuck started from a real landing page I liked.' },
       { title: 'Shrunken screenshots mislead', text: 'A reviewer kept saying text was too small. Its full-page screenshots had been shrunk until detail was lost. Viewport shots of one section work better.' },
