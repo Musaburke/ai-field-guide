@@ -28,7 +28,7 @@ document.querySelectorAll<HTMLElement>('[data-split]').forEach((el) => {
   walk(el);
 });
 
-const targets = document.querySelectorAll<HTMLElement>('[data-reveal], [data-split]');
+const targets = document.querySelectorAll<HTMLElement>('[data-reveal], [data-split], .graph');
 if (reduce) {
   targets.forEach((t) => t.classList.add('in'));
 } else {
@@ -117,4 +117,23 @@ if (!reduce && (bar || stack.length)) {
   addEventListener('scroll', ask, { passive: true });
   addEventListener('resize', ask);
   ask();
+}
+
+// "On this page": highlight the section being read.
+const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc]')];
+if (tocLinks.length) {
+  const visible = new Map<string, boolean>();
+  const mark = () => {
+    const current = tocLinks.find((a) => visible.get(a.dataset.toc!)) ?? null;
+    tocLinks.forEach((a) => {
+      const on = a === current;
+      a.classList.toggle('on', on);
+      if (on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+    });
+  };
+  const spy = new IntersectionObserver((entries) => {
+    for (const e of entries) visible.set(e.target.id, e.isIntersecting);
+    mark();
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  tocLinks.forEach((a) => { const el = document.getElementById(a.dataset.toc!); if (el) spy.observe(el); });
 }

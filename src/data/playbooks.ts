@@ -1,8 +1,11 @@
 // The practical layer of each guide. Prompts and steps are this guide's own advice, not
 // study findings. `cite` lists the claims (guide.ts) that a line relies on.
-export interface Use { title: string; text: string; cite?: string[]; prompt: string }
+// A simplified terminal or file view. `cmd` lines get a prompt, `note` lines are dimmed.
+// Only restate the command or the cited docs; never invent screen output.
+export interface Demo { title: string; lines: { cmd?: string; text?: string; note?: string }[] }
+export interface Use { title: string; text: string; cite?: string[]; prompt: string; demo?: Demo }
 export interface Line { title: string; text: string; cite?: string[] }
-export interface Topic { title: string; habit: string; example: string; cite?: string[]; prompt?: string }
+export interface Topic { title: string; habit: string; example: string; cite?: string[]; prompt?: string; demo?: Demo }
 export interface Field { id: string; label: string; text: string; cite?: string[]; prompt: string; check: string }
 export interface Playbook {
   uses?: Use[];
@@ -11,6 +14,10 @@ export interface Playbook {
   steps: Line[];
   careful: Line[];
   notes?: Line[];
+  notesTitle?: string; // defaults to "What I learned building this site"
+  topicsTitle?: string; // defaults to "<count> habits that pay off"
+  topicsNote?: string;
+  graph?: { title: string; text: string }; // shows the brain graph figure
   proof: string[];
 }
 
@@ -60,18 +67,21 @@ export const playbooks: Record<string, Playbook> = {
     topics: [
       {
         title: 'Choose the right model',
+        demo: { title: "Claude Code", lines: [{ cmd: "/model" }, { text: "haiku    simple tasks" }, { text: "sonnet   daily coding tasks" }, { text: "opus     complex reasoning tasks" }, { text: "fable    hardest, longest-running tasks" }] },
         habit: 'Use the smallest model that can do the job, and step up when the work is hard. Check your tool\'s own model page, because names and prices change.',
         example: '`/model` switches model. The docs describe Haiku for simple tasks, Sonnet for daily coding, Opus for complex reasoning and Fable for the hardest, longest work.',
         cite: ['cc-models'],
       },
       {
         title: 'Save your usage',
+        demo: { title: "Claude Code", lines: [{ cmd: "/clear" }, { note: "fresh start for the next job" }, { cmd: "/usage" }, { note: "what this session and your plan have used" }] },
         habit: 'Long conversations cost more, so start a new one for each new job. Check what you have used before starting something big.',
-        example: '`/clear` starts fresh and costs nothing. `/usage` shows what you have used. `/compact` summarises a conversation, though on a large one that is itself a large request.',
-        cite: ['cc-costs'],
+        example: '`/clear` starts fresh and costs nothing. `/usage` shows what you have used. The next guide, Manage your usage, has the rest.',
+        cite: ['cc-costs', 'cc-usage'],
       },
       {
         title: 'Plan before you build',
+        demo: { title: "Claude Code", lines: [{ text: "Shift+Tab  cycles to plan mode" }, { note: "reads and explores, does not edit source files" }, { cmd: "Interview me about this project, one question at a time." }] },
         habit: 'Agree the plan first, while changes are cheap. Ask the tool to question you, so gaps show up before anything gets made.',
         example: 'Shift+Tab cycles to plan mode, where it reads and explores but does not edit your source files.',
         cite: ['cc-plan'],
@@ -79,30 +89,42 @@ export const playbooks: Record<string, Playbook> = {
       },
       {
         title: 'Save what you repeat as a skill',
+        demo: { title: "Where skills live", lines: [{ text: ".claude/skills/review/SKILL.md" }, { note: "this project only" }, { text: "~/.claude/skills/review/SKILL.md" }, { note: "every project" }, { cmd: "/review" }] },
         habit: 'If you keep typing the same instructions, save them once and reuse them.',
-        example: 'A skill is a `SKILL.md` file in `.claude/skills/<name>/`, which you run with `/name`. It only loads when used, so long instructions cost almost nothing until then.',
+        example: 'A skill is a `SKILL.md` file in `.claude/skills/<name>/`, which you run with `/name`. Put it in `~/.claude/skills/<name>/` instead to use it in every project. It only loads when used, so long instructions cost almost nothing until then.',
         cite: ['cc-skills'],
       },
       {
         title: 'Tell it how you work, once',
+        demo: { title: "Where CLAUDE.md lives", lines: [{ text: "~/.claude/CLAUDE.md" }, { note: "your rules, every project" }, { text: "./CLAUDE.md" }, { note: "this project, shared with your team" }, { text: "See @docs/setup.md for how to run it." }, { note: "an @ line pulls in another file" }] },
         habit: 'Most AI tools have somewhere for standing instructions. Put your rules and project details there, and keep them short.',
-        example: 'It reads `CLAUDE.md` at the start of every session, and `/init` creates a first draft. The docs advise under 200 lines, and warn it is context rather than enforced rules.',
-        cite: ['cc-memory'],
+        example: 'It reads `CLAUDE.md` at the start of every session, and `/init` creates a first draft. The docs advise under 200 lines, and warn it is context rather than enforced rules. Rules for every project, such as which skill to use for which job, go in `~/.claude/CLAUDE.md`.',
+        cite: ['cc-memory', 'cc-imports'],
+      },
+      {
+        title: 'Check your skills actually run',
+        demo: { title: "Claude Code", lines: [{ cmd: "/context" }, { note: "what fills the conversation, skills included" }, { text: "disable-model-invocation: true" }, { note: "this skill runs only when you type its name" }] },
+        habit: 'Installing a skill does not mean it gets used. Check that each one loads where you need it, and say when to use it.',
+        example: 'Skills in one project\'s `.claude/skills` are not visible in another. A skill with `disable-model-invocation: true` only runs when you type its name. `/context` shows what is filling the conversation, skills included.',
+        cite: ['cc-skills', 'cc-usage'],
       },
       {
         title: 'Use agents for the right jobs',
+        demo: { title: "How agents split work", lines: [{ text: "main conversation" }, { text: "\u251c\u2500 subagent   own context, reviews the diff" }, { text: "\u2514\u2500 subagent   own context, searches the docs" }, { note: "both count toward the same usage limits" }] },
         habit: 'Hand a job to an agent when it is noisy, can run in parallel or needs fresh eyes. Keep simple work in your main conversation, because extra agents cost extra usage.',
         example: 'A subagent has its own context and counts toward the same limits. The docs say that by default you get parallelism or a fresh reviewer, but not a smarter answer.',
         cite: ['cc-subagents'],
       },
       {
         title: 'Give it the least access it needs',
+        demo: { title: ".claude/settings.json", lines: [{ text: "{" }, { text: "  \"permissions\": {" }, { text: "    \"deny\":  [\"Read(./.env)\"]," }, { text: "    \"ask\":   [\"Bash(git push:*)\"]," }, { text: "    \"allow\": [\"Bash(npm run test:*)\"]" }, { text: "  }" }, { text: "}" }, { note: "checked in the order deny, ask, allow" }] },
         habit: 'Start with approvals on, and allow more only for things you trust. Anything a tool can reach, a mistake can reach too.',
         example: 'It enforces its permission rules itself, in the order deny, ask, allow. The docs say to use bypass mode only in isolated environments such as containers or VMs.',
         cite: ['cc-permissions'],
       },
       {
         title: 'Connect other tools with care',
+        demo: { title: "Terminal", lines: [{ cmd: "claude mcp add --transport http notion https://mcp.notion.com/mcp" }, { note: "connect only servers you trust" }] },
         habit: 'Connecting your calendar, files or database makes an AI tool far more useful, and widens what can go wrong. Connect only what you need, from people you trust.',
         example: 'It uses MCP for this. The docs warn that servers fetching outside content can expose you to prompt injection.',
         cite: ['cc-mcp'],
@@ -126,6 +148,110 @@ export const playbooks: Record<string, Playbook> = {
       { title: 'Set a budget before you start', text: 'I gave Claude a weekly usage limit and pasted in my `/usage` at checkpoints, because the session could not read it. One research agent alone used about 261,000 tokens.' },
       { title: 'Passing tests does not mean it is good', text: 'I rejected several versions of this site after every automated check had passed. Only looking at it told me it was boring.' },
       { title: 'Let it interview you', text: 'This guide exists because Claude finally asked me questions before building. My answers changed what the site was for.' },
+    ],
+    proof: [],
+  },
+  usage: {
+    uses: [
+      {
+        title: 'See how much of your plan is left',
+        demo: { title: "Claude Code", lines: [{ cmd: "/usage" }, { note: "Session: tokens used in this session" }, { note: "Plan: five-hour and weekly limits, and what is using them" }] },
+        text: 'Plans have a limit that resets every five hours and another that resets weekly. `/usage` shows both, and a breakdown of what is using them up.',
+        cite: ['cc-usage', 'cc-statusline'],
+        prompt: 'I have [X]% of my weekly limit left. Here is the job: [describe it]. Tell me which parts will use the most, and how to do it in fewer steps.',
+      },
+      {
+        title: 'Keep the numbers on screen',
+        demo: { title: "~/.claude/statusline.sh", lines: [{ text: "jq -r '.rate_limits.five_hour.used_percentage'" }, { text: "jq -r '.rate_limits.seven_day.used_percentage'" }, { note: "each is a percentage from 0 to 100" }] },
+        text: 'A status line script can show your five-hour and weekly percentages under every prompt, so you never have to go and look.',
+        cite: ['cc-statusline'],
+        prompt: 'Write me a Claude Code status line script that shows the model name and my five-hour and weekly usage as percentages. Read the rate_limits fields, and show nothing for any that are missing.',
+      },
+      {
+        title: 'Find what fills the conversation',
+        demo: { title: "Claude Code", lines: [{ cmd: "/context" }, { note: "a breakdown of the context window, by category" }] },
+        text: '`/context` lists what is taking up space, such as your instructions, installed skills and long tool output.',
+        cite: ['cc-usage'],
+        prompt: 'Here is my /context output: [paste]. What is taking the most space, and what could I remove or load only when needed?',
+      },
+      {
+        title: 'Read the dollar figure right',
+        text: 'On a Pro, Max or Ultra plan, the session cost in `/usage` is not what you pay. Your subscription already covers that usage.',
+        cite: ['cc-usage'],
+        prompt: 'Explain the difference between my plan limits and the session cost figure Claude Code shows me. What happens when I reach a limit?',
+      },
+    ],
+    steps: [
+      { title: 'Start a new chat for each job', text: '`/clear` drops the old conversation, so the next request does not pay for it.', cite: ['cc-costs'] },
+      { title: 'Compact a long job instead of restarting', text: '`/compact` summarises the history and carries on. On a very large conversation, that summary is a big request too.', cite: ['cc-costs'] },
+      { title: 'Match the model to the job', text: '`/model` switches. Use a smaller model for copy edits and small fixes, and save the biggest for planning and hard bugs.', cite: ['cc-models'] },
+      { title: 'Say when it does not need to look', text: 'Screenshots are expensive to read. When you only need the build to pass, say "no screenshots, just check the build".' },
+      { title: 'Keep your chat history', text: 'Claude Code deletes transcripts after 30 days without telling you. Set `"cleanupPeriodDays": 3650` in `~/.claude/settings.json` to keep them.', cite: ['cc-retention'] },
+    ],
+    careful: [
+      { title: 'Decide on usage credits before you need them', text: 'Usage credits let you keep working past your plan limit. Check in your account settings whether they are on, and whether you want them.', cite: ['cc-usage'] },
+      { title: 'Estimates can be far off', text: 'An AI\'s guess at how much a job will use is a guess. Read `/usage` before and after a big job instead.' },
+      { title: 'Agents multiply usage', text: 'Each subagent sends its own requests against the same limits. Try one, see what it used, then decide whether to start more.', cite: ['cc-subagents'] },
+    ],
+    // TODO(musa): approve or rewrite each note. Drafted from Usage and limits and Using Claude efficiently in ~/Brain.
+    notesTitle: 'What my own usage looked like',
+    notes: [
+      { title: 'Real numbers from one week', text: 'On my plan, the first full build of my portfolio took about 14% of a weekly limit, and one new section about 2%. Claude had guessed that section would cost far more. A redesign on Opus took about 8% of the week and 60% of one five-hour window.' },
+      { title: 'The $100 that was not a bill', text: '`npx ccusage@latest daily` showed $100.94 for 29 October to 1 November. Nearly all of it was cache reads, priced as if I paid per token. My subscription price stayed the same.' },
+      { title: 'Where most of it went', text: 'By Claude\'s estimate, my biggest costs were full-page screenshots read several at a time, rewriting whole files instead of editing them, and installed skills adding about 16,000 tokens to every request.' },
+      { title: 'Clearing saves the most', text: 'The usage panel put starting a new chat for each task at 82% of the savings it suggested. `CLAUDE.md` loads again by itself, so nothing important is lost.' },
+    ],
+    proof: [],
+  },
+  'second-brain': {
+    graph: { title: 'See your brain grow', text: 'Open the folder in Obsidian and turn on graph view. Every `[[link]]` between two notes becomes a line, so you can see which ideas connect and which notes stand alone. The more you link, the more it looks like a brain.' },
+    uses: [
+      {
+        title: 'Set it up in one go',
+        text: 'One prompt builds the folders, templates, git repo, the link from `CLAUDE.md` and a command to keep it updated. It asks you a few questions first.',
+        prompt: "Set up a second brain that you and I will both use. Work in [~/Brain]. First ask me, one question at a time: what I will use it for (study, projects, work), which folders I want, and whether I use Obsidian.\n\nThen build it:\n1. A private git repo with my folders (for example Inbox, Projects, Knowledge, Uni) and a Templates folder.\n2. Home.md, linking every folder, and a short How this works note that explains these rules.\n3. Templates for a project note, a lecture note and a decision. Give each one front matter: tags, updated, source.\n4. Inbox.md, for my own quick thoughts only. Sort it into notes when I ask, but never write in it yourself.\n5. Link related notes with [[note name]], so Obsidian's graph view shows how they connect.\n6. One block in ~/.claude/CLAUDE.md that imports Home.md and says: read my notes before starting work, add source: claude-chats to any note you write, and update the matching project note at the end of a session.\n7. A /brain-update skill that reads what we did since the last update, writes the changes on a git branch and shows me the diff before anything merges.\n\nRules: show me every file before you commit. Keep passwords, keys and other people's personal details out. When a note disagrees with the code, trust the code.",
+      },
+      {
+        title: 'Start each chat already up to speed',
+        demo: { title: "Your notes folder", lines: [{ text: "~/Brain/" }, { text: "\u251c\u2500 Inbox.md      your own quick thoughts" }, { text: "\u251c\u2500 Projects/     one note per project" }, { text: "\u2514\u2500 Knowledge/    ideas and fixes worth keeping" }, { note: "in ~/.claude/CLAUDE.md, so every chat can find it:" }, { text: "My notes are in ~/Brain. Start from @~/Brain/Home.md" }] },
+        text: 'Keep one short note per project: what it is, where the code lives and what is left. Point the AI at it instead of explaining again.',
+        prompt: 'Read my note at [path]. Summarise where this project is up to in five lines, and ask me about anything that looks out of date before we start.',
+      },
+      {
+        title: 'Keep decisions with their reasons',
+        text: 'Write down what you chose and why, so neither you nor the AI reopens a settled question three chats later.',
+        prompt: 'From this chat, list the decisions we made, each with one line on why. Format them so I can paste them into my decisions note.',
+      },
+      {
+        title: 'Turn lectures into notes you can revise from',
+        text: 'Give it your slides and ask for notes that fit your own folders, with diagrams where they help.',
+        prompt: 'Turn these slides into revision notes: [paste]. Use short headings and one example per idea, and end with what I should be able to explain afterwards.',
+      },
+      {
+        title: 'Check what is still open',
+        text: 'Keep a list of loose ends. Have the AI check each one against the real code and sites, and report without ticking anything off.',
+        prompt: 'Here is my open loops list: [paste]. For each item, tell me how to check whether it is really done. Do not mark anything done yourself.',
+      },
+    ],
+    steps: [
+      { title: 'Give it its own folder', text: 'Keep the notes apart from your code, as plain Markdown files. Obsidian is one app that opens a folder like this. Put it in a private git repo so every change can be undone.' },
+      { title: 'Keep an inbox that is yours', text: 'One note for quick thoughts, links and ideas, written only by you. The AI sorts it into the right notes later.' },
+      { title: 'Label what the AI wrote', text: 'Add a line such as `source: claude-chats` to the top of every note the AI wrote, so you never mistake its summary for your own words.' },
+      { title: 'Review changes before they land', text: 'Have the AI update the notes on a git branch, then read the diff before you merge it.' },
+      { title: 'Tell your tool where the notes are', text: 'Nothing reads them until something points to them. Add a line to `~/.claude/CLAUDE.md`, which loads in every project, or import a note with `@path/to/note`.', cite: ['cc-imports', 'cc-memory'] },
+    ],
+    careful: [
+      { title: 'A brain only the AI fills goes unread', text: 'It grows quickly and nobody reads it. Most of the value comes from what you add yourself.' },
+      { title: 'Notes are summaries, not sources', text: 'A note records what someone remembered. When it disagrees with the code or the live site, trust the code.' },
+      { title: 'Keep secrets out', text: 'Leave out passwords, keys, other people\'s personal details and raw chat transcripts. A private repo is still one more copy.' },
+    ],
+    // TODO(musa): approve or rewrite each note. Drafted from How this brain works and Skills setup in ~/Brain.
+    notesTitle: 'How my own second brain works',
+    notes: [
+      { title: 'Four folders', text: 'Inbox for quick thoughts, Uni for lectures, Knowledge for ideas and fixes worth keeping, and Projects for one note per project. Links work by name, so notes can move freely.' },
+      { title: 'Updates on a branch', text: 'A custom skill, `/brain-update`, reads my Claude Code chats since the last run, writes the changes on a branch and shows me the diff before anything merges.' },
+      { title: 'Claude warned me early', text: 'It pointed out that a brain agents fill alone gets big and nobody reads it. So the Inbox is mine, and the AI does not write in it.' },
+      { title: 'Rules there did nothing at first', text: 'Rules I wrote only in the brain were never used, because nothing loaded them. Moving them into `~/.claude/CLAUDE.md` fixed that.' },
     ],
     proof: [],
   },
@@ -209,6 +335,46 @@ export const playbooks: Record<string, Playbook> = {
     proof: ['ceo-memos', 'job-adverts', 'wef', 'canaries', 'humlum', 'mit-pilots'],
   },
   coding: {
+    topicsTitle: 'Set up before you code',
+    topicsNote: 'A workflow that saves rework, with Claude Code as the example',
+    topics: [
+      {
+        title: "Choose the stack before the first prompt",
+        demo: { title: "CLAUDE.md", lines: [{ text: "## Stack" }, { text: "Astro 7, strict TypeScript, Tailwind 4." }, { text: "Node 22+. Hosted on Cloudflare Pages." }, { note: "settled once, read every session" }] },
+        habit: "Decide the framework, language, versions and where it will be hosted, and write them down. Left open, the AI picks for you and can change its mind halfway.",
+        example: "Put the stack at the top of `CLAUDE.md`, so every session starts from the same choices.",
+        cite: ['cc-memory'],
+      },
+      {
+        title: "Write CLAUDE.md before you write code",
+        demo: { title: "CLAUDE.md", lines: [{ text: "## Commands" }, { text: "npm run dev     local server" }, { text: "npm run check   must pass" }, { text: "## Rules" }, { text: "Never invent facts. Unknown means TODO." }] },
+        habit: "List the commands, where things live and the rules that never change. Keep it short and specific.",
+        example: "`/init` drafts a first version from your project. Add the commands it must run and what \"done\" means.",
+        cite: ['cc-memory'],
+      },
+      {
+        title: "Define everything in plan mode",
+        demo: { title: "Claude Code", lines: [{ text: "Shift+Tab  plan mode" }, { cmd: "Interview me, then write the plan." }, { note: "read it, correct it, approve it" }, { note: "only then does it start editing" }] },
+        habit: "Agree the goal, the pages or features, the data and what finished looks like before any file changes. Changes are cheap in a plan and expensive in code.",
+        example: "Shift+Tab switches to plan mode, where it reads and explores but does not edit source files. Let it question you, correct the plan, then approve it.",
+        cite: ['cc-plan'],
+        prompt: "Before any code: interview me about this feature one question at a time. Cover the goal, who uses it, the data, edge cases and how we will know it is done. Then write the plan as numbered steps with the files each one touches, and wait for my approval.",
+      },
+      {
+        title: "Turn repeat jobs into workflows",
+        demo: { title: "project/", lines: [{ text: "\u251c\u2500 CLAUDE.md          read workflows/ first" }, { text: "\u251c\u2500 workflows/" }, { text: "\u2502  \u251c\u2500 add-page.md" }, { text: "\u2502  \u2514\u2500 pre-ship.md" }, { text: "\u2514\u2500 tools/" }, { text: "   \u251c\u2500 check.sh" }, { text: "   \u2514\u2500 screenshot.mjs" }] },
+        habit: "Write each job you repeat as a short step-by-step file, and give the fiddly steps a script. If each step is 90% reliable, five in a row is only about 59%, so scripts beat retyping.",
+        example: "Keep the steps in a `workflows/` folder and the scripts in `tools/`, and tell `CLAUDE.md` to read the matching workflow first. A skill does the same job inside Claude Code.",
+        cite: ['cc-skills'],
+      },
+      {
+        title: "Give it a check it can run",
+        demo: { title: "Terminal", lines: [{ cmd: "npm run check" }, { note: "0 errors before anything is called done" }] },
+        habit: "Before the first feature, add one command that fails when something is broken. The AI can then test its own work instead of telling you it is done.",
+        example: "Ask for the command it ran and its output as evidence, not a summary.",
+        cite: ['cc-best'],
+      },
+    ],
     uses: [
       {
         title: 'Understand unfamiliar code',
@@ -246,6 +412,54 @@ export const playbooks: Record<string, Playbook> = {
       { title: 'It magnifies your habits', text: 'DORA calls AI "an amplifier" of existing strengths and weaknesses, so get testing and review in place first.', cite: ['dora-2025'] },
     ],
     proof: ['peng', 'veracode', 'metr-2026', 'dora-2025', 'so-2025'],
+  },
+  'build-sites': {
+    uses: [
+      {
+        title: 'Show it sites you like',
+        text: 'Anthropic calls examples one of the most reliable ways to steer the output. Give it three or four real sites and say what you like about each.',
+        cite: ['prompting'],
+        prompt: 'Here are sites I like: [link] for its hero, [link] for its navigation and [link] for its colours. Say what each does well, then propose a direction for my site that borrows the ideas, not the look.',
+      },
+      {
+        title: 'Start from a design system',
+        demo: { title: "your-site/", lines: [{ text: "\u251c\u2500 DESIGN.md    colours, type, spacing, components" }, { text: "\u251c\u2500 CLAUDE.md    \"Follow @DESIGN.md for every page.\"" }, { text: "\u2514\u2500 src/" }] },
+        text: 'Refero Styles collects design systems taken from product websites, each with a `DESIGN.md` file an AI coding tool can read.',
+        cite: ['refero'],
+        prompt: 'Read this DESIGN.md: [paste]. Build my [section] with its spacing and type scale, using my own colours and content.',
+      },
+      {
+        title: 'Look at one part at a time',
+        text: 'Galleries such as `land-book.com` for layouts, `navbar.gallery` for navigation and `pricingpages.design` for pricing show many versions of one part. Some block automated browsers, so send a screenshot instead.',
+        prompt: 'Here is a screenshot of a [navigation bar] I like. List what makes it work, including spacing, type, states and motion. Then build mine to the same standard.',
+      },
+      {
+        title: 'Make it look at its own work',
+        text: 'Have it screenshot what it built at desktop and phone width, and fix what it sees before it shows you.',
+        cite: ['cc-best'],
+        prompt: 'Take screenshots of [page] at 1440px and 390px wide. List everything that looks broken, crowded or generic, fix it, and screenshot again.',
+      },
+    ],
+    steps: [
+      { title: 'Collect your references', text: 'Three or four sites, each picked for one thing you want.' },
+      { title: 'Let it interview you', text: 'Ask it to question you about audience, tone and content before it designs anything.', cite: ['cc-plan'] },
+      { title: 'Build one section first', text: 'Agree the look on the first screen before it builds the rest.' },
+      { title: 'Look, fix, repeat', text: 'Screenshot it, judge it yourself and fix it, at least two rounds a page. Judge the screenshots, not the code.', cite: ['cc-best'] },
+      { title: 'Get a second opinion', text: 'Run a separate reviewer that has not seen how the page was built.', cite: ['cc-subagents'] },
+    ],
+    careful: [
+      { title: 'A passing build is not a good design', text: 'A site can build with no errors and still look generic. Only looking at it tells you.' },
+      { title: 'It is a weak judge of its own design', text: 'When it says a page looks great, check for yourself.' },
+      { title: 'Borrow ideas, not sites', text: 'Use references for direction. Another site\'s words, images and exact look are not yours to publish.' },
+      { title: 'Pages can carry instructions', text: 'A page the AI reads can hide text telling it what to do. Treat what it reads as data.', cite: ['injection-unsolved'] },
+    ],
+    // TODO(musa): approve or rewrite each note. Drafted from AI field guide and Review loop in ~/Brain.
+    notes: [
+      { title: 'Three designs rejected first', text: 'Warm paper with a serif, a printed annual, and cream with pastel green were all rejected. The one that stuck started from a real landing page I liked.' },
+      { title: 'Shrunken screenshots mislead', text: 'A reviewer kept saying text was too small. Its full-page screenshots had been shrunk until detail was lost. Viewport shots of one section work better.' },
+      { title: 'Motion needs a real browser', text: 'Screenshots cannot show how an animation feels. Check motion yourself, in a browser and on a phone.' },
+    ],
+    proof: [],
   },
   cyber: {
     uses: [

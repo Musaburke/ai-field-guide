@@ -14,7 +14,7 @@ import { tasks } from '../data/playbooks';
     {tasks.map((t, i) => (
       <div class="picker-panel" role="tabpanel" id={`panel-${t.id}`} aria-labelledby={`tab-${t.id}`} data-active={i === 0 ? 'true' : 'false'}>
         <p class="picker-weak"><span>Instead of</span> “{t.weak}”</p>
-        <PromptBox prompt={t.better} />
+        <PromptBox prompt={t.better} open />
         <p class="picker-check"><span>Then check</span> <Rich text={t.check} current="/" /></p>
       </div>
     ))}

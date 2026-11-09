@@ -195,3 +195,17 @@ Pages opened on this date, through a fetch agent. Long pages were read for their
 - Bono and Xu, Security Copilot for IT administrators (arXiv 2411.01067): 181 completed, +34.53% accuracy, -29.79% time, multiple-choice 25.13% slower. Microsoft authors, simulated lab.
 
 Failed: ICO AI guidance (timed out twice), so not used. Microsoft Research page for the trial returned 404.
+
+
+## Added 9 November 2026: usage, second brain and reference sites
+
+Pages read on this date, through a fetch agent and Context7 documentation excerpts. Only verbatim parts are used.
+
+- Claude Code costs page (code.claude.com/docs/en/costs), read in full: /usage Session block, plan-limit breakdown, subscribers' session cost "isn't relevant for billing purposes", /context, usage credits. The page has no sentence on /cost, so /cost is not used.
+- Claude Code status line docs (code.claude.com/docs/en/statusline), excerpts: rate_limits five_hour and seven_day, used_percentage, resets_at.
+- Claude Code settings reference (code.claude.com/docs/en/settings-reference), excerpts: cleanupPeriodDays, default 30, silent sweep, 0 fails validation, 3650 suggested.
+- Claude Code memory docs (code.claude.com/docs/en/memory), first ~40k of ~55k characters verbatim plus an excerpt of the locations table: @path imports, ~/.claude/CLAUDE.md as user instructions, --add-dir folders not loaded by default.
+- Claude Code skills docs (code.claude.com/docs/en/skills), excerpt: disable-model-invocation: true.
+- Refero Styles (styles.refero.design), home page: beta, "2,000+ AI-readable design systems", DESIGN.md files. Pricing and terms not checked.
+
+No independent study found on usage habits, notes vaults, or reference-led AI design. The usage and reference-site guides say so in their "What is missing" lines; Musa removed it from the second-brain guide on 9 November 2026. Personal numbers in the notes come from Musa's own Brain notes, not from sources.
