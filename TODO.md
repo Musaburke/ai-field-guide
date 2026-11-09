@@ -1,7 +1,6 @@
 # TODO (Musa)
 
-Live at https://ai-field-guide-3ka.pages.dev (free Cloudflare Pages). To redeploy after a change:
-`npm run build && npx wrangler pages deploy dist --project-name ai-field-guide --branch master`
+Live at https://musa-ai-field-guide.pages.dev (free Cloudflare Pages, connected to GitHub). Merging into `master` deploys automatically; other branches get a preview address.
 
 Still open:
 
