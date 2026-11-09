@@ -1,0 +1,14 @@
+---
+import type { Demo } from '../data/playbooks';
+interface Props { demo: Demo }
+const { demo } = Astro.props;
+---
+<figure class="term" data-ui>
+  <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span>{demo.title}</span></div>
+  <pre class="term-body" translate="no"><code>{demo.lines.map((l) => (
+    l.cmd ? <span class="term-line"><span class="term-prompt" aria-hidden="true">&gt; </span>{l.cmd}</span>
+    : l.note ? <span class="term-line term-note"># {l.note}</span>
+    : <span class="term-line">{l.text}</span>
+  ))}</code></pre>
+  <figcaption class="vh">Simplified example: {demo.title}</figcaption>
+</figure>

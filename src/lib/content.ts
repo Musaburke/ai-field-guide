@@ -94,3 +94,7 @@ export function readCounts(items: { read: Read }[]) {
     snippet: items.filter((i) => i.read === 'snippet').length,
   };
 }
+
+const words = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
+/** Headings that count items in the data, so they never go stale: 10 becomes "Ten". */
+export const countWord = (n: number) => words[n] ?? String(n);

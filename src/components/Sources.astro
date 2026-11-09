@@ -4,20 +4,15 @@ import { Flags, ReadLine } from './Evidence';
 interface Props { cites: Cite[]; current?: string }
 const { cites } = Astro.props;
 ---
-<section class="block" id="sources" aria-labelledby="sources-h">
-  <h2 id="sources-h">Sources</h2>
-  <div class="rows">
-    <details class="row">
-      <summary>Show all {cites.length} sources<span class="row-mark" aria-hidden="true"></span></summary>
-      <ol>
-        {cites.map((c) => (
-          <li class="source" id={`src-${c.n}`}>
-            <p class="source-title">{c.n}. {c.label}{c.date && <span> · {c.date}</span>}</p>
-            <p>{c.links.map((l, i) => <>{i > 0 && ' · '}<a href={l.url} rel="noopener noreferrer">{l.label}</a></>)}</p>
-            <div class="source-meta"><ReadLine read={c.read} />{c.strength && <span>Strength: {c.strength}</span>}<Flags flags={c.flags} /></div>
-          </li>
-        ))}
-      </ol>
-    </details>
-  </div>
-</section>
+<details class="row" id="sources">
+  <summary>All {cites.length} sources for this guide<span class="row-mark" aria-hidden="true"></span></summary>
+  <ol>
+    {cites.map((c) => (
+      <li class="source" id={`src-${c.n}`}>
+        <p class="source-title">{c.n}. {c.label}{c.date && <span> · {c.date}</span>}</p>
+        <p>{c.links.map((l, i) => <>{i > 0 && ' · '}<a href={l.url} rel="noopener noreferrer">{l.label}</a></>)}</p>
+        <div class="source-meta"><ReadLine read={c.read} />{c.strength && <span>Strength: {c.strength}</span>}<Flags flags={c.flags} /></div>
+      </li>
+    ))}
+  </ol>
+</details>

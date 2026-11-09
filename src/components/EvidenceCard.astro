@@ -29,7 +29,7 @@ const date = claimDate[claim.id];
     )}
     <div class="ev-body">
       <p class="ev-source">{b.source}{date && ` · ${date}`}</p>
-      <h3>{b.title}</h3>
+      <h4>{b.title}</h4>
       <p class="ev-summary">{b.summary} <Citation client:visible cite={cite} current={current} /></p>
       {b.catch && <p class="ev-catch">{b.catch}</p>}
       <div class="ev-meta"><ReadLine read={claim.read} /><Flags flags={claim.flags} /></div>
