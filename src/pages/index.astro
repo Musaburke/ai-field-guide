@@ -4,9 +4,9 @@ import Constellation from '../components/Constellation.astro';
 import PromptPicker from '../components/PromptPicker.astro';
 import Rich from '../components/Rich';
 import { sections } from '../data/guide';
-import { blurbs, icons } from '../data/panels';
+import { blurbs, groups, icons } from '../data/panels';
 import { rules, wins } from '../data/playbooks';
-import { claimHref } from '../lib/content';
+import { claimHref, countWord } from '../lib/content';
 ---
 <Guide title="AI field guide" description="Practical guides to using AI well: what to use it for, how to ask, and what to check. For students and professionals, with every claim sourced." current="/">
   <div class="wash">
@@ -17,7 +17,7 @@ import { claimHref } from '../lib/content';
         <p class="hero-lead" data-reveal style="--d:250ms">What to use it for, how to ask, and what to check. Practical guides for students and professionals, with sources you can open.</p>
         <div class="hero-cta" data-reveal style="--d:350ms">
           <a class="btn" href={`/${sections[0]!.id}`}>Start with the basics</a>
-          <a class="btn btn-soft" href="#guides">See all seven guides</a>
+          <a class="btn btn-soft" href="#guides">See all {countWord(sections.length).toLowerCase()} guides</a>
         </div>
       </div>
       <div data-reveal style="--d:300ms"><PromptPicker /></div>
@@ -25,6 +25,34 @@ import { claimHref } from '../lib/content';
   </div>
 
   <div class="wrap">
+    <section class="block" id="guides" aria-labelledby="ch-h">
+      <div class="sec-head">
+        <h2 id="ch-h" data-split>{countWord(sections.length)} short guides</h2>
+        <p>In three groups. Start at the top if you are new.</p>
+      </div>
+      <div class="groups">
+        {groups.map((gr) => (
+          <div class="group" data-reveal>
+            <div class="group-head">
+              <h3>{gr.title}</h3>
+              <p>{gr.line}</p>
+            </div>
+            <ul class="group-cards">
+              {gr.guides.map((id) => {
+                const g = sections.find((x) => x.id === id)!;
+                return (
+                  <li><a class="ch-card" href={`/${id}`}>
+                    <span class="ch-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={icons[id]} /></svg></span>
+                    <span class="ch-text"><b>{g.title}</b><span>{blurbs[id]}</span></span>
+                  </a></li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
     <section class="block" aria-labelledby="wins-h">
       <h2 id="wins-h" data-split>Where AI has really helped</h2>
       <div class="wins">
@@ -38,28 +66,13 @@ import { claimHref } from '../lib/content';
       </div>
     </section>
 
-    <section class="block" id="guides" aria-labelledby="ch-h">
-      <h2 id="ch-h" data-split>Seven short guides</h2>
-      <div class="chapters">
-        {sections.map((s, i) => (
-          <a class="ch-card" href={`/${s.id}`} data-reveal style={`--d:${i * 60}ms`}>
-            <span class="ch-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={icons[s.id]} /></svg></span>
-            <h3>{s.title}</h3>
-            <p>{blurbs[s.id]}</p>
-          </a>
-        ))}
-      </div>
-    </section>
-
     <section class="block" aria-labelledby="rules-h">
       <h2 id="rules-h" data-split>Three rules for using it wisely</h2>
-      <ul class="rules">
-        {rules.map((r, i) => (
-          <li data-reveal style={`--d:${i * 70}ms`}><h3>{r.title}</h3><p><Rich text={r.text} current="/" /></p></li>
+      <ul class="rule-strip" data-reveal>
+        {rules.map((r) => (
+          <li><h3>{r.title}</h3><p><Rich text={r.text} current="/" /></p></li>
         ))}
       </ul>
     </section>
-
-    <a class="band" href={`/${sections[0]!.id}`}><span>Start here</span><b>{sections[0]!.title}</b></a>
   </div>
 </Guide>

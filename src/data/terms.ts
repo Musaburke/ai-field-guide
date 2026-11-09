@@ -13,6 +13,17 @@ export const terms: Record<string, { term: string; meaning: string }[]> = {
     { term: 'Agent', meaning: 'An AI tool that takes steps on its own, such as reading files or running commands.' },
     { term: 'MCP', meaning: 'Model Context Protocol, a standard way to connect AI tools to other apps and data.' },
   ],
+  usage: [
+    { term: 'Rate limit', meaning: 'A cap on how much you can use in a set time. Claude plans have one that resets every five hours and one that resets weekly.' },
+    { term: 'Cache read', meaning: 'Text the tool has already sent once and sends again from a stored copy, priced lower than new text.' },
+    { term: 'Transcript', meaning: 'The saved record of a chat, kept on your computer.' },
+  ],
+  'second-brain': [
+    { term: 'Second brain', meaning: 'Notes kept outside your head, here in files an AI can also read.' },
+    { term: 'Markdown', meaning: 'Plain text with a few simple marks, such as # for a heading.' },
+    { term: 'Vault', meaning: 'Obsidian\'s name for a folder of Markdown notes.' },
+    { term: 'Branch', meaning: 'A separate line of changes in git that you can review before merging.' },
+  ],
   safety: [
     { term: 'Prompt injection', meaning: 'Hidden or malicious text that tricks an AI tool into following instructions it should ignore.' },
     { term: 'Framework', meaning: 'An agreed list of risks and good practice. It guides work but does not measure how often harm happens.' },
@@ -27,6 +38,11 @@ export const terms: Record<string, { term: string; meaning: string }[]> = {
     { term: 'Synthetic benchmark', meaning: 'A standard test built for measuring, not real work.' },
     { term: 'OWASP Top 10', meaning: 'A well-known list of common web security risks. It is separate from OWASP\'s list for AI apps.' },
     { term: 'Mature repository', meaning: 'A long-running code project the developer already knows well.' },
+  ],
+  'build-sites': [
+    { term: 'Reference site', meaning: 'A real site you show the AI as an example of what you want.' },
+    { term: 'Design system', meaning: 'The agreed colours, type, spacing and parts a site is built from.' },
+    { term: 'Viewport', meaning: 'The part of a page visible on screen at once.' },
   ],
   cyber: [
     { term: 'Prompt injection', meaning: 'Hidden or malicious text that tricks an AI tool into following instructions it should ignore.' },

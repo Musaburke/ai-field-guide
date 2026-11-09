@@ -195,7 +195,7 @@ export const sections: Section[] = [
       },
       {
         id: 'cc-skills',
-        text: 'The [Claude Code skills docs](https://code.claude.com/docs/en/skills) say a skill is a SKILL.md file of instructions, kept in .claude/skills/<name>/ for a project or ~/.claude/skills/<name>/ for you, and run with /skill-name or loaded when relevant. "Unlike CLAUDE.md content, a skill\'s body loads only when it\'s used, so long reference material costs almost nothing until you need it."',
+        text: 'The [Claude Code skills docs](https://code.claude.com/docs/en/skills) say a skill is a SKILL.md file of instructions, kept in .claude/skills/<name>/ for a project or ~/.claude/skills/<name>/ for you, and run with /skill-name or loaded when relevant. "Unlike CLAUDE.md content, a skill\'s body loads only when it\'s used, so long reference material costs almost nothing until you need it." Setting disable-model-invocation: true "prevents Claude from invoking the skill on its own; you can still run it directly."',
         read: 'page',
         strength: 'Official guidance',
         flags: ['vendor'],
@@ -234,6 +234,101 @@ export const sections: Section[] = [
         note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
       },
     ],
+  },
+  {
+    id: 'usage',
+    title: 'Manage your usage',
+    intro: 'See what you have used, make it last and know what the numbers mean, using Claude Code as the worked example.',
+    claims: [
+      {
+        id: 'cc-usage',
+        text: 'The [Claude Code costs page](https://code.claude.com/docs/en/costs) says "The Session block at the top of /usage shows detailed token usage statistics for your current session", and that on a paid plan "/usage also shows a breakdown of what counts against your plan limits, with recommendations". It adds: "Claude Pro, Max, and Ultra subscribers have usage included in their subscription, so the session cost figure isn\'t relevant for billing purposes." It says "Run /context to see what\'s consuming space", and "Usage credits let you keep working past your plan\'s usage limit."',
+        read: 'page',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+      {
+        id: 'cc-statusline',
+        text: 'The [Claude Code status line docs](https://code.claude.com/docs/en/statusline) say that for subscribers "the rate_limits object contains a rolling five_hour window and a weekly seven_day window. Each window provides used_percentage, from 0 to 100, and resets_at, the Unix epoch seconds when the window resets."',
+        read: 'partial',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Read through documentation excerpts rather than the whole page. Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+      {
+        id: 'cc-retention',
+        text: 'The [Claude Code settings reference](https://code.claude.com/docs/en/settings-reference) says cleanupPeriodDays sets "how many days Claude Code keeps session transcripts and other application data before deleting them." The default is 30, the sweep "deletes transcripts without showing a message", and "Setting 0 fails validation, so pick a large value such as 3650 for long retention."',
+        read: 'partial',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Read through documentation excerpts rather than the whole page. Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+    ],
+    gap: 'Gap: no independent study of usage habits was found. This guide rests on the toolmaker\'s own docs and one person\'s numbers.',
+  },
+  {
+    id: 'second-brain',
+    title: 'Give AI a second brain',
+    intro: 'Keep your notes, decisions and lessons in plain files the AI can read and add to, so each new chat starts from what you already know.',
+    claims: [
+      {
+        id: 'cc-imports',
+        text: 'The [Claude Code memory docs](https://code.claude.com/docs/en/memory) say "CLAUDE.md files can import additional files using @path/to/import syntax. Imported files are expanded and loaded into context alongside the CLAUDE.md that references them." They list ~/.claude/CLAUDE.md as user instructions, for "Personal preferences for all projects". For folders added with --add-dir, "By default, CLAUDE.md files from these directories are not loaded."',
+        read: 'partial',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'The first two thirds of the page were read in full, and the table of locations through an excerpt. Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+    ],
+  },
+  {
+    id: 'coding',
+    title: 'Code with AI',
+    intro:
+      'Controlled studies of coding productivity and learning are in other chapters ([METR 2025](#metr-2025), [METR 2026](#metr-2026), [Anthropic trial](#anthropic-rct)), with survey data in [Stack Overflow](#so-2025) and [DORA](#dora-2025). Summarised: one trial found a slowdown for experienced developers on their own mature repositories, later data suggests a smaller or reversed effect but is inconclusive, and a second trial found a learning cost when code was delegated.',
+    claims: [
+      {
+        id: 'peng',
+        text: 'In a [randomised experiment](https://arxiv.org/abs/2302.06590) (Peng et al., February 2023), professional programmers recruited through Upwork, using GitHub Copilot, finished an HTTP server task in JavaScript 55.8% faster than a control group (95% confidence interval 21 to 89%). 95 were recruited and 35 from both groups completed it. Less experienced developers benefited more.',
+        read: 'page',
+        strength: 'Moderate',
+        flags: ['vendor'],
+        note: 'Authors include GitHub and Microsoft Research staff, and both sell Copilot. It is one standard task, and the authors say it "does not examine the effects of AI on code quality".',
+      },
+      {
+        id: 'veracode',
+        text: 'The [Veracode 2025 GenAI Code Security Report](https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/) (30 July 2025) tested 100+ language models on 80 coding tasks built from known weakness types (CWEs). In 45% of cases the models introduced a flaw of an OWASP Top 10 class. Java failed in over 70% of cases, Python, C# and JavaScript between 38% and 45%, cross-site scripting (CWE-80) in 86% and log injection (CWE-117) in 88%. The report says models are "getting better at coding accurately but are not improving at security".',
+        read: 'page',
+        strength: 'Moderate',
+        flags: ['vendor'],
+        note: 'Veracode sells code-scanning and fixing tools. This is a synthetic benchmark in which a secure and an insecure option both existed. It does not show that 45% of real AI-written code is vulnerable, although some outlets state it that way.',
+      },
+    ],
+    habits: [
+      {
+        text: 'Review and test AI-written code like a stranger\'s pull request, especially for injection and input handling, where the [Veracode benchmark](https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/) found the highest failure rates (a vendor study).',
+      },
+      {
+        text: 'DORA\'s finding that AI amplifies existing strengths and weaknesses points to the basics, such as testing, as the thing to have in place first. That is this guide\'s reading of a correlational report, not a tested recommendation.',
+      },
+    ],
+  },
+  {
+    id: 'build-sites',
+    title: 'Build websites with AI',
+    intro: 'Show the AI what good looks like with real sites you admire, then judge every version with your own eyes.',
+    claims: [
+      {
+        id: 'refero',
+        text: '[Refero Styles](https://styles.refero.design/), marked as a beta, says "Browse 2,000+ AI-readable design systems from leading product websites." Each one, it says, comes with "colors, typography, spacing, components, and a DESIGN.md you can use in Cursor, Claude Code, Codex, v0, or Lovable."',
+        read: 'page',
+        strength: 'Product description',
+        flags: ['vendor'],
+        note: 'The site describing its own product. Its pricing and terms were not checked.',
+      },
+    ],
+    gap: 'Gap: no study was found that measures how much reference sites improve AI-built designs. Anthropic\'s point about examples is about prompts in general, and the rest is one person\'s practice.',
   },
   {
     id: 'safety',
@@ -317,6 +412,37 @@ export const sections: Section[] = [
     ],
   },
   {
+    id: 'cyber',
+    title: 'AI in cyber security',
+    intro:
+      'Two directions: AI used by attackers, and AI as a target. Prompt injection is covered in [Use AI safely](#ncsc-injection); the NCSC and OWASP entries are the strongest sources in this guide.',
+    claims: [
+      {
+        id: 'security-copilot',
+        text: 'In a [randomised lab trial](https://arxiv.org/abs/2411.01067) (Bono and Xu, Microsoft, October 2024), 181 participants recruited through Upwork completed IT admin tasks in a simulated environment, with half given Security Copilot. "Copilot subjects experienced a 34.53% improvement in overall accuracy and a 29.79% reduction in task completion time." Multiple-choice questions took 25.13% longer with it.',
+        read: 'page',
+        strength: 'Moderate, vendor-run',
+        flags: ['vendor'],
+        note: 'Written by Microsoft staff about a Microsoft product, in a simulated lab rather than live work. The discussion section was not read in full.',
+      },
+      {
+        id: 'gtg-1002',
+        text: 'Anthropic [reported](https://www.anthropic.com/news/disrupting-AI-espionage) (13 November 2025) that a group it assesses "with high confidence" as Chinese state-sponsored used Claude Code against roughly thirty targets and "succeeded in a small number of cases". Anthropic says the AI did "80-90% of the campaign", with humans at about four to six decision points, and that Claude "occasionally hallucinated credentials", "an obstacle to fully autonomous cyberattacks".',
+        read: 'page',
+        strength: 'Weak to moderate',
+        flags: ['vendor'],
+        note: 'Vendor self-report, not independently verified. Words such as "first" and the 80-90% figure are Anthropic\'s framing, and Anthropic says it only sees its own product\'s usage. No independent rebuttal was retrieved.',
+      },
+      {
+        id: 'injection-unsolved',
+        text: 'Prompt injection is treated as an unsolved problem by both the [NCSC](https://www.ncsc.gov.uk/blog-post/prompt-injection-is-not-sql-injection) and [OWASP](https://genai.owasp.org/llm-top-10/) (LLM01). [EchoLeak](#echoleak) is a reported real-world example.',
+        read: 'page',
+        strength: 'Strong consensus',
+      },
+    ],
+    gap: 'Gap: no independent evaluation of AI in security operations centre (SOC) work was found. The sources located were vendor-heavy or vendor-sponsored, so this guide gives no SOC effectiveness figures. The one SOC forecast found is [listed on Sources](#f-gartner).',
+  },
+  {
     id: 'employers',
     title: 'Stand out at work',
     intro:
@@ -368,69 +494,6 @@ export const sections: Section[] = [
       },
     ],
     gap: 'Gap: no primary hiring-report, no company AI policy and no employer survey with raw data was read. Treat this section as a map of claims to check, not a verdict on what employers want.',
-  },
-  {
-    id: 'coding',
-    title: 'Code with AI',
-    intro:
-      'Controlled studies of coding productivity and learning are in other chapters ([METR 2025](#metr-2025), [METR 2026](#metr-2026), [Anthropic trial](#anthropic-rct)), with survey data in [Stack Overflow](#so-2025) and [DORA](#dora-2025). Summarised: one trial found a slowdown for experienced developers on their own mature repositories, later data suggests a smaller or reversed effect but is inconclusive, and a second trial found a learning cost when code was delegated.',
-    claims: [
-      {
-        id: 'peng',
-        text: 'In a [randomised experiment](https://arxiv.org/abs/2302.06590) (Peng et al., February 2023), professional programmers recruited through Upwork, using GitHub Copilot, finished an HTTP server task in JavaScript 55.8% faster than a control group (95% confidence interval 21 to 89%). 95 were recruited and 35 from both groups completed it. Less experienced developers benefited more.',
-        read: 'page',
-        strength: 'Moderate',
-        flags: ['vendor'],
-        note: 'Authors include GitHub and Microsoft Research staff, and both sell Copilot. It is one standard task, and the authors say it "does not examine the effects of AI on code quality".',
-      },
-      {
-        id: 'veracode',
-        text: 'The [Veracode 2025 GenAI Code Security Report](https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/) (30 July 2025) tested 100+ language models on 80 coding tasks built from known weakness types (CWEs). In 45% of cases the models introduced a flaw of an OWASP Top 10 class. Java failed in over 70% of cases, Python, C# and JavaScript between 38% and 45%, cross-site scripting (CWE-80) in 86% and log injection (CWE-117) in 88%. The report says models are "getting better at coding accurately but are not improving at security".',
-        read: 'page',
-        strength: 'Moderate',
-        flags: ['vendor'],
-        note: 'Veracode sells code-scanning and fixing tools. This is a synthetic benchmark in which a secure and an insecure option both existed. It does not show that 45% of real AI-written code is vulnerable, although some outlets state it that way.',
-      },
-    ],
-    habits: [
-      {
-        text: 'Review and test AI-written code like a stranger\'s pull request, especially for injection and input handling, where the [Veracode benchmark](https://www.veracode.com/press-release/ai-generated-code-poses-major-security-risks-in-nearly-half-of-all-development-tasks-veracode-research-reveals/) found the highest failure rates (a vendor study).',
-      },
-      {
-        text: 'DORA\'s finding that AI amplifies existing strengths and weaknesses points to the basics, such as testing, as the thing to have in place first. That is this guide\'s reading of a correlational report, not a tested recommendation.',
-      },
-    ],
-  },
-  {
-    id: 'cyber',
-    title: 'AI in cyber security',
-    intro:
-      'Two directions: AI used by attackers, and AI as a target. Prompt injection is covered in [Use AI safely](#ncsc-injection); the NCSC and OWASP entries are the strongest sources in this guide.',
-    claims: [
-      {
-        id: 'security-copilot',
-        text: 'In a [randomised lab trial](https://arxiv.org/abs/2411.01067) (Bono and Xu, Microsoft, October 2024), 181 participants recruited through Upwork completed IT admin tasks in a simulated environment, with half given Security Copilot. "Copilot subjects experienced a 34.53% improvement in overall accuracy and a 29.79% reduction in task completion time." Multiple-choice questions took 25.13% longer with it.',
-        read: 'page',
-        strength: 'Moderate, vendor-run',
-        flags: ['vendor'],
-        note: 'Written by Microsoft staff about a Microsoft product, in a simulated lab rather than live work. The discussion section was not read in full.',
-      },
-      {
-        id: 'gtg-1002',
-        text: 'Anthropic [reported](https://www.anthropic.com/news/disrupting-AI-espionage) (13 November 2025) that a group it assesses "with high confidence" as Chinese state-sponsored used Claude Code against roughly thirty targets and "succeeded in a small number of cases". Anthropic says the AI did "80-90% of the campaign", with humans at about four to six decision points, and that Claude "occasionally hallucinated credentials", "an obstacle to fully autonomous cyberattacks".',
-        read: 'page',
-        strength: 'Weak to moderate',
-        flags: ['vendor'],
-        note: 'Vendor self-report, not independently verified. Words such as "first" and the 80-90% figure are Anthropic\'s framing, and Anthropic says it only sees its own product\'s usage. No independent rebuttal was retrieved.',
-      },
-      {
-        id: 'injection-unsolved',
-        text: 'Prompt injection is treated as an unsolved problem by both the [NCSC](https://www.ncsc.gov.uk/blog-post/prompt-injection-is-not-sql-injection) and [OWASP](https://genai.owasp.org/llm-top-10/) (LLM01). [EchoLeak](#echoleak) is a reported real-world example.',
-        read: 'page',
-        strength: 'Strong consensus',
-      },
-    ],
-    gap: 'Gap: no independent evaluation of AI in security operations centre (SOC) work was found. The sources located were vendor-heavy or vendor-sponsored, so this guide gives no SOC effectiveness figures. The one SOC forecast found is [listed on Sources](#f-gartner).',
   },
   {
     id: 'other-fields',

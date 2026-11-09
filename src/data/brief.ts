@@ -15,6 +15,31 @@ export const briefs: Record<string, Brief> = {
     summary: 'Haiku is for simple tasks, Sonnet for daily coding, Opus for complex reasoning and Fable for the hardest, longest work.',
     catch: 'Official documentation from the toolmaker, not a measured result.',
   },
+  'cc-usage': {
+    source: 'Claude Code docs', title: '/usage shows your session and your plan',
+    summary: 'On a paid plan, /usage shows what counts against your limits. For subscribers the session cost figure is not a bill.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-statusline': {
+    source: 'Claude Code docs', title: 'A status line can show your limits',
+    summary: 'Subscribers get a five-hour and a weekly window, each with a percentage used and a reset time.',
+    catch: 'Official documentation from the toolmaker, read through excerpts.',
+  },
+  'cc-retention': {
+    source: 'Claude Code docs', title: 'Transcripts are deleted after 30 days',
+    summary: 'cleanupPeriodDays sets how long transcripts are kept. The default is 30, and deletion happens without a message.',
+    catch: 'Official documentation from the toolmaker, read through excerpts.',
+  },
+  'cc-imports': {
+    source: 'Claude Code docs', title: 'CLAUDE.md can pull in other files',
+    summary: 'An @path line in CLAUDE.md loads that file too, and ~/.claude/CLAUDE.md applies to every project.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'refero': {
+    source: 'Refero Styles', title: 'Design systems an AI can read',
+    summary: 'Over 2,000 design systems from product websites, each with a DESIGN.md for AI coding tools.',
+    catch: 'The site describing itself. Pricing and terms not checked.',
+  },
   'cc-costs': {
     source: 'Claude Code docs', title: 'Long conversations cost more',
     summary: 'Token costs grow with context size, so clear the conversation when you switch to unrelated work.',
@@ -291,9 +316,12 @@ export const briefs: Record<string, Brief> = {
 export const verdicts: Record<string, string> = {
   'using-ai-well': 'Get real work done faster, and keep learning while you do it.',
   'set-up-your-tools': 'Pick the right model, plan first and keep your usage under control.',
+  usage: 'Know what you have left, spend it on the work that needs it, and read the numbers right.',
+  'second-brain': 'Write down what you learn once, so every new chat can start from it.',
   safety: 'Get the benefits without giving away data or access you cannot get back.',
   employers: 'Show what you can do with AI, and be honest about how you checked it.',
   coding: 'Build faster, understand what you build, and review all of it.',
+  'build-sites': 'Show it real sites you like, then judge every version with your own eyes.',
   cyber: 'Use AI to learn and defend, and only test what you have permission to test.',
   'other-fields': 'Find where AI helps in your work, and the checks your field still requires.',
 };
