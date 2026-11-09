@@ -1,0 +1,21 @@
+---
+// Closed by default on guide pages, so cards stay short. The home picker passes `open`.
+interface Props { prompt: string; open?: boolean }
+const { prompt, open = false } = Astro.props;
+---
+{open ? (
+  <div class="prompt">
+    <p class="prompt-label">Try this</p>
+    <p class="prompt-text" data-prompt>{prompt}</p>
+    <button class="prompt-copy" type="button" data-copy>Copy</button>
+  </div>
+) : (
+  <details class="prompt-fold">
+    <summary>Show prompt<span class="row-mark" aria-hidden="true"></span></summary>
+    <div class="prompt">
+      <p class="prompt-label">Try this</p>
+      <p class="prompt-text" data-prompt>{prompt}</p>
+      <button class="prompt-copy" type="button" data-copy>Copy</button>
+    </div>
+  </details>
+)}
