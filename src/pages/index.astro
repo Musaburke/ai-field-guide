@@ -1,133 +1,78 @@
 ---
-import Base from '../layouts/Base.astro';
-import RichText from '../components/RichText.astro';
-import Tags from '../components/Tags.astro';
-import { sections, forecasts, notUsed, notRead, checkedOn, checkedOnLabel } from '../data/guide';
-
-const toc = [
-  { id: 'how-to-read', title: 'How to read this guide' },
-  ...sections.map((s) => ({ id: s.id, title: s.title })),
-  { id: 'forecasts', title: 'The future: forecasts, not evidence' },
-  { id: 'limits', title: 'Limits of this guide' },
-];
+import Guide from '../layouts/Guide.astro';
+import Constellation from '../components/Constellation.astro';
+import PromptPicker from '../components/PromptPicker.astro';
+import Rich from '../components/Rich';
+import { sections } from '../data/guide';
+import { blurbs, groups, icons } from '../data/panels';
+import { rules, wins } from '../data/playbooks';
+import { claimHref, countWord } from '../lib/content';
 ---
-<Base
-  title="AI Field Guide"
-  description="A cited guide to using AI well, safely and responsibly: what employers value, coding, cyber security, other fields and the future, with the strength of each piece of evidence shown."
->
-  <div class="shell">
-    <header class="masthead">
-      <h1>Using AI well, safely and responsibly</h1>
-      <p class="lede">
-        A cited guide to what the evidence says about AI at work: how to use it, where it goes wrong, what employers ask for, and what is only a forecast.
-      </p>
-      <p class="checked">Evidence checked on <time datetime={checkedOn}>{checkedOnLabel}</time>. Sources can change after this date.</p>
-    </header>
-
-    <nav class="toc" aria-label="Contents">
-      <h2 class="toc-title">Contents</h2>
-      <ol>
-        {toc.map((t) => <li><a href={`#${t.id}`}>{t.title}</a></li>)}
-      </ol>
-    </nav>
-
-    <main id="main" class="guide">
-      <section id="how-to-read" aria-labelledby="h-how">
-        <h2 id="h-how">How to read this guide</h2>
-        <p>
-          Every claim links to its source and carries labels, so you can judge it yourself. Nothing in this guide is a prediction by its author. Forecasts are kept in their own section, with the forecaster named.
-        </p>
-        <dl class="legend">
-          <div>
-            <dt>Evidence strength</dt>
-            <dd>The rating from the research notes: strong, moderate or weak, with the reason. It is about how far the source supports the claim, not how important the claim is.</dd>
-          </div>
-          <div>
-            <dt>Source page read</dt>
-            <dd>The page was opened and the claim checked against it. "Partly read" means only some of the claim was confirmed.</dd>
-          </div>
-          <div>
-            <dt>Search summary only</dt>
-            <dd>The claim comes from a search-result summary and the page was not opened. Wording is cautious ("reportedly") and the figure should be re-checked at the link before you rely on it.</dd>
-          </div>
-          <div>
-            <dt>Vendor or interested-party source</dt>
-            <dd>The source is written or paid for by someone who sells, or stands to gain from, the thing it describes.</dd>
-          </div>
-          <div>
-            <dt>Contested</dt>
-            <dd>Authors, critics or later data dispute the claim or its reach.</dd>
-          </div>
-        </dl>
-        <p>
-          Companies named here appear as sources or examples only. Naming one is not an endorsement.
-        </p>
-      </section>
-
-      {sections.map((s) => (
-        <section id={s.id} aria-labelledby={`h-${s.id}`}>
-          <h2 id={`h-${s.id}`}>{s.title}</h2>
-          <p class="intro"><RichText text={s.intro} /></p>
-          <ul class="claims">
-            {s.claims.map((c) => (
-              <li class="claim" id={c.id}>
-                <p><RichText text={c.text} /></p>
-                <Tags read={c.read} strength={c.strength} flags={c.flags} />
-                {c.note && <p class="note"><RichText text={c.note} /></p>}
-              </li>
-            ))}
-          </ul>
-          {s.gap && <p class="gap"><RichText text={s.gap} /></p>}
-          {s.habits && (
-            <>
-              <h3>Habits these sources support</h3>
-              <ul class="habits">
-                {s.habits.map((h) => <li><RichText text={h.text} /></li>)}
-              </ul>
-            </>
-          )}
-        </section>
-      ))}
-
-      <section id="forecasts" aria-labelledby="h-forecasts">
-        <h2 id="h-forecasts">The future: forecasts, not evidence</h2>
-        <p class="intro">
-          Everything below is a forecast or an opinion. None of it is evidence about what will happen, and this guide makes no prediction of its own. Forecasters disagree, and several are vendors.
-        </p>
-        <ul class="forecasts">
-          {forecasts.map((f) => (
-            <li class="forecast" id={f.id}>
-              <p class="forecaster">{f.who}</p>
-              <p class="kind">{f.kind}</p>
-              <p><RichText text={f.text} /></p>
-              <Tags read={f.read} flags={f.flags} />
-              <p class="note"><RichText text={f.caveat} /></p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section id="limits" aria-labelledby="h-limits">
-        <h2 id="h-limits">Limits of this guide</h2>
-        <p>
-          The research behind it used a fixed budget of 30 searches and 20 page reads. Many pages were seen only as search summaries, and several 2026-dated items rest on summaries that conflict across sources. Read the labels, and open the link before you quote a number.
-        </p>
-        <h3>Deliberately not used</h3>
-        <ul class="plain">
-          {notUsed.map((n) => <li>{n}</li>)}
-        </ul>
-        <h3>Not opened or not readable</h3>
-        <ul class="plain">
-          {notRead.map((n) => <li>{n}</li>)}
-        </ul>
-        <p>
-          Anthropic appears as a source several times. Some of those items are studies of its own products, and each is labelled as a vendor source.
-        </p>
-      </section>
-    </main>
-
-    <footer class="foot">
-      <p>Evidence checked on {checkedOnLabel}. Static page, no scripts, no tracking.</p>
-    </footer>
+<Guide title="AI field guide" description="Practical guides to using AI well: what to use it for, how to ask, and what to check. For students and professionals, with every claim sourced." current="/">
+  <div class="wash">
+    <Constellation />
+    <div class="wrap hero">
+      <div>
+        <h1 data-split>Get more out of AI,<br /> and stay sharp</h1>
+        <p class="hero-lead" data-reveal style="--d:250ms">What to use it for, how to ask, and what to check. Practical guides for students and professionals, with sources you can open.</p>
+        <div class="hero-cta" data-reveal style="--d:350ms">
+          <a class="btn" href={`/${sections[0]!.id}`}>Start with the basics</a>
+          <a class="btn btn-soft" href="#guides">See all {countWord(sections.length).toLowerCase()} guides</a>
+        </div>
+      </div>
+      <div data-reveal style="--d:300ms"><PromptPicker /></div>
+    </div>
   </div>
-</Base>
+
+  <div class="wrap">
+    <section class="block" id="guides" aria-labelledby="ch-h">
+      <div class="sec-head">
+        <h2 id="ch-h" data-split>{countWord(sections.length)} short guides</h2>
+        <p>In three groups. Start at the top if you are new.</p>
+      </div>
+      <div class="groups">
+        {groups.map((gr) => (
+          <div class="group" data-reveal>
+            <div class="group-head">
+              <h3>{gr.title}</h3>
+              <p>{gr.line}</p>
+            </div>
+            <ul class="group-cards">
+              {gr.guides.map((id) => {
+                const g = sections.find((x) => x.id === id)!;
+                return (
+                  <li><a class="ch-card" href={`/${id}`}>
+                    <span class="ch-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={icons[id]} /></svg></span>
+                    <span class="ch-text"><b>{g.title}</b><span>{blurbs[id]}</span></span>
+                  </a></li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="wins-h">
+      <h2 id="wins-h" data-split>Where AI has really helped</h2>
+      <div class="wins">
+        {wins.map((w, i) => (
+          <a href={claimHref(w.claim)} data-reveal style={`--d:${i * 60}ms`}>
+            <b>{w.value}</b>
+            <span>{w.text}</span>
+            <small>{w.limit}</small>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="rules-h">
+      <h2 id="rules-h" data-split>Three rules for using it wisely</h2>
+      <ul class="rule-strip" data-reveal>
+        {rules.map((r) => (
+          <li><h3>{r.title}</h3><p><Rich text={r.text} current="/" /></p></li>
+        ))}
+      </ul>
+    </section>
+  </div>
+</Guide>
