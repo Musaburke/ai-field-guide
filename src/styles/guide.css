@@ -108,8 +108,22 @@ section.block { padding-bottom: 56px; }
 
 /* Next and previous */
 
-.foot { padding: 24px 0 40px; color: var(--soft); font-size: var(--t-small); }
-.foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+.foot { margin-top: 96px; padding: 56px 0 48px; background: rgb(255 255 255 / 0.55); color: var(--soft); font-size: var(--t-small); }
+.foot-grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 32px 40px; }
+.foot-brand p { max-width: 34ch; margin-top: 10px; }
+.foot-head { color: var(--ink); font-weight: 600; margin-bottom: 10px; }
+.foot ul { display: grid; gap: 6px; }
+.foot a { color: var(--soft); text-decoration: none; transition: color 150ms ease; }
+.foot .nav-mark { color: var(--ink); }
+.foot-link { display: inline-block; margin-top: 12px; color: var(--green-ink) !important; }
+@media (hover: hover) and (pointer: fine) { .foot a:hover { color: var(--green-ink); } }
+@media (max-width: 760px) { .foot-grid { grid-template-columns: 1fr 1fr; } .foot-brand { grid-column: 1 / -1; } }
+/* The last thing on the home page points at the first guide, so the page never just stops. */
+.next-card { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px 40px; padding: 40px; border-radius: 28px; background: var(--mint); }
+.next-card h2 { font-size: var(--t-page); line-height: 1.1; }
+.next-card p { max-width: 48ch; margin-top: 10px; color: var(--ink); }
+.next-card .hero-cta { margin-top: 0; }
+@media (max-width: 600px) { .next-card { padding: 28px 22px; } }
 
 @media (max-width: 640px) {
   .open { padding: 56px 0 40px; }
