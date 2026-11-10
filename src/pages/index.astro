@@ -74,5 +74,18 @@ import { claimHref, countWord } from '../lib/content';
         ))}
       </ul>
     </section>
+
+    <section class="block next-up" aria-labelledby="next-h">
+      <div class="next-card" data-reveal>
+        <div>
+          <h2 id="next-h">Begin with the first guide</h2>
+          <p><b>{sections[0]!.title}.</b> {blurbs[sections[0]!.id]}</p>
+        </div>
+        <div class="hero-cta">
+          <a class="btn" href={`/${sections[0]!.id}`}>Read the first guide</a>
+          <a class="btn btn-soft" href="/sources">See where it comes from</a>
+        </div>
+      </div>
+    </section>
   </div>
 </Guide>

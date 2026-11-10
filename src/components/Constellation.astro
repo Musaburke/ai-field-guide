@@ -1,6 +1,8 @@
 ---
 // Light version of the portfolio's starfield: drifting nodes that link near each
-// other and near the cursor. Pauses offscreen or hidden; one still frame on reduced motion.
+// other. Near the cursor they brighten, lean away and link more strongly; the cursor
+// is smoothed and fades in and out, so nothing snaps. Pauses offscreen or hidden;
+// one still frame on reduced motion.
 ---
 <canvas class="sky" aria-hidden="true"></canvas>
 <script>
@@ -8,66 +10,95 @@
   const ctx = canvas?.getContext('2d');
   if (canvas && ctx) {
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const LINK = 130, CURSOR = 180;
-    let w = 0, h = 0, raf = 0, visible = true;
-    let mx = -9999, my = -9999;
+    const LINK = 130, CURSOR = 200, LEAN = 14, INK = '44,98,73';
+    let w = 0, h = 0, raf = 0, last = 0, visible = true;
+    // Cursor: where it is (tx, ty), where we draw it (px, py) and how present it is (0..1).
+    let tx = 0, ty = 0, px = 0, py = 0, here = 0, inside = false;
     let nodes: { x: number; y: number; vx: number; vy: number; r: number }[] = [];
+    const make = () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.14, vy: (Math.random() - 0.5) * 0.14,
+      r: 1 + Math.random() * 1.6,
+    });
     const size = () => {
+      const ow = w, oh = h;
       const dpr = Math.min(devicePixelRatio, 2);
       w = canvas.clientWidth; h = canvas.clientHeight;
-      canvas.width = w * dpr; canvas.height = h * dpr;
+      if (!w || !h) return;
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      nodes = Array.from({ length: Math.round((w * h) / 16000) }, () => ({
-        x: Math.random() * w, y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.14, vy: (Math.random() - 0.5) * 0.14,
-        r: 1 + Math.random() * 1.6,
-      }));
+      // Keep the existing nodes where they were, scaled to the new size, so a resize never scatters them.
+      if (ow && oh) for (const n of nodes) { n.x *= w / ow; n.y *= h / oh; }
+      const want = Math.round((w * h) / 16000);
+      while (nodes.length < want) nodes.push(make());
+      nodes.length = want;
     };
+    const ease = (t: number) => t * t * (3 - 2 * t);
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
+      ctx.lineWidth = 1;
+      ctx.lineCap = 'round';
+      // Where each node is drawn this frame and how strongly the cursor touches it.
+      const dx = new Float32Array(nodes.length), dy = new Float32Array(nodes.length), k = new Float32Array(nodes.length);
       for (let i = 0; i < nodes.length; i++) {
-        const a = nodes[i]!;
-        const fade = Math.max(0, 1 - a.y / h);
-        for (let j = i + 1; j < nodes.length; j++) {
-          const b = nodes[j]!;
-          const d = Math.hypot(a.x - b.x, a.y - b.y);
-          if (d < LINK) {
-            ctx.strokeStyle = `rgba(44,98,73,${0.16 * (1 - d / LINK) * fade})`;
-            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        const n = nodes[i]!;
+        let x = n.x, y = n.y, t = 0;
+        if (here > 0.01) {
+          const ox = n.x - px, oy = n.y - py, c = Math.sqrt(ox * ox + oy * oy);
+          if (c < CURSOR) {
+            t = ease(1 - c / CURSOR) * here;
+            if (c > 0.5) { x += (ox / c) * LEAN * t; y += (oy / c) * LEAN * t; }
           }
         }
-        const c = Math.hypot(a.x - mx, a.y - my);
-        if (c < CURSOR) {
-          ctx.strokeStyle = `rgba(44,98,73,${0.4 * (1 - c / CURSOR)})`;
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mx, my); ctx.stroke();
+        dx[i] = x; dy[i] = y; k[i] = t;
+      }
+      for (let i = 0; i < nodes.length; i++) {
+        const fade = Math.max(0, 1 - dy[i]! / h);
+        for (let j = i + 1; j < nodes.length; j++) {
+          const lx = dx[i]! - dx[j]!, ly = dy[i]! - dy[j]!, d = Math.sqrt(lx * lx + ly * ly);
+          if (d >= LINK) continue;
+          const lift = 1 + 2.2 * Math.max(k[i]!, k[j]!);
+          ctx.strokeStyle = `rgba(${INK},${(0.16 * (1 - d / LINK) * Math.max(fade, k[i]!) * lift).toFixed(3)})`;
+          ctx.beginPath(); ctx.moveTo(dx[i]!, dy[i]!); ctx.lineTo(dx[j]!, dy[j]!); ctx.stroke();
         }
-        ctx.fillStyle = `rgba(44,98,73,${0.42 * fade + (c < CURSOR ? 0.3 : 0)})`;
-        ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 7); ctx.fill();
+        ctx.fillStyle = `rgba(${INK},${(0.42 * fade + 0.4 * k[i]!).toFixed(3)})`;
+        ctx.beginPath(); ctx.arc(dx[i]!, dy[i]!, nodes[i]!.r * (1 + 0.35 * k[i]!), 0, 7); ctx.fill();
       }
     };
-    const tick = () => {
+    const tick = (now: number) => {
+      // Time-based, so the drift is the same speed at 60 Hz and 120 Hz.
+      const step = last ? Math.min(3, (now - last) / 16.67) : 1;
+      last = now;
       for (const n of nodes) {
-        n.x += n.vx; n.y += n.vy;
-        if (n.x < 0 || n.x > w) n.vx *= -1;
-        if (n.y < 0 || n.y > h) n.vy *= -1;
+        n.x += n.vx * step; n.y += n.vy * step;
+        if (n.x < 0 || n.x > w) { n.vx *= -1; n.x = Math.min(w, Math.max(0, n.x)); }
+        if (n.y < 0 || n.y > h) { n.vy *= -1; n.y = Math.min(h, Math.max(0, n.y)); }
       }
+      const s = 1 - Math.pow(1 - 0.18, step);
+      px += (tx - px) * s; py += (ty - py) * s;
+      here += ((inside ? 1 : 0) - here) * (1 - Math.pow(1 - 0.08, step));
       draw();
       raf = requestAnimationFrame(tick);
     };
     const run = () => {
       cancelAnimationFrame(raf);
+      last = 0;
       if (reduce) { draw(); return; }
       if (visible && !document.hidden) raf = requestAnimationFrame(tick);
     };
     size(); run();
-    addEventListener('resize', () => { size(); run(); });
+    new ResizeObserver(() => { size(); if (reduce) draw(); }).observe(canvas);
     document.addEventListener('visibilitychange', run);
     new IntersectionObserver(([e]) => { visible = !!e?.isIntersecting; run(); }).observe(canvas);
     if (matchMedia('(pointer: fine)').matches && !reduce) {
       addEventListener('pointermove', (e) => {
         const r = canvas.getBoundingClientRect();
-        mx = e.clientX - r.left; my = e.clientY - r.top;
+        tx = e.clientX - r.left; ty = e.clientY - r.top;
+        const was = inside;
+        inside = tx >= 0 && ty >= 0 && tx <= r.width && ty <= r.height;
+        if (inside && !was && here < 0.05) { px = tx; py = ty; } // arrive where the cursor is, don't sweep in from the old spot
       }, { passive: true });
+      document.documentElement.addEventListener('pointerleave', () => { inside = false; });
     }
   }
 </script>

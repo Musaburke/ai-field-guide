@@ -44,9 +44,20 @@ const { title, description, current } = Astro.props;
     </div>
     <main id="main"><slot /></main>
     <footer class="foot">
-      <div class="wrap">
-        <span>By Musa Burke, with Claude. Sources can change, so check the linked pages.</span>
-        <a href="/sources">Where this comes from</a>
+      <div class="wrap foot-grid">
+        <div class="foot-brand">
+          <a class="nav-mark" href="/">AI field guide</a>
+          <p>Practical guides to using AI well, with sources you can open. Sources change, so check the linked pages.</p>
+          <a class="foot-link" href="/sources">Where this comes from</a>
+        </div>
+        {groups.map((gr) => (
+          <nav class="foot-group" aria-label={gr.title}>
+            <p class="foot-head">{gr.title}</p>
+            <ul>
+              {gr.guides.map((id) => <li><a href={`/${id}`}>{sections.find((x) => x.id === id)!.title}</a></li>)}
+            </ul>
+          </nav>
+        ))}
       </div>
     </footer>
     <script>import '../scripts/motion';</script>
