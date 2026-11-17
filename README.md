@@ -4,7 +4,7 @@ Practical guides to using AI well, for students and professionals, with every cl
 
 **Live:** https://musa-ai-field-guide.pages.dev
 
-![AI field guide home page](https://raw.githubusercontent.com/Musaburke/portfolio/master/src/assets/projects/afg-home.jpg)
+![AI field guide home page: "Get more out of AI, and stay sharp" beside a "What do you want to do?" card that turns a vague prompt into a better one, above the first of the ten short guides](docs/home.jpg)
 
 ## What's in it
 
