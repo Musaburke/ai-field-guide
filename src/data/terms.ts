@@ -6,6 +6,8 @@ export const terms: Record<string, { term: string; meaning: string }[]> = {
     { term: 'Confidence interval', meaning: 'A range of results the data fits. If it includes zero, the data cannot rule out no effect.' },
     { term: 'Self-selected survey', meaning: 'People chose to answer, so they may not represent everyone.' },
     { term: 'Vendor', meaning: 'A company that sells the product being discussed, so it has an interest in the result.' },
+    { term: 'Retrieval practice', meaning: 'Pulling an answer from memory, for example in a quiz, instead of reading it again.' },
+    { term: 'Preprint', meaning: 'A paper shared before peer review, so other researchers have not yet checked it.' },
   ],
   'set-up-your-tools': [
     { term: 'Token', meaning: 'A small chunk of text. AI tools measure and often charge by tokens.' },
@@ -17,12 +19,14 @@ export const terms: Record<string, { term: string; meaning: string }[]> = {
     { term: 'Rate limit', meaning: 'A cap on how much you can use in a set time. Claude plans have one that resets every five hours and one that resets weekly.' },
     { term: 'Cache read', meaning: 'Text the tool has already sent once and sends again from a stored copy, priced lower than new text.' },
     { term: 'Transcript', meaning: 'The saved record of a chat, kept on your computer.' },
+    { term: 'Cache lifetime', meaning: 'How long a stored copy of the conversation is kept. After a longer break, the tool processes the whole conversation again without the discount.' },
   ],
   'second-brain': [
     { term: 'Second brain', meaning: 'Notes kept outside your head, here in files an AI can also read.' },
     { term: 'Markdown', meaning: 'Plain text with a few simple marks, such as # for a heading.' },
     { term: 'Vault', meaning: 'Obsidian\'s name for a folder of Markdown notes.' },
     { term: 'Branch', meaning: 'A separate line of changes in git that you can review before merging.' },
+    { term: 'Memory', meaning: 'Facts a chat app saves about you between chats. You can view and delete them in its settings.' },
   ],
   safety: [
     { term: 'Prompt injection', meaning: 'Hidden or malicious text that tricks an AI tool into following instructions it should ignore.' },
@@ -38,6 +42,12 @@ export const terms: Record<string, { term: string; meaning: string }[]> = {
     { term: 'Synthetic benchmark', meaning: 'A standard test built for measuring, not real work.' },
     { term: 'OWASP Top 10', meaning: 'A well-known list of common web security risks. It is separate from OWASP\'s list for AI apps.' },
     { term: 'Mature repository', meaning: 'A long-running code project the developer already knows well.' },
+  ],
+  agents: [
+    { term: 'Hook', meaning: 'A command the tool runs at a set point every time, such as before each edit. The model cannot skip it.' },
+    { term: 'Checkpoint', meaning: 'A saved copy of files from before a change, so the tool can put them back.' },
+    { term: 'Connector', meaning: 'A link that lets an AI tool read or act in another app, such as your email or GitHub.' },
+    { term: 'Prompt injection', meaning: 'Hidden or malicious text that tricks an AI tool into following instructions it should ignore.' },
   ],
   'build-sites': [
     { term: 'Reference site', meaning: 'A real site you show the AI as an example of what you want.' },

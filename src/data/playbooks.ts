@@ -49,6 +49,44 @@ export const playbooks: Record<string, Playbook> = {
         prompt: 'Here is my plan: [paste plan]. Give me the three strongest reasons it could fail, and what you would ask me before approving it.',
       },
     ],
+    topicsTitle: 'Study with AI and keep the skill',
+    topicsNote: 'A loop built from the studies below, for any chat tool. The loop is this guide\'s reading of them, not one study\'s advice',
+    topics: [
+      {
+        title: 'Try it before you ask',
+        habit: 'Have a go first, even a wrong one. Then show the AI what you tried and where you got stuck.',
+        example: 'Students who let an AI write their exercise solutions covered more topics but understood each one less. Those who asked it for explanations understood more.',
+        cite: ['lehmann'],
+        prompt: 'Here is my attempt at [problem]: [paste]. I think the next step is [idea], but I am stuck on [part]. Give me a hint, not the answer.',
+      },
+      {
+        title: 'Ask for a quiz, not a summary',
+        habit: 'Answer from memory and let the AI mark you. Reading its summary feels like studying, but it works like rereading.',
+        example: 'A review of ten study techniques rates practice testing among the two most useful, and summarising and rereading among the least useful.',
+        cite: ['dunlosky'],
+        prompt: 'Quiz me on [topic] using my notes: [paste]. Ask one question at a time and wait for my answer. Mark it, explain what I missed, then ask the next one.',
+      },
+      {
+        title: 'Explain it back',
+        habit: 'Explain the idea in your own words and ask the AI to find the gaps. If you cannot explain it, you have not learned it yet.',
+        example: 'The same review rates self-explanation as moderately useful. Novice programmers who leaned on AI while struggling finished "with an illusion of competence".',
+        cite: ['dunlosky', 'prather'],
+        prompt: 'I will explain [concept] in my own words. Do not rewrite it. Tell me what is wrong or missing, then ask me one question on the weakest part.',
+      },
+      {
+        title: 'Come back in a few days',
+        habit: 'Quiz yourself again two days and a week later. It feels harder than rereading, and that is why it works.',
+        example: 'Rereading won on a test 5 minutes later. Testing won after 2 days and after a week, even though rereading made students more confident.',
+        cite: ['roediger'],
+        prompt: 'From this chat, write 10 short questions on the things I got wrong, without the answers. I will paste them back in three days and answer from memory.',
+      },
+      {
+        title: 'Turn on a learning mode',
+        habit: 'Switch on your tool\'s learning setting when you study. It nudges the tool to ask before it tells, but one click turns it off, so the habit still matters more.',
+        example: 'ChatGPT has study mode, Claude has Learning mode and Gemini has Guided Learning. Claude Code\'s Learning output style leaves `TODO(human)` gaps for you to write. OpenAI says its mode can behave inconsistently.',
+        cite: ['study-modes'],
+      },
+    ],
     steps: [
       { title: 'Give it the context', text: 'Say who it is for, what it is for and what good looks like. Paste the material it needs.' },
       { title: 'Ask for a draft', text: 'Treat the first answer as a starting point, then tell it what to change.' },
@@ -60,8 +98,10 @@ export const playbooks: Record<string, Playbook> = {
       { title: 'Your sense of speed can mislead you', text: '16 experienced developers took 19% longer with AI allowed, yet believed they were about 20% faster. Time your work before deciding it helps.', cite: ['metr-2025'] },
       { title: 'It can fail outside its strengths', text: 'On a task beyond GPT-4\'s abilities, consultants using it did worse by an average of 19 points. Be most careful where you cannot judge the answer.', cite: ['dellacqua'] },
       { title: 'Handing everything over costs you the skill', text: 'Students with plain GPT-4 did 17% worse once it was taken away. In another trial, the AI group scored 50% on a quiz against 67% without it.', cite: ['bastani', 'anthropic-rct'] },
+      { title: 'Beginners have the most to lose', text: 'In one set of studies, AI widened the gap between students with low and high prior knowledge. Be strictest with yourself when a subject is new.', cite: ['lehmann', 'prather'] },
+      { title: 'A better result is not more learning', text: 'Students writing with ChatGPT improved their essays most, but learned no more than the other groups. Judge your learning by what you can do with the tool closed.', cite: ['fan'] },
     ],
-    proof: ['noy-zhang', 'kestin', 'brynjolfsson', 'dellacqua', 'bastani', 'anthropic-rct', 'metr-2025'],
+    proof: ['noy-zhang', 'kestin', 'brynjolfsson', 'dellacqua', 'bastani', 'anthropic-rct', 'metr-2025', 'dunlosky', 'roediger', 'lehmann'],
   },
   'set-up-your-tools': {
     topics: [
@@ -155,8 +195,8 @@ export const playbooks: Record<string, Playbook> = {
       {
         title: 'See how much of your plan is left',
         demo: { title: "Claude Code", lines: [{ cmd: "/usage" }, { note: "Session: tokens used in this session" }, { note: "Plan: five-hour and weekly limits, and what is using them" }] },
-        text: 'Plans have a limit that resets every five hours and another that resets weekly. `/usage` shows both, and a breakdown of what is using them up.',
-        cite: ['cc-usage', 'cc-statusline'],
+        text: 'Claude and Gemini plans both have a limit that resets every five hours and another that resets weekly. In Claude Code, `/usage` shows both, and a breakdown of what is using them up.',
+        cite: ['cc-usage', 'cc-statusline', 'gemini-limits'],
         prompt: 'I have [X]% of my weekly limit left. Here is the job: [describe it]. Tell me which parts will use the most, and how to do it in fewer steps.',
       },
       {
@@ -179,17 +219,27 @@ export const playbooks: Record<string, Playbook> = {
         cite: ['cc-usage'],
         prompt: 'Explain the difference between my plan limits and the session cost figure Claude Code shows me. What happens when I reach a limit?',
       },
+      {
+        title: 'Stop a run that goes in circles',
+        text: 'More tokens did not buy better answers in one study of coding agents, and capping the number of turns cut costs by 24 to 68% with little loss.',
+        cite: ['agent-tokens'],
+        prompt: 'Before you start, tell me how we will know this is done. If you try three approaches without progress, stop and tell me what you learned instead of trying a fourth.',
+      },
     ],
     steps: [
       { title: 'Start a new chat for each job', text: '`/clear` drops the old conversation, so the next request does not pay for it.', cite: ['cc-costs'] },
-      { title: 'Compact a long job instead of restarting', text: '`/compact` summarises the history and carries on. On a very large conversation, that summary is a big request too.', cite: ['cc-costs'] },
-      { title: 'Match the model to the job', text: '`/model` switches. Use a smaller model for copy edits and small fixes, and save the biggest for planning and hard bugs.', cite: ['cc-models'] },
+      { title: 'Rewind a dead end, compact at a break', text: '`/rewind` drops a failed attempt and reuses what is already cached. Save `/compact` for natural breaks, because summarising a very large conversation is a big request too.', cite: ['cc-caching', 'cc-costs'] },
+      { title: 'Pick the model at the start', text: 'Use a smaller model for copy edits and small fixes, and the biggest for planning and hard bugs. Choose before you begin, because switching mid-task reads the whole conversation again without the cache.', cite: ['cc-models', 'cc-caching'] },
+      { title: 'Ask related questions together', text: 'Several related questions in one message cost less than one message each. In the Claude apps, files kept in a project count less when reused.', cite: ['claude-limit-tips'] },
+      { title: 'Turn off tools you are not using', text: 'Connectors and web search use a lot. In Claude Code, a command-line tool such as `gh` uses less context than an MCP server.', cite: ['claude-limits', 'cc-costs-hidden'] },
       { title: 'Say when it does not need to look', text: 'Screenshots are expensive to read. When you only need the build to pass, say "no screenshots, just check the build".' },
       { title: 'Keep your chat history', text: 'Claude Code deletes transcripts after 30 days without telling you. Set `"cleanupPeriodDays": 3650` in `~/.claude/settings.json` to keep them.', cite: ['cc-retention'] },
     ],
     careful: [
       { title: 'Decide on usage credits before you need them', text: 'Usage credits let you keep working past your plan limit. Check in your account settings whether they are on, and whether you want them.', cite: ['cc-usage'] },
-      { title: 'Estimates can be far off', text: 'An AI\'s guess at how much a job will use is a guess. Read `/usage` before and after a big job instead.' },
+      { title: 'Estimates can be far off', text: 'In one study, models consistently guessed their own token use too low. Read `/usage` before and after a big job instead.', cite: ['agent-tokens'] },
+      { title: 'Chat and code share one allowance', text: 'A heavy week in Claude Code leaves less for claude.ai, because every Claude app counts toward the same limit.', cite: ['claude-limits'] },
+      { title: 'Going back to an old chat costs more', text: 'A quick question in a session left open all day pays for the whole conversation, and after a break the cache has run out. Start a new chat instead.', cite: ['cc-costs-hidden', 'cc-caching'] },
       { title: 'Agents multiply usage', text: 'Each subagent sends its own requests against the same limits. Try one, see what it used, then decide whether to start more.', cite: ['cc-subagents'] },
     ],
     notesTitle: 'What my own usage looked like',
@@ -199,7 +249,7 @@ export const playbooks: Record<string, Playbook> = {
       { title: 'Where most of it went', text: 'By Claude\'s estimate, my biggest costs were full-page screenshots read several at a time, rewriting whole files instead of editing them, and installed skills adding about 16,000 tokens to every request.' },
       { title: 'Clearing saves the most', text: 'The usage panel put starting a new chat for each task at 82% of the savings it suggested. `CLAUDE.md` loads again by itself, so nothing important is lost.' },
     ],
-    proof: [],
+    proof: ['claude-limits', 'cc-caching', 'agent-tokens'],
   },
   'second-brain': {
     graph: { title: 'See your brain grow', text: 'Open the folder in Obsidian and turn on graph view. Every `[[link]]` between two notes becomes a line, so you can see which ideas connect and which notes stand alone. The more you link, the more it looks like a brain.' },
@@ -231,6 +281,49 @@ export const playbooks: Record<string, Playbook> = {
         prompt: 'Here is my open loops list: [paste]. For each item, tell me how to check whether it is really done. Do not mark anything done yourself.',
       },
     ],
+    topicsTitle: 'Give it the context once',
+    topicsNote: 'In Claude, ChatGPT and coding agents, checked on 22 November 2026',
+    topics: [
+      {
+        title: 'One project per module',
+        habit: 'Put each module\'s syllabus, notes and instructions in one project, so every chat inside it starts with them.',
+        example: 'Each Claude project keeps its own memory, and free accounts get up to five projects. In ChatGPT, project instructions override your general custom instructions.',
+        cite: ['claude-memory', 'chatgpt-memory'],
+        prompt: 'You are helping me study [module]. The syllabus and my notes are in this project. Use my lecturer\'s terms, say when something is not in my materials, and quiz me rather than giving answers unless I ask.',
+      },
+      {
+        title: 'Write instructions you could check',
+        habit: 'Keep standing instructions short and specific. "Answer in British English" can be checked. "Be helpful" cannot.',
+        example: 'The Claude Code docs prefer "Use 2-space indentation" to "Format code properly", and say longer files "reduce adherence". ChatGPT custom instructions hold 1,500 characters on free plans.',
+        cite: ['cc-rules', 'chatgpt-memory'],
+      },
+      {
+        title: 'Check what it remembers',
+        habit: 'Read through the saved memories now and then, and delete anything wrong or private. Use a temporary or incognito chat for things you do not want kept.',
+        example: 'In ChatGPT, deleting a chat does not necessarily delete a memory saved from it, so delete both. Temporary chats create no memories, and Claude offers incognito chats on every plan.',
+        cite: ['chatgpt-memory', 'claude-memory'],
+      },
+      {
+        title: 'One instruction file for every coding tool',
+        demo: { title: 'project/', lines: [{ text: '\u251c\u2500 AGENTS.md   rules for any coding agent' }, { text: '\u2514\u2500 CLAUDE.md   @AGENTS.md, then Claude-only notes' }, { note: 'Claude Code reads AGENTS.md alone only if there is no CLAUDE.md' }] },
+        habit: 'If you use more than one coding agent, keep the shared rules in one file instead of copying them into each tool.',
+        example: 'Many coding agents read `AGENTS.md`. Claude Code reads it when a project has no `CLAUDE.md`, or you can import it into `CLAUDE.md` with an `@AGENTS.md` line.',
+        cite: ['agents-md', 'cc-imports'],
+      },
+      {
+        title: 'Load the rest only when needed',
+        habit: 'Keep the always-on part short, and point the AI at notes and procedures to open when they matter. More text in view can make answers worse, not better.',
+        example: 'Anthropic calls this context rot: recall drops as the context fills. In Claude Code, rules in `.claude/rules/` with a `paths` field load only for matching files, and skills load only when used.',
+        cite: ['context-eng', 'cc-rules', 'cc-skills'],
+      },
+      {
+        title: 'Tidy your instructions each term',
+        demo: { title: 'Claude Code', lines: [{ cmd: '/doctor prompt-audit' }, { note: 'a report of outdated or conflicting instructions' }, { note: 'nothing changes until you ask' }] },
+        habit: 'Old rules go stale and start to contradict each other. Read them again whenever a term or project starts.',
+        example: '`/doctor prompt-audit` asks Claude Code to check your instruction files for outdated or conflicting content and suggest edits.',
+        cite: ['cc-rules'],
+      },
+    ],
     steps: [
       { title: 'Give it its own folder', text: 'Keep the notes apart from your code, as plain Markdown files. Obsidian is one app that opens a folder like this. Put it in a private git repo so every change can be undone.' },
       { title: 'Keep an inbox that is yours', text: 'One note for quick thoughts, links and ideas, written only by you. The AI sorts it into the right notes later.' },
@@ -242,6 +335,8 @@ export const playbooks: Record<string, Playbook> = {
       { title: 'A brain only the AI fills goes unread', text: 'It grows quickly and nobody reads it. Most of the value comes from what you add yourself.' },
       { title: 'Notes are summaries, not sources', text: 'A note records what someone remembered. When it disagrees with the code or the live site, trust the code.' },
       { title: 'Keep secrets out', text: 'Leave out passwords, keys, other people\'s personal details and raw chat transcripts. A private repo is still one more copy.' },
+      { title: 'Read a skill before you install it', text: 'Skills now work in the Claude apps on every plan. Claude\'s own help page says to install them only from trusted sources, and to read the files first, even from a colleague.', cite: ['claude-app-skills'] },
+      { title: 'Features move, your notes stay', text: 'Gemini Gems on personal accounts went read-only on 17 November 2026 and are removed on 17 December 2026. Keep your instructions in your own notes too, so you can paste them into any tool.', cite: ['gemini-gems'] },
     ],
     notesTitle: 'How my own second brain works',
     notes: [
@@ -250,7 +345,7 @@ export const playbooks: Record<string, Playbook> = {
       { title: 'Claude warned me early', text: 'It pointed out that a brain agents fill alone gets big and nobody reads it. So the Inbox is mine, and the AI does not write in it.' },
       { title: 'Rules there did nothing at first', text: 'Rules I wrote only in the brain were never used, because nothing loaded them. Moving them into `~/.claude/CLAUDE.md` fixed that.' },
     ],
-    proof: [],
+    proof: ['context-eng', 'cc-rules', 'claude-memory', 'chatgpt-memory'],
   },
   safety: {
     uses: [
@@ -410,24 +505,70 @@ export const playbooks: Record<string, Playbook> = {
     ],
     proof: ['peng', 'veracode', 'metr-2026', 'dora-2025', 'so-2025'],
   },
+  agents: {
+    uses: [
+      {
+        title: 'Chores with a clear finish line',
+        text: 'Agents do best on work with a check that passes or fails, such as making failing tests pass or tidying files. Anthropic advises the simplest setup that does the job.',
+        cite: ['cc-best', 'building-agents'],
+        prompt: 'Make `npm test` pass without changing the tests. Work on a new branch, keep each change small, and show me the test output when you finish.',
+      },
+      {
+        title: 'A check-in on a schedule',
+        demo: { title: 'Claude Code', lines: [{ cmd: '/loop 5m check the deploy' }, { note: 'runs every 5 minutes while this session is open' }, { note: 'recurring loops expire after 7 days' }] },
+        text: '`/loop` re-runs a prompt while your session is open. Cloud scheduled tasks in Claude Code, and scheduled tasks in ChatGPT, keep running while you are away.',
+        cite: ['cc-scheduling', 'chatgpt-tasks'],
+        prompt: 'Every weekday at 8am, list my deadlines for the next three days from [source], and the one thing I should start first. Do not send, change or delete anything.',
+      },
+      {
+        title: 'A reviewer with fresh eyes',
+        text: 'A subagent that has not seen how the code was written can review it. It counts toward the same limits as your main chat.',
+        cite: ['cc-subagents'],
+        prompt: 'Start a subagent to review my last commit as a strict senior engineer. List bugs and security problems first. Change nothing.',
+      },
+      {
+        title: 'Practise while it builds',
+        text: 'Claude Code\'s Learning output style leaves small pieces marked `TODO(human)` for you to write, so you still practise while the task gets done.',
+        cite: ['study-modes'],
+        prompt: 'Build the routine parts of [feature]. Where there is a real design decision, leave it for me to write, explain the choice, and review what I write.',
+      },
+    ],
+    steps: [
+      { title: 'Commit before it starts', text: 'Git is the undo the agent cannot reach. Checkpoints miss files changed only by shell commands, and most subagent edits.', cite: ['cc-checkpoints'] },
+      { title: 'Write the finish line', text: 'Say what done looks like, and give it a command that passes or fails.', cite: ['cc-best'] },
+      { title: 'Give it only what the job needs', text: 'Remove connectors a task does not use, because cloud scheduled tasks include all of them by default. Adding a local MCP server runs a program on your computer, so add only ones you trust.', cite: ['cc-scheduling', 'mcp-security'] },
+      { title: 'Turn must-nevers into hooks or deny rules', text: 'An instruction can be ignored. A hook runs every time, and a deny rule covers what a hook misses, such as shell commands.', cite: ['cc-hooks', 'cc-rules', 'cc-permissions'] },
+      { title: 'Read the diff, not the summary', text: 'Check what changed yourself. An agent\'s report on its own work can be wrong.', cite: ['replit'] },
+    ],
+    careful: [
+      { title: 'Never give one agent all three', text: 'Private data, untrusted content such as web pages or email, and a way to send data out. Together, they let an attacker steal your data.', cite: ['lethal-trifecta', 'ncsc-injection'] },
+      { title: 'Auto mode is not a safety net', text: 'It blocks risky actions such as production deploys, but the docs say it does not guarantee safety. Bypass mode is for throwaway containers only.', cite: ['cc-auto-mode', 'cc-permissions'] },
+      { title: 'Scheduled tasks act as you', text: 'Commits, messages and tickets from a cloud task carry your name and use your linked accounts.', cite: ['cc-scheduling'] },
+      { title: 'Agents can be wrong about what they did', text: 'Replit\'s agent deleted a live database during a code freeze, then said a rollback would not work. The user recovered the data himself.', cite: ['replit'] },
+      { title: 'Your university may ban agents', text: 'Edinburgh counts using an AI agent in its learning platform as misconduct, even for work that is not assessed. Check your course rules on agents, not just on chat AI.', cite: ['edinburgh'] },
+      { title: 'Benchmarks do not say how long it can work alone', text: 'METR\'s time horizon measures how hard a task is for a human expert, not how long an agent can run without you watching.', cite: ['metr-horizon'] },
+    ],
+    proof: ['lethal-trifecta', 'cc-checkpoints', 'cc-auto-mode', 'replit', 'edinburgh', 'building-agents', 'metr-horizon'],
+  },
   'build-sites': {
     uses: [
       {
         title: 'Show it sites you like',
         text: 'Anthropic calls examples one of the most reliable ways to steer the output. Give it three or four real sites and say what you like about each.',
-        cite: ['prompting'],
-        prompt: 'Here are sites I like: [link] for its hero, [link] for its navigation and [link] for its colours. Say what each does well, then propose a direction for my site that borrows the ideas, not the look.',
+        cite: ['prompting', 'figma-make'],
+        prompt: 'Here are sites I like: [link] for its hero, [link] for its navigation and [link] for its colours. Use them as a style reference, not something to copy 1:1. Say what each does well, then propose a direction for my site that borrows the ideas, not the look.',
       },
       {
         title: 'Start from a design system',
         demo: { title: "your-site/", lines: [{ text: "\u251c\u2500 DESIGN.md    colours, type, spacing, components" }, { text: "\u251c\u2500 CLAUDE.md    \"Follow @DESIGN.md for every page.\"" }, { text: "\u2514\u2500 src/" }] },
-        text: 'Refero Styles collects design systems taken from product websites, each with a `DESIGN.md` file an AI coding tool can read.',
-        cite: ['refero'],
+        text: 'Refero Styles collects design systems taken from product websites, each with a `DESIGN.md` file an AI coding tool can read. Google has published DESIGN.md as an open format.',
+        cite: ['refero', 'design-md'],
         prompt: 'Read this DESIGN.md: [paste]. Build my [section] with its spacing and type scale, using my own colours and content.',
       },
       {
         title: 'Look at one part at a time',
-        text: 'Galleries such as `land-book.com` for layouts, `navbar.gallery` for navigation and `pricingpages.design` for pricing show many versions of one part. Some block automated browsers, so send a screenshot instead.',
+        text: 'Galleries such as `land-book.com` for layouts, `navbar.gallery` for navigation and `pricingpages.design` for pricing show many versions of one part. Some block automated browsers, so send a screenshot instead. Crop it to the one part, and put it before your words: large images get shrunk, which can blur small text.',
+        cite: ['claude-vision'],
         prompt: 'Here is a screenshot of a [navigation bar] I like. List what makes it work, including spacing, type, states and motion. Then build mine to the same standard.',
       },
       {
@@ -436,18 +577,25 @@ export const playbooks: Record<string, Playbook> = {
         cite: ['cc-best'],
         prompt: 'Take screenshots of [page] at 1440px and 390px wide. List everything that looks broken, crowded or generic, fix it, and screenshot again.',
       },
+      {
+        title: 'Describe motion in words',
+        text: 'A screenshot cannot show movement. Claude reads only the first frame of a GIF, and Figma\'s agent cannot watch video, so say what moves, when, how far and how fast.',
+        cite: ['claude-vision', 'figma-make'],
+        prompt: 'On scroll, each card should fade in and rise about 16px over 400ms, one after another, 80ms apart, with an ease-out curve. Skip the motion for anyone who has reduced motion turned on.',
+      },
     ],
     steps: [
       { title: 'Collect your references', text: 'Three or four sites, each picked for one thing you want.' },
       { title: 'Let it interview you', text: 'Ask it to question you about audience, tone and content before it designs anything.', cite: ['cc-plan'] },
       { title: 'Build one section first', text: 'Agree the look on the first screen before it builds the rest.' },
       { title: 'Look, fix, repeat', text: 'Screenshot it, judge it yourself and fix it, at least two rounds a page. Judge the screenshots, not the code.', cite: ['cc-best'] },
+      { title: 'Compare it with the reference', text: 'Put your build beside the reference and look for missing parts and wrong spacing. In a benchmark, models copied text almost perfectly but missed 30 to 40% of the blocks on harder pages.', cite: ['design2code'] },
       { title: 'Get a second opinion', text: 'Run a separate reviewer that has not seen how the page was built.', cite: ['cc-subagents'] },
     ],
     careful: [
       { title: 'A passing build is not a good design', text: 'A site can build with no errors and still look generic. Only looking at it tells you.' },
       { title: 'It is a weak judge of its own design', text: 'When it says a page looks great, check for yourself.' },
-      { title: 'Borrow ideas, not sites', text: 'Use references for direction. Another site\'s words, images and exact look are not yours to publish.' },
+      { title: 'Borrow ideas, not sites', text: 'In the US, a site\'s overall look and feel is not protected, but its text, images and creative arrangement can be. UK and EU law differ. Borrow spacing, type scale and patterns, and make or license your own words and images.', cite: ['usco-website'] },
       { title: 'Pages can carry instructions', text: 'A page the AI reads can hide text telling it what to do. Treat what it reads as data.', cite: ['injection-unsolved'] },
     ],
     notes: [
@@ -455,7 +603,7 @@ export const playbooks: Record<string, Playbook> = {
       { title: 'Shrunken screenshots mislead', text: 'A reviewer kept saying text was too small. Its full-page screenshots had been shrunk until detail was lost. Viewport shots of one section work better.' },
       { title: 'Motion needs a real browser', text: 'Screenshots cannot show how an animation feels. Check motion yourself, in a browser and on a phone.' },
     ],
-    proof: [],
+    proof: ['design2code', 'claude-vision', 'usco-website'],
   },
   cyber: {
     uses: [

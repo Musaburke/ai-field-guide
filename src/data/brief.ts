@@ -300,6 +300,181 @@ export const briefs: Record<string, Brief> = {
     summary: 'The report records what surveyed employers expect to happen to skills.',
     catch: 'Expectations, not outcomes. The report page could not be read.',
   },
+  'dunlosky': {
+    source: 'Dunlosky et al., 2013', title: 'Quizzing beats rereading',
+    summary: 'A review of ten study techniques rates practice testing and spaced practice as the most useful, and rereading, highlighting and summarising as the least.',
+    catch: 'Only the abstract was read, and the review predates AI chatbots.',
+  },
+  'roediger': {
+    source: 'Roediger and Karpicke, 2006', title: 'Testing yourself feels worse and works better',
+    summary: 'Restudying won on a test 5 minutes later. Testing won clearly after 2 days and after a week, even though restudying made students more confident.',
+    catch: 'A lab study of short passages. Only the abstract was read.',
+  },
+  'lehmann': {
+    source: 'Lehmann, Cornelius and Sting', title: 'Asking for explanations helps, copying solutions does not',
+    summary: 'Students who let AI write their solutions covered more but understood less. Those who asked for explanations understood more. AI widened the gap between weaker and stronger students.',
+    catch: 'A preprint. The usage split comes from exploratory analyses and a field study.',
+  },
+  'fan': {
+    source: 'Fan et al., 2024', title: 'Better essays, no more learning',
+    summary: 'Students with ChatGPT improved their essays most, but learned and transferred no more than other groups.',
+    catch: 'One writing task with 117 students. Only the abstract was read.',
+  },
+  'prather': {
+    source: 'Prather et al., ICER 2024', title: 'AI helps beginners who already have a plan',
+    summary: 'Novices who knew what they wanted used AI to write it faster. Those who struggled ended up believing they did better than they had.',
+    catch: 'A small observational study of 21 students.',
+  },
+  'study-modes': {
+    source: 'OpenAI, Anthropic and Google', title: 'Learning modes ask before they tell',
+    summary: 'ChatGPT study mode, Claude\'s Learning mode and Gemini Guided Learning question you and give hints instead of answers.',
+    catch: 'Vendors describing their own products. No independent trial was found, and each can be switched off.',
+  },
+  'claude-limits': {
+    source: 'Claude help centre', title: 'One allowance for chat and Claude Code',
+    summary: 'The five-hour window starts with your first message. claude.ai, Claude Code and Claude Desktop all count toward the same limit.',
+    catch: 'Official documentation from the toolmaker, with no per-plan numbers.',
+  },
+  'claude-limit-tips': {
+    source: 'Claude help centre', title: 'Projects and batching save usage',
+    summary: 'Project content is cached and counts less when reused. Related questions cost less sent together in one message.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-caching': {
+    source: 'Claude Code docs', title: 'Set the model once, rewind dead ends',
+    summary: 'Changing model mid-task breaks the cache. /rewind drops a failed attempt more cheaply than /compact.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-costs-hidden': {
+    source: 'Claude Code docs', title: 'Old sessions and long logs cost more',
+    summary: 'A short question in an all-day session pays for the whole conversation, and a long break means rereading it all.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'gemini-limits': {
+    source: 'Gemini help centre', title: 'Gemini has five-hour and weekly limits too',
+    summary: 'Gemini\'s limit refreshes every five hours up to a weekly cap, and long chats and heavy features use more.',
+    catch: 'Official documentation from the toolmaker. Limits may change.',
+  },
+  'agent-tokens': {
+    source: 'Bai et al.; Gao and Peng', title: 'Agents underestimate their own costs',
+    summary: 'Coding agents spend most on input, vary up to 30 times between runs and guess their own usage too low. A turn limit cut costs by a quarter or more.',
+    catch: 'Agents paying per token on one benchmark, not subscription plans. Abstracts only.',
+  },
+  'cc-rules': {
+    source: 'Claude Code docs', title: 'Short, checkable rules get followed',
+    summary: 'Write instructions you could verify, keep CLAUDE.md under 200 lines, and move the rest into rules that load only for matching files.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'agents-md': {
+    source: 'agents.md', title: 'One instruction file for many tools',
+    summary: 'AGENTS.md is a shared file for coding agents, and Claude Code reads it when a project has no CLAUDE.md.',
+    catch: 'Support in each tool was not checked one by one.',
+  },
+  'claude-memory': {
+    source: 'Claude help centre', title: 'Claude remembers, project by project',
+    summary: 'Memory is on by default and saved as topics. Each project keeps its own memory, and free accounts get five projects.',
+    catch: 'Official documentation from the toolmaker. Settings change often.',
+  },
+  'claude-app-skills': {
+    source: 'Claude help centre', title: 'Skills work in the Claude apps too',
+    summary: 'Skills are on every plan, including Free, with code execution turned on. Install them only from sources you trust.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'chatgpt-memory': {
+    source: 'OpenAI help centre', title: 'Deleting a chat may not delete the memory',
+    summary: 'Custom instructions hold 1,500 characters on free plans. A memory saved from a chat can outlive the chat, and temporary chats save none.',
+    catch: 'Official documentation from the toolmaker. Help pages change often.',
+  },
+  'gemini-gems': {
+    source: 'Gemini help centre', title: 'Gems are being removed',
+    summary: 'On personal accounts, Gems became read-only skills on 17 November 2026 and are removed on 17 December 2026.',
+    catch: 'Official documentation from the toolmaker. Other account types follow later.',
+  },
+  'context-eng': {
+    source: 'Anthropic engineering', title: 'More context can mean worse recall',
+    summary: 'As the context fills, recall drops. Keep only the most useful text in view, and keep notes in a file the agent can reopen.',
+    catch: 'Guidance from a vendor about building agents, not a study.',
+  },
+  'building-agents': {
+    source: 'Anthropic engineering', title: 'Start with the simplest thing that works',
+    summary: 'Agents cost more and their errors compound, so use the simplest setup that does the job and test in a sandbox.',
+    catch: 'Advice from a vendor, not a measured result.',
+  },
+  'cc-hooks': {
+    source: 'Claude Code docs', title: 'Hooks always run',
+    summary: 'A hook is a command that runs at a set point every time, unlike an instruction the model may skip.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-checkpoints': {
+    source: 'Claude Code docs', title: 'Rewind is not a backup',
+    summary: '/rewind undoes Claude\'s own edits, but not changes made only by shell commands. Keep using Git.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-auto-mode': {
+    source: 'Claude Code docs', title: 'Auto mode does not guarantee safety',
+    summary: 'Auto mode blocks risky actions such as production deploys, but the docs say it is no replacement for review.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-scheduling': {
+    source: 'Claude Code docs', title: 'Scheduled tasks act as you',
+    summary: 'Loops expire after 7 days. Cloud scheduled tasks use your accounts and every connector you have linked, unless you remove them.',
+    catch: 'Official documentation from the toolmaker. Cloud tasks are a research preview.',
+  },
+  'chatgpt-tasks': {
+    source: 'OpenAI help centre', title: 'ChatGPT can run tasks on a schedule',
+    summary: 'Free and Go plans can keep 3 tasks active and Plus 5. Free tasks run at most once a day.',
+    catch: 'Official documentation from the toolmaker. Limits change.',
+  },
+  'mcp-security': {
+    source: 'Model Context Protocol', title: 'A local server is a program on your computer',
+    summary: 'Adding a local MCP server downloads and runs code, so apps must show the exact command and ask you first.',
+    catch: 'Written for builders of MCP apps, not users.',
+  },
+  'lethal-trifecta': {
+    source: 'Simon Willison', title: 'Never give one agent all three',
+    summary: 'Private data, untrusted content and a way to send data out, together, let an attacker steal your data.',
+    catch: 'Practitioner analysis, not a study.',
+  },
+  'replit': {
+    source: 'Fortune', title: 'An agent deleted a live database',
+    summary: 'During a code freeze, Replit\'s agent wiped a production database, then wrongly said it could not be recovered.',
+    catch: 'Based mainly on the user\'s own posts. Accounts differ on the details.',
+  },
+  'metr-horizon': {
+    source: 'METR', title: 'Time horizon measures difficulty, not stamina',
+    summary: 'METR rates task length by how long a human expert takes, not how long an agent can work alone.',
+    catch: 'Mostly software tasks, cleaner than real work.',
+  },
+  'edinburgh': {
+    source: 'University of Edinburgh', title: 'One university bans agents in its platforms',
+    summary: 'Using an AI agent or AI browser for any work in Edinburgh\'s learning platform counts as misconduct, assessed or not.',
+    catch: 'One university\'s rules. Check your own.',
+  },
+  'claude-vision': {
+    source: 'Anthropic docs', title: 'Crop screenshots and put them first',
+    summary: 'Big images are shrunk, which can blur text, so crop them. Put the image before your text. A GIF shows only its first frame.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'figma-make': {
+    source: 'Figma help centre', title: 'Say copy or style reference',
+    summary: 'Tell the tool whether you want an exact copy or a style reference. It cannot watch video.',
+    catch: 'Documentation for one tool, not a measured result.',
+  },
+  'design2code': {
+    source: 'Si et al., Design2Code', title: 'Models copy text well and layout badly',
+    summary: 'Rebuilding 484 real pages from screenshots, models got text almost right but missed 30 to 40% of blocks on hard pages.',
+    catch: 'Older models, and it measures copying, not design quality.',
+  },
+  'design-md': {
+    source: 'Google Stitch', title: 'DESIGN.md is an open format',
+    summary: 'Google open-sourced a draft spec for DESIGN.md, a file of design rules an AI agent can read.',
+    catch: 'A company describing its own format.',
+  },
+  'usco-website': {
+    source: 'US Copyright Office', title: 'Look and feel is free, the content is not',
+    summary: 'In the US a site\'s overall look and feel is not protected, but its text, images and creative arrangement can be.',
+    catch: 'US registration practice, not legal advice. UK and EU law differ.',
+  },
   'f-aiimpacts': {
     source: 'AI Impacts survey, 2022', title: 'Researchers put 50% odds on 2059',
     summary: 'Researchers gave a 50% chance of "high-level machine intelligence" by 2059.',
@@ -321,6 +496,7 @@ export const verdicts: Record<string, string> = {
   safety: 'Get the benefits without giving away data or access you cannot get back.',
   employers: 'Show what you can do with AI, and be honest about how you checked it.',
   coding: 'Build faster, understand what you build, and review all of it.',
+  agents: 'Hand off work you can check and undo, and keep the final say on anything that acts as you.',
   'build-sites': 'Show it real sites you like, then judge every version with your own eyes.',
   cyber: 'Use AI to learn and defend, and only test what you have permission to test.',
   'other-fields': 'Find where AI helps in your work, and the checks your field still requires.',
