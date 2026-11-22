@@ -1,5 +1,5 @@
 ---
-// The shape of Musa's own vault: real links between real notes, names left out.
+// The shape of my own vault: real links between real notes, names left out.
 // Regenerate with `python3 -I tools/brain-graph.py ~/Brain`.
 // Without JS it is a still picture; the script adds the drift, dragging and hover focus.
 import graph from '../data/brain-graph.json';
@@ -21,7 +21,7 @@ const used = [...new Set(nodes.map((n) => n.g))].sort((a, b) => a - b);
     <ul class="graph-key">
       {used.map((g) => <li><i style={`background:${tones[g % tones.length]}`}></i>{folders[g]}</li>)}
     </ul>
-    <span>Musa's own notes: {nodes.length} linked notes and {edges.length} links, drawn the way Obsidian's graph view draws them. Note names are left out. <span class="graph-hint">Drag a note to pull its links.</span></span>
+    <span>My own notes: {nodes.length} linked notes and {edges.length} links, drawn the way Obsidian's graph view draws them. Note names are left out. <span class="graph-hint">Drag a note to pull its links.</span></span>
   </figcaption>
 </figure>
 

@@ -69,6 +69,18 @@ section.block { padding-bottom: 56px; }
 .pop > * + * { margin-top: 6px; }
 .pop-title { font-weight: 600; }
 .pop-note { color: var(--soft); }
+.pop-gloss { width: min(300px, calc(100vw - 32px)); }
+
+/* Glossary words: a dotted underline; hover or tap shows the meaning */
+.gloss { display: inline; padding: 0; border: 0; border-radius: 3px; background: none; color: inherit; font: inherit; text-align: inherit; text-decoration: underline dotted; text-decoration-color: var(--green-ink); text-decoration-thickness: 1.5px; text-underline-offset: 3px; cursor: help; transition: color 150ms ease, background-color 150ms ease; }
+@media (hover: hover) and (pointer: fine) { button.gloss:hover { color: var(--green-ink); } }
+button.gloss:active, button.gloss[data-state="open"] { background: var(--green-1); color: var(--green-ink); }
+button.gloss:focus-visible { outline: 2px solid var(--green-ink); outline-offset: 2px; }
+
+/* Before you start: the words this guide uses */
+.start-words { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px 28px; margin-top: 24px; padding: 20px 24px; border-radius: var(--radius); background: var(--green-1); }
+.start-words dt { font-weight: 600; }
+.start-words dd { margin-top: 2px; font-size: var(--t-small); line-height: 1.5; }
 
 /* Evidence signals */
 .read-line { display: inline-flex; align-items: center; gap: 8px; color: var(--soft); font-size: var(--t-small); }

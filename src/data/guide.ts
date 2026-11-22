@@ -431,6 +431,30 @@ export const sections: Section[] = [
     ],
   },
   {
+    id: 'skills',
+    title: 'Teach AI with skills',
+    intro: 'Save how you like a job done as a skill, use the ones built in, and connect the apps your work lives in.',
+    claims: [
+      {
+        id: 'cc-skills-bundled',
+        text: 'The [Claude Code skills docs](https://code.claude.com/docs/en/skills) say: "Create a SKILL.md file with instructions, and Claude adds it to its toolkit. Claude uses skills when relevant, or you can invoke one directly with /skill-name." Skills can live in ~/.claude/skills/ for you, .claude/skills/ for one project, or inside a plugin. "Claude Code includes a set of bundled skills, such as /doctor, /code-review, /batch, /debug, /loop, and /claude-api."',
+        read: 'page',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
+      },
+      {
+        id: 'caveman',
+        text: 'The [caveman project](https://github.com/JuliusBrussee/caveman) describes itself as a "Skill + local proxy for coding agents: shorter answers, smaller tool output". Its README reports "33.2% fewer" input tokens over whole sessions, measured on "6 synthetic large-tool-output tasks". It installs into Claude Code as a plugin. The README says its proxy and app collect usage data by default unless you turn it off.',
+        read: 'page',
+        strength: 'Weak (the author\'s own tests)',
+        flags: ['vendor'],
+        note: 'Numbers come from the project\'s own small, synthetic tests, not independent measurement. Your saving will depend on how you work.',
+      },
+    ],
+    gap: 'No independent study yet measures how much skills improve results or save usage. Most of what is known comes from the toolmakers\' docs and from skill authors\' own tests.',
+  },
+  {
     id: 'coding',
     title: 'Code with AI',
     intro:
@@ -465,15 +489,23 @@ export const sections: Section[] = [
   {
     id: 'agents',
     title: 'Hand work to agents',
-    intro: 'What to hand to an AI agent, how to run it on a schedule, and how to keep an undo it cannot touch, using Claude Code as the worked example.',
+    intro: 'What an agent is, what to give it, how to get several working together, and how to keep a way back if it goes wrong, using Claude Code as the worked example.',
     claims: [
       {
         id: 'building-agents',
-        text: 'Anthropic\'s [Building effective agents](https://www.anthropic.com/engineering/building-effective-agents) (19 December 2024) recommends "finding the simplest solution possible, and only increasing complexity when needed. This might mean not building agentic systems at all." It warns that "The autonomous nature of agents means higher costs, and the potential for compounding errors", and recommends "extensive testing in sandboxed environments, along with the appropriate guardrails."',
+        text: 'Anthropic\'s [Building effective agents](https://www.anthropic.com/engineering/building-effective-agents) (19 December 2024) recommends "finding the simplest solution possible, and only increasing complexity when needed. This might mean not building agentic systems at all." It warns that "The autonomous nature of agents means higher costs, and the potential for compounding errors", and recommends "extensive testing in sandboxed environments, along with the appropriate guardrails. It describes ways to combine several model calls, including "**Sectioning**: Breaking a task into independent subtasks run in parallel" and the evaluator-optimizer, where "one LLM call generates a response while another provides evaluation and feedback in a loop". That loop "is particularly effective when we have clear evaluation criteria, and when iterative refinement provides measurable value."',
         read: 'page',
         strength: 'Moderate (practitioner guidance)',
         flags: ['vendor'],
         note: 'Advice from an AI vendor to people building agent systems, based on its own work with customers. It is not a measured result.',
+      },
+      {
+        id: 'cc-worktrees',
+        text: 'The [Claude Code worktrees page](https://code.claude.com/docs/en/worktrees) says claude --worktree feature-auth "Creates a worktree under .claude/worktrees/<name>/ on a new branch" and starts Claude in it, and that running it again with a different name in another terminal gives "a second isolated session". The [best practices page](https://code.claude.com/docs/en/best-practices) adds: "A second session is also the easiest independent reviewer you can get. One session writes the rate limiter, another reviews" it "without having watched it being written".',
+        read: 'page',
+        strength: 'Official guidance',
+        flags: ['vendor'],
+        note: 'Official documentation from the company that makes the tool. It describes how the tool works and does not measure results. Details can change, so check the page.',
       },
       {
         id: 'cc-hooks',

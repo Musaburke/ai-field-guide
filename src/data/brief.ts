@@ -395,6 +395,22 @@ export const briefs: Record<string, Brief> = {
     summary: 'As the context fills, recall drops. Keep only the most useful text in view, and keep notes in a file the agent can reopen.',
     catch: 'Guidance from a vendor about building agents, not a study.',
   },
+  'cc-worktrees': {
+    source: 'Claude Code docs', title: 'Two agents, two copies of the project',
+    summary: 'claude --worktree starts Claude in its own copy of the project on a new branch. A second session that did not write the code makes the easiest independent reviewer.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  'cc-skills-bundled': {
+    source: 'Claude Code docs', title: 'A skill is one file of instructions',
+    summary: 'Write a SKILL.md file and Claude uses it when relevant, or when you type its name. Some skills, such as /code-review and /debug, come built in.',
+    catch: 'Official documentation from the toolmaker, not a measured result.',
+  },
+  caveman: {
+    source: 'caveman on GitHub', title: 'Shorter answers, fewer tokens',
+    summary: 'A community skill and proxy that makes coding agents say less and read less. Its author reports about a third fewer input tokens over whole sessions.',
+    catch: 'The author\'s own small, synthetic tests, not an independent measurement.',
+    visual: { big: '33%', label: 'fewer input tokens, author\'s tests' },
+  },
   'building-agents': {
     source: 'Anthropic engineering', title: 'Keep agents simple',
     summary: 'Agents cost more and their errors compound, so use the simplest setup that does the job and test in a sandbox.',
@@ -495,8 +511,9 @@ export const verdicts: Record<string, string> = {
   'second-brain': 'Give the AI your context once, so every new chat can start from it.',
   safety: 'Get the benefits without giving away data or access you cannot get back.',
   employers: 'Show what you can do with AI, and be honest about how you checked it.',
+  skills: 'Save how you like a job done once, and the AI follows it every time.',
   coding: 'Build faster, understand what you build, and review all of it.',
-  agents: 'Hand off work you can check and undo, and keep the final say on anything that acts as you.',
+  agents: 'Let AI do whole jobs for you, and always keep a way to check and undo its work.',
   'build-sites': 'Show it real sites you like, then judge every version with your own eyes.',
   cyber: 'Use AI to learn and defend, and only test what you have permission to test.',
   'other-fields': 'Find where AI helps in your work, and the checks your field still requires.',

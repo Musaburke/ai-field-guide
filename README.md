@@ -16,6 +16,7 @@ Eleven short guides in three groups:
 | Set up your AI tools | Hand work to agents | AI in cyber security |
 | Manage your usage | Build websites with AI | Stand out at work |
 | Give AI a second brain | | AI in your field |
+| Teach AI with skills | | |
 
 Each guide runs the same way: what AI is good for, how to do it, where to be careful, and a "Behind this guide" area with notes, evidence, terms and sources.
 
