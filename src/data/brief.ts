@@ -446,7 +446,7 @@ export const briefs: Record<string, Brief> = {
     catch: 'Mostly software tasks, cleaner than real work.',
   },
   'edinburgh': {
-    source: 'University of Edinburgh', title: 'Edinburgh bans agents',
+    source: 'University of Edinburgh', title: 'No agents in Edinburgh\'s VLE',
     summary: 'Using an AI agent or AI browser for any work in Edinburgh\'s learning platform counts as misconduct, assessed or not.',
     catch: 'One university\'s rules. Check your own.',
   },

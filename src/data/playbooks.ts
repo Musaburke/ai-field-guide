@@ -221,7 +221,7 @@ export const playbooks: Record<string, Playbook> = {
       },
       {
         title: 'Stop a run that goes in circles',
-        text: 'More tokens did not buy better answers in one study of coding agents, and capping the number of turns cut costs by 24 to 68% with little loss.',
+        text: 'In one study of coding agents, more tokens did not buy better answers. In another, capping the number of turns cut costs by 24 to 68% with little loss.',
         cite: ['agent-tokens'],
         prompt: 'Before you start, tell me how we will know this is done. If you try three approaches without progress, stop and tell me what you learned instead of trying a fourth.',
       },
