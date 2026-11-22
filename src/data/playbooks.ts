@@ -111,7 +111,7 @@ export const playbooks: Record<string, Playbook> = {
   'set-up-your-tools': {
     start: {
       text: "A little setup before the big jobs pays off: picking the right model, writing your standing instructions once, planning before building and limiting what the AI can touch. The examples use Claude Code, a version of Claude that works on the files on your computer, but most tools have the same ideas under other names.",
-      words: ['Token', 'Context', 'Plan mode', 'CLAUDE.md', 'Skill', 'Agent', 'MCP'],
+      words: ['Token', 'Plan mode', 'CLAUDE.md', 'Skill', 'Agent', 'MCP'],
     },
     topics: [
       {
@@ -627,7 +627,7 @@ export const playbooks: Record<string, Playbook> = {
   agents: {
     start: {
       text: 'A normal AI chat answers you and stops. An agent keeps going: it reads your files, runs commands, checks whether the job worked and tries again until it is done. Claude Code, OpenAI Codex and Cursor\'s agent are examples. This guide covers what to give an agent, how to set one up, how to get several working together, and how to stay safe while they work.',
-      words: ['Agent', 'Subagent', 'Git', 'Commit', 'Shell command', 'Skill', 'MCP', 'Hook'],
+      words: ['Agent', 'Subagent', 'Git', 'Commit', 'Skill', 'MCP'],
     },
     uses: [
       {

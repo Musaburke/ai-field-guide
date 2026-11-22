@@ -10,6 +10,7 @@ import Sources from '../components/Sources.astro';
 import Terminal from '../components/Terminal.astro';
 import BrainGraph from '../components/BrainGraph.astro';
 import Segs from '../components/Segs.astro';
+import Term from '../components/Term';
 import { sections } from '../data/guide';
 import { verdicts } from '../data/brief';
 import { groupOf } from '../data/panels';
@@ -37,12 +38,11 @@ const cites = numberCites(
     .concat(p.proof),
 );
 // Each block underlines the first use of each glossary word in it, so it explains itself.
-const m = Object.fromEntries(['start', 'uses', 'graph', 'habits', 'steps', 'careful', 'notes'].map((k) => [k, marker(s.id)]));
+const m = Object.fromEntries(['uses', 'graph', 'habits', 'steps', 'careful', 'notes'].map((k) => [k, marker(s.id)]));
 const startWords = p.start ? define(p.start.words) : [];
 
 // The "On this page" list follows the sections this guide actually renders.
 const toc = [
-  p.start && { id: 'start', label: 'Before you start' },
   p.uses && { id: 'uses', label: 'What it is great for' },
   p.graph && { id: 'graph', label: p.graph.title },
   p.fields && { id: 'fields', label: 'In your field' },
@@ -60,6 +60,19 @@ const toc = [
         <p class="open-step">{group.title} · Guide {index + 1} of {sections.length}</p>
         <h1 data-split>{s.title}</h1>
         <p class="verdict" data-reveal style="--d:200ms">{verdicts[s.id]}</p>
+        {p.start && (
+          <div class="open-intro" data-reveal style="--d:320ms">
+            <p>{p.start.text}</p>
+            {startWords.length > 0 && (
+              <div class="words">
+                <p class="words-label">Words you will meet</p>
+                <ul>
+                  {startWords.map((w) => <li><Term client:visible chip text={w.term} term={w.term} meaning={w.meaning} /></li>)}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
       </header>
     </div>
   </div>
@@ -72,18 +85,6 @@ const toc = [
     </nav>
 
     <div class="guide-main">
-      {p.start && (
-        <section class="block" id="start" aria-labelledby="start-h">
-          <h2 id="start-h" data-split>Before you start</h2>
-          <p class="block-lead">{p.start.text}</p>
-          {startWords.length > 0 && (
-            <dl class="start-words" data-reveal>
-              {startWords.map((w) => <div><dt>{w.term}</dt><dd>{w.meaning}</dd></div>)}
-            </dl>
-          )}
-        </section>
-      )}
-
       {p.uses && (
         <section class="block" id="uses" aria-labelledby="uses-h">
           <h2 id="uses-h" data-split>What it is great for</h2>

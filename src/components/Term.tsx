@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import * as Popover from '@radix-ui/react-popover';
 
 /**
- * A word with a plain definition. Server and no-JS: the word with its meaning as a tooltip.
+ * A word with a plain definition, inline in text or as a chip in a guide's opening. Server and no-JS: the word with its meaning as a tooltip.
  * After hydration: a button that opens the meaning on hover (mouse) or tap and keyboard.
  */
-export default function Term({ text, term, meaning }: { text: string; term: string; meaning: string }) {
+export default function Term({ text, term, meaning, chip }: { text: string; term: string; meaning: string; chip?: boolean }) {
+  const cls = chip ? 'gloss gloss-chip' : 'gloss';
   const [ready, setReady] = useState(false);
   const [open, setOpen] = useState(false);
   const timer = useRef<number | undefined>(undefined);
@@ -14,7 +15,7 @@ export default function Term({ text, term, meaning }: { text: string; term: stri
   useEffect(() => setReady(true), []);
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
-  if (!ready) return <span className="gloss" title={`${term}: ${meaning}`}>{text}</span>;
+  if (!ready) return <span className={cls} title={`${term}: ${meaning}`}>{text}</span>;
 
   const enter = (e: React.PointerEvent) => {
     if (e.pointerType !== 'mouse') return;
@@ -29,7 +30,7 @@ export default function Term({ text, term, meaning }: { text: string; term: stri
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
       <Popover.Trigger
-        className="gloss"
+        className={cls}
         aria-label={`${text}: what this means`}
         onPointerEnter={enter}
         onPointerLeave={leave}
