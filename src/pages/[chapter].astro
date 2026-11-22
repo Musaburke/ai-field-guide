@@ -107,7 +107,7 @@ const toc = [
           </div>
           <div class="habits">
             {p.topics.map((t) => (
-              <article class="habit" data-reveal>
+              <article class:list={["habit", !t.demo && "habit-solo"]} data-reveal>
                 <div class="habit-text">
                   <h3>{t.title}</h3>
                   <p class="topic-habit">{t.habit}</p>
