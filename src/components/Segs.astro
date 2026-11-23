@@ -1,0 +1,8 @@
+---
+// Renders guide text from `marker()`: plain text, `code` spans and glossary words.
+import Term from './Term';
+import type { Seg } from '../lib/terms';
+
+const { segs } = Astro.props as { segs: Seg[] };
+---
+{segs.map((s) => s.code ? <code>{s.t}</code> : s.term ? <Term client:visible text={s.t} term={s.term.term} meaning={s.term.meaning} /> : s.t)}

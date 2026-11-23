@@ -9,12 +9,15 @@ import Rich from '../components/Rich';
 import Sources from '../components/Sources.astro';
 import Terminal from '../components/Terminal.astro';
 import BrainGraph from '../components/BrainGraph.astro';
+import Segs from '../components/Segs.astro';
+import Term from '../components/Term';
 import { sections } from '../data/guide';
 import { verdicts } from '../data/brief';
 import { groupOf } from '../data/panels';
 import { playbooks } from '../data/playbooks';
 import { terms } from '../data/terms';
 import { allClaims, countWord, gapDisplay, numberCites } from '../lib/content';
+import { define, marker } from '../lib/terms';
 
 export function getStaticPaths() {
   return sections.map((s, i) => ({ params: { chapter: s.id }, props: { index: i } }));
@@ -34,8 +37,9 @@ const cites = numberCites(
     .flatMap((l) => l.cite ?? [])
     .concat(p.proof),
 );
-// `code` spans in the data render as code; nothing else is parsed.
-const codeParts = (t: string) => t.split(/`([^`]+)`/);
+// Each block underlines the first use of each glossary word in it, so it explains itself.
+const m = Object.fromEntries(['uses', 'graph', 'habits', 'steps', 'careful', 'notes'].map((k) => [k, marker(s.id)]));
+const startWords = p.start ? define(p.start.words) : [];
 
 // The "On this page" list follows the sections this guide actually renders.
 const toc = [
@@ -56,6 +60,19 @@ const toc = [
         <p class="open-step">{group.title} · Guide {index + 1} of {sections.length}</p>
         <h1 data-split>{s.title}</h1>
         <p class="verdict" data-reveal style="--d:200ms">{verdicts[s.id]}</p>
+        {p.start && (
+          <div class="open-intro" data-reveal style="--d:320ms">
+            <p>{p.start.text}</p>
+            {startWords.length > 0 && (
+              <div class="words">
+                <p class="words-label">Words you will meet</p>
+                <ul>
+                  {startWords.map((w) => <li><Term client:visible chip text={w.term} term={w.term} meaning={w.meaning} /></li>)}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
       </header>
     </div>
   </div>
@@ -75,7 +92,7 @@ const toc = [
             {p.uses.map((u, i) => (
               <article class="use" data-reveal style={`--d:${(i % 2) * 70}ms`}>
                 <h3>{u.title}</h3>
-                <p>{codeParts(u.text).map((part, n) => n % 2 ? <code>{part}</code> : part)} {u.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p>
+                <p><Segs segs={m.uses(u.text)} /> {u.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p>
                 {u.demo && <Terminal demo={u.demo} />}
                 <PromptBox prompt={u.prompt} />
               </article>
@@ -87,7 +104,7 @@ const toc = [
       {p.graph && (
         <section class="block" id="graph" aria-labelledby="graph-h">
           <h2 id="graph-h" data-split>{p.graph.title}</h2>
-          <p class="block-lead">{codeParts(p.graph.text).map((part, n) => n % 2 ? <code>{part}</code> : part)}</p>
+          <p class="block-lead"><Segs segs={m.graph(p.graph.text)} /></p>
           <BrainGraph />
         </section>
       )}
@@ -107,11 +124,11 @@ const toc = [
           </div>
           <div class="habits">
             {p.topics.map((t) => (
-              <article class="habit" data-reveal>
+              <article class:list={["habit", !t.demo && "habit-solo"]} data-reveal>
                 <div class="habit-text">
                   <h3>{t.title}</h3>
-                  <p class="topic-habit">{t.habit}</p>
-                  <p class="habit-example">{codeParts(t.example).map((part, n) => n % 2 ? <code>{part}</code> : part)} {t.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p>
+                  <p class="topic-habit"><Segs segs={m.habits(t.habit)} /></p>
+                  <p class="habit-example"><Segs segs={m.habits(t.example)} /> {t.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p>
                   {t.prompt && <PromptBox prompt={t.prompt} />}
                 </div>
                 {t.demo && <Terminal demo={t.demo} />}
@@ -127,7 +144,7 @@ const toc = [
           {p.steps.map((l, i) => (
             <li data-reveal style={`--d:${i * 50}ms`}>
               <span class="step-n" aria-hidden="true">{i + 1}</span>
-              <div><h3>{l.title}</h3><p>{codeParts(l.text).map((part, n) => n % 2 ? <code>{part}</code> : part)} {l.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p></div>
+              <div><h3>{l.title}</h3><p><Segs segs={m.steps(l.text)} /> {l.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p></div>
             </li>
           ))}
         </ol>
@@ -137,7 +154,7 @@ const toc = [
         <h2 id="careful-h" data-split>Where to be careful</h2>
         <ul class="rules">
           {p.careful.map((l, i) => (
-            <li data-reveal style={`--d:${i * 70}ms`}><h3>{l.title}</h3><p>{codeParts(l.text).map((part, n) => n % 2 ? <code>{part}</code> : part)} {l.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p></li>
+            <li data-reveal style={`--d:${i * 70}ms`}><h3>{l.title}</h3><p><Segs segs={m.careful(l.text)} /> {l.cite?.map((id) => <Citation client:visible cite={cites.get(id)!} current={route} />)}</p></li>
           ))}
         </ul>
       </section>
@@ -151,10 +168,10 @@ const toc = [
         {p.notes && (
           <div class="behind-part">
             <h3>{p.notesTitle ?? 'What I learned building this site'}</h3>
-            <p class="block-note">Musa Burke's own notes from building this guide and other sites with Claude Code, not study findings.</p>
+            <p class="block-note">My own notes from building this guide and other sites with Claude Code, not study findings.</p>
             <ul class="notes">
               {p.notes.map((l, i) => (
-                <li data-reveal style={`--d:${(i % 2) * 70}ms`}><h4>{l.title}</h4><p>{codeParts(l.text).map((part, n) => n % 2 ? <code>{part}</code> : part)}</p></li>
+                <li data-reveal style={`--d:${(i % 2) * 70}ms`}><h4>{l.title}</h4><p><Segs segs={m.notes(l.text)} /></p></li>
               ))}
             </ul>
           </div>
